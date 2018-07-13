@@ -1,0 +1,10 @@
+{
+    "routers": [
+        {
+            "name": "首页",
+            "path": "/",
+            "exact": true,
+            "component": "home"
+        }
+    ]
+}

@@ -1,0 +1,24 @@
+{
+  "name": "sam",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": "./bin/index.js",
+  "keywords": [],
+  "author": "lengyingxin <lengyingxin8966@gmail.com> (https://github.com/LengYXin)",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^2.16.0",
+    "download-git-repo": "^1.0.2",
+    "fs-extra": "^6.0.1",
+    "handlebars": "^4.0.11",
+    "koa": "^2.5.2",
+    "koa-bodyparser": "^4.2.1",
+    "koa-router": "^7.4.0",
+    "mem-fs": "^1.1.3",
+    "mem-fs-editor": "^5.1.0"
+  }
+}
