@@ -21,7 +21,7 @@ module.exports = class {
     this.use();
     app.listen(port, null, null, () => {
       const loct = `http://localhost:${port}`;
-      log.success('server: open ' + loct)
+      log.info('模板服务已启动  ： ' + loct)
       // Opn(loct);
     });
   }

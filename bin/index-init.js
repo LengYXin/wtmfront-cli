@@ -41,8 +41,8 @@ async function goDownload() {
     fsExtra.copySync(target, projectPath);
     log.success("init Success");
     // spinner.stop();
-    spinner.text = 'npm install';
-    const procChild = child_process.exec('npm init --yes --loglevel=notice', { cwd: projectPath, maxBuffer: 999999999 }, (error, stdout, stderr) => {
+    spinner.text = 'npm install ( *¯ ꒳¯*) 正在下载包依赖，还请耐心等待一会~';
+    const procChild = child_process.exec('npm install --loglevel=notice', { cwd: projectPath, maxBuffer: 999999999 }, (error, stdout, stderr) => {
         spinner.stop();
         if (error) {
             log.error(error);
@@ -67,13 +67,14 @@ function start() {
     const procChild = child_process.exec( `code -g -n ${projectPath}`, { cwd: projectPath, maxBuffer: 999999999 }, (error, stdout, stderr) => {
         if (error) {
             log.error(error);
+            log.error('vscode 打开项目出错啦~ 请手动打开项目 ( *¯ ꒳¯*)');
         }
     });
-    procChild.stdout.on("data", data => {
-        console.log('stdout', data);
-    })
-    procChild.stderr.on("data", data => {
-        console.log('stderr', chalk.blue(data));
-    })
+    // procChild.stdout.on("data", data => {
+    //     console.log('stdout', data);
+    // })
+    // procChild.stderr.on("data", data => {
+    //     console.log('stderr', chalk.blue(data));
+    // })
 }
 
