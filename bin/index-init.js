@@ -8,8 +8,11 @@ const store = memFs.create();
 const fsEditor = editor.create(store);
 const rootPath = process.cwd();
 const path = require('path');
+const chalk = require('chalk');
+const child_process = require('child_process')
 const log = require('../lib/log');
 const download = require('../lib/download');
+const server = require('../server/index');
 
 // download('test');
 
@@ -36,7 +39,41 @@ async function goDownload() {
     const target = await download(projectName);
     spinner.start();
     fsExtra.copySync(target, projectPath);
-    spinner.stop();
     log.success("init Success");
+    // spinner.stop();
+    spinner.text = 'npm install';
+    const procChild = child_process.exec('npm init --yes --loglevel=notice', { cwd: projectPath, maxBuffer: 999999999 }, (error, stdout, stderr) => {
+        spinner.stop();
+        if (error) {
+            log.error(error);
+            log.info('请到 项目重新安装依赖 npm install ');
+        } else {
+            start();
+            log.success("npm install Success");
+        }
+        // console.log(error, stdout, stderr);
+    });
+    // procChild.stdout.on("data", data => {
+    //     console.log('stdout', data);
+    // })
+    // procChild.stderr.on("data", data => {
+    //     console.log(chalk.blue(data));
+    // })
+}
+function start() {
+    // 服务
+    new server(projectPath).init(8765);
+    // open项目
+    const procChild = child_process.exec( `code -g -n ${projectPath}`, { cwd: projectPath, maxBuffer: 999999999 }, (error, stdout, stderr) => {
+        if (error) {
+            log.error(error);
+        }
+    });
+    procChild.stdout.on("data", data => {
+        console.log('stdout', data);
+    })
+    procChild.stderr.on("data", data => {
+        console.log('stderr', chalk.blue(data));
+    })
 }
 
