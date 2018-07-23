@@ -20,7 +20,7 @@ module.exports = function (router) {
             };
         } catch (error) {
             ctx.body = {
-                code: 200,
+                code: 500,
                 data: false,
                 message: error
             };

@@ -6,7 +6,7 @@ const editor = require('mem-fs-editor');
 const store = memFs.create();
 const fsEditor = editor.create(store);
 const templateServer = require('./templateServer/analysis');
-const log=require('../lib/log');
+const log = require('../lib/log');
 module.exports = class {
     constructor(contextRoot) {
         // this.Generator = Generator;
@@ -38,6 +38,44 @@ module.exports = class {
          * 临时目录
          */
         this.temporaryPath = path.join(__dirname, 'templateServer', "temporary");
+        /**
+         * 项目配置文件路径
+         */
+        this.wtmfrontPath = path.join(this.contextRoot, "wtmfront.json");
+        /**
+         * 项目配置
+         */
+        this.wtmfrontConfig = {};
+        /**
+         * 初始化配置
+         */
+        if (this.exists(this.wtmfrontPath)) {
+            this.init(fsExtra.readJsonSync(this.wtmfrontPath));
+        }
+    }
+    /**
+     * 初始化项目信息
+     */
+    init(body) {
+        let containersPath = this.containersPath;
+        let routersPath = this.routersPath;
+        try {
+            containersPath = path.join(this.contextRoot, body.containers);
+            routersPath = path.join(this.contextRoot, body.routers);
+            this.containersPath = containersPath;
+            this.routersPath = routersPath;
+            this.wtmfrontConfig = body;
+        } catch (error) {
+            log.error(error);
+            throw error;
+        }
+        finally {
+            // log.success(JSON.stringify({
+            //     contextRoot: this.contextRoot,
+            //     containersPath: this.containersPath,
+            //     routersPath: this.routersPath,
+            // }, null, 4))
+        }
     }
     /**
      * 创建组件
@@ -46,36 +84,53 @@ module.exports = class {
     async create(component) {
         try {
             this.componentName = component.containers.containersName;
+            // 过滤
             if (!this.componentName) {
                 throw "组件名称不能为空";
             }
-            const fsPath = path.join(this.containersPath, this.componentName);
-            if (fs.readdirSync(this.containersPath).some(x => x == this.componentName)) {
-                throw "组件已经存在";
-            } else {
-                // 创建临时文件
-                const temporaryPath = path.join(this.temporaryPath, this.componentName);
-                const analysis = new templateServer(temporaryPath);
-                this.mkdirSync(temporaryPath);
-                // this.copy(path.join(this.templatePath, "table"), temporaryPath);
-                fsExtra.copySync(path.join(this.templatePath, "table"), temporaryPath);
-                fsExtra.writeJsonSync(path.join(temporaryPath, "pageConfig.json"), component.model, { spaces: 4 });
-                await analysis.render();
-                this.mkdirSync(fsPath);
-                this.copy(temporaryPath, fsPath);
-                this.writeRouters(component.containers, 'add');
-                this.writeContainers();
-                // 删除临时文件
-                fsExtra.removeSync(temporaryPath);
-                // // 修改 页面配置 模型
-                // fsExtra.writeJsonSync(path.join(fsPath, "pageConfig.json"), component.model, { spaces: 4 });
+            // 组件目录不不存在 直接退出。
+            if (!this.fsExistsSync(this.containersPath)) {
+                throw "组件目录不存在 " + this.wtmfrontConfig.containers;
             }
+            if (fs.readdirSync(this.containersPath).some(x => x == this.componentName)) {
+                throw "组件已经存在 " + this.componentName;
+            }
+            const fsPath = path.join(this.containersPath, this.componentName);
+            // 创建临时文件
+            const temporaryPath = path.join(this.temporaryPath, this.componentName);
+            // 模板服务
+            const analysis = new templateServer(temporaryPath);
+            this.mkdirSync(temporaryPath);
+            // this.copy(path.join(this.templatePath, "table"), temporaryPath);
+            fsExtra.copySync(path.join(this.templatePath, "table"), temporaryPath);
+            fsExtra.writeJsonSync(path.join(temporaryPath, "pageConfig.json"), component.model, { spaces: 4 });
+            await analysis.render();
+            // 创建目录
+            this.mkdirSync(fsPath);
+            // 拷贝生成组件
+            this.copy(temporaryPath, fsPath);
+            // 写入路由
+            this.writeRouters(component.containers, 'add');
+            // 生成导出
+            this.writeContainers();
+            // 删除临时文件
+            fsExtra.removeSync(temporaryPath);
+            // // 修改 页面配置 模型
+            // fsExtra.writeJsonSync(path.join(fsPath, "pageConfig.json"), component.model, { spaces: 4 });
             log.success("create " + this.componentName);
         } catch (error) {
             log.error("error", error);
             throw error
         }
 
+    }
+    fsExistsSync(path) {
+        try {
+            fs.accessSync(path, fs.F_OK);
+        } catch (e) {
+            return false;
+        }
+        return true;
     }
     /**
      * 删除组件
@@ -185,8 +240,9 @@ module.exports = class {
      */
     getContainersDir() {
         return fs.readdirSync(this.containersPath).filter(x => {
-            const pathStr = path.join(this.containersPath, x);
-            return fs.statSync(pathStr).isDirectory() && this.exists(path.join(pathStr, "index.tsx"))
+            const pathStr = path.join(this.containersPath, x, "index.tsx");
+            return this.exists(pathStr)
+            // return fs.statSync(pathStr).isDirectory() && this.exists(path.join(pathStr, "index.tsx"))
         })
     }
 }

@@ -1,4 +1,25 @@
 module.exports = function (router) {
+    router.post('/init', async (ctx, next) => {
+        try {
+            await this.componentCreate.init(ctx.request.body)
+            ctx.body = {
+                code: 200,
+                data: {
+                    contextRoot: this.componentCreate.contextRoot,
+                    componentName: this.componentCreate.componentName,
+                    containersPath: this.componentCreate.containersPath,
+                    routersPath: this.componentCreate.routersPath,
+                },
+                message: `init 成功`
+            };
+        } catch (error) {
+            ctx.body = {
+                code: 500,
+                data: false,
+                message: error
+            };
+        }
+    });
     router.post('/create', async (ctx, next) => {
         // const data = await create(ctx.request.body, this.Generator.contextRoot)
         try {
@@ -12,7 +33,7 @@ module.exports = function (router) {
             // console.log("create",ctx.request.body);
         } catch (error) {
             ctx.body = {
-                code: 200,
+                code: 500,
                 data: false,
                 message: error
             };
@@ -29,7 +50,7 @@ module.exports = function (router) {
             };
         } catch (error) {
             ctx.body = {
-                code: 200,
+                code: 500,
                 data: false,
                 message: error
             };

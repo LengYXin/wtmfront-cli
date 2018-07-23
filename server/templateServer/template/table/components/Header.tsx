@@ -22,7 +22,7 @@ class FormComponent extends React.Component<Props, any> {
       },
     };
     return <>
-      {{{HeaderFormItem searchKeys}}}
+      {{{HeaderFormItem search}}}
     </>
   }
   handleSubmit = (e) => {

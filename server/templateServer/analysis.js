@@ -1,7 +1,7 @@
 const Handlebars = require("handlebars");
 const fsExtra = require('fs-extra');
 const path = require("path");
-const log=require('../../lib/log');
+const log = require('../../lib/log');
 // 解析枚举
 function registerEnum(model) {
     let EnumTsx = [], enums = model.enum;
@@ -22,19 +22,19 @@ function registerEnum(model) {
             </Select>`;
 }
 function registerFieldDecorator(model) {
-    const rules = [];
-    let initialValue = `this.Store.details.${model.key} || ''`;
+    // const rules = [];
+    let initialValue = `this.initialValue('${model.key}','${model.format||''}')`;
     let FormItem = ''
     // 添加验证
-    if (!model.allowEmptyValue) {
-        rules.push({ required: true, message: `Please input your ${model.key}!` });
-    }
-    if (typeof model.minLength != 'undefined') {
-        rules.push({ min: model.minLength, message: `min length ${model.minLength}!` });
-    }
-    if (typeof model.maxLength != 'undefined') {
-        rules.push({ max: model.maxLength, message: `max length ${model.maxLength}!` });
-    }
+    // if (!model.allowEmptyValue) {
+    //     rules.push({ required: true, message: `Please input your ${model.key}!` });
+    // }
+    // if (typeof model.minLength != 'undefined') {
+    //     rules.push({ min: model.minLength, message: `min length ${model.minLength}!` });
+    // }
+    // if (typeof model.maxLength != 'undefined') {
+    //     rules.push({ max: model.maxLength, message: `max length ${model.maxLength}!` });
+    // }
     // 枚举
     if (model.enum) {
         FormItem = registerEnum(model);
@@ -42,11 +42,9 @@ function registerFieldDecorator(model) {
         switch (model.format) {
             case 'date-time':
                 FormItem = ` <DatePicker   format={this.dateFormat} /> `;
-                initialValue = `this.moment(this.Store.details.${model.key})`;
                 break;
             case 'int32':
                 FormItem = ` <InputNumber   /> `;
-                initialValue = `this.Store.details.${model.key} || 0`;
                 break;
             default:
                 FormItem = `  <Input type="text" placeholder='${model.description}' />`;
@@ -57,11 +55,12 @@ function registerFieldDecorator(model) {
         FormItem: FormItem,
         config: `
             {
-                rules:${JSON.stringify(rules)},
-                initialValue:${initialValue}
+                rules:${JSON.stringify(model.rules)},
+                initialValue:${initialValue},
             }`
     }
 }
+// edit
 Handlebars.registerHelper('EditFormItem', function (person) {
     return person.map(x => {
         const dec = registerFieldDecorator(x);
@@ -72,6 +71,7 @@ Handlebars.registerHelper('EditFormItem', function (person) {
         </FormItem> `
     }).join('\n         ');
 });
+// header
 Handlebars.registerHelper('HeaderFormItem', function (person) {
     return person.map(x => {
         const dec = registerFieldDecorator(x);
@@ -84,7 +84,10 @@ Handlebars.registerHelper('HeaderFormItem', function (person) {
         </Col> `
     }).join('\n         ');
 });
-
+// Json
+Handlebars.registerHelper('JSONStringify', function (person) {
+    return JSON.stringify(person, null, 4)
+});
 /**
  * 模板解析
  */
@@ -126,9 +129,7 @@ module.exports = class {
     async  renderHeader() {
         const source = await fsExtra.readFile(this.path.Header)
         const template = Handlebars.compile(source.toString());
-        const result = template({
-            searchKeys: this.searchKeys
-        });
+        const result = template(this.pageConfig);
         await fsExtra.writeFile(this.path.Header, result)
     }
     /**
@@ -137,9 +138,7 @@ module.exports = class {
     async  renderEdit() {
         const source = await fsExtra.readFile(this.path.edit)
         const template = Handlebars.compile(source.toString());
-        const result = template({
-            editKeys: this.editKeys
-        });
+        const result = template(this.pageConfig);
         await fsExtra.writeFile(this.path.edit, result)
     }
     /**
@@ -148,11 +147,12 @@ module.exports = class {
     async  renderColumns() {
         const source = await fsExtra.readFile(this.path.store)
         const template = Handlebars.compile(source.toString());
-        const result = template({
-            ApiName: this.ApiName,
-            columns: JSON.stringify(this.columns, null, 4),
-            IdKey: this.IdKey
-        });
+        // const result = template({
+        //     url: JSON.stringify(this.pageConfig.url, null, 4),
+        //     columns: JSON.stringify(this.pageConfig.table.filter(x => x.show), null, 4),
+        //     IdKey: this.pageConfig.IdKey
+        // });
+        const result = template(this.pageConfig);
         await fsExtra.writeFile(this.path.store, result)
     }
     /**
@@ -161,35 +161,41 @@ module.exports = class {
     analysisJson() {
         try {
             const pageConfig = this.pageConfig = this.readJSON(this.path.pageConfig);
-            const ApiName = this.ApiName = Object.keys(pageConfig.value)[0];
-            this.searchKeys = pageConfig.value[ApiName]['get']['parameters'].map(x => {
-                return {
-                    key: x.name,
-                    ...x
-                }
-            });
+            // const ApiName = this.ApiName = Object.keys(pageConfig.value)[0];
+            // this.searchKeys = pageConfig.value[ApiName]['get']['parameters'].map(x => {
+            //     return {
+            //         key: x.name,
+            //         ...x
+            //     }
+            // });
+            // // table 列
+            // this.columns = Object.keys(pageConfig.tableModel).filter(x => pageConfig.tableModel[x].show).map((x, i) => {
+            //     let model = this.pageConfig.tableModel[x];
+            //     return {
+            //         title: model.description,
+            //         dataIndex: model.key,
+            //         type: model.type,
+            //         format: model.format,
+            //         enum: model.enum
+            //         // key: model.key,
+            //     }
+            // });
+            // const editKey = pageConfig.value[Object.keys(pageConfig.value)[0]]['post']['model']['properties'];
+            // this.editKeys = Object.keys(editKey).map(x => {
+            //     let model = editKey[x];
+            //     return {
+            //         key: x,
+            //         ...model
+            //     }
+            // });
+            // const ApiDetails = Object.keys(pageConfig.value)[1];
+            // this.IdKey = /(.*\/){(\w*)}/.exec(ApiDetails)[2];
+            // const ApiName = this.ApiName = Object.keys(pageConfig.value)[0];
+            // this.searchKeys = pageConfig.search.filter(x => x.show);
             // table 列
-            this.columns = Object.keys(pageConfig.tableModel).filter(x => pageConfig.tableModel[x].show).map((x, i) => {
-                let model = this.pageConfig.tableModel[x];
-                return {
-                    title: model.description,
-                    dataIndex: model.key,
-                    type: model.type,
-                    format: model.format,
-                    enum: model.enum
-                    // key: model.key,
-                }
-            });
-            const editKey = pageConfig.value[Object.keys(pageConfig.value)[0]]['post']['model']['properties'];
-            this.editKeys = Object.keys(editKey).map(x => {
-                let model = editKey[x];
-                return {
-                    key: x,
-                    ...model
-                }
-            });
-            const ApiDetails = Object.keys(pageConfig.value)[1];
-            this.IdKey = /(.*\/){(\w*)}/.exec(ApiDetails)[2];
+            // this.columns = pageConfig.table.filter(x => x.show);
+            // this.editKeys = pageConfig.edit.filter(x => x.show);;
+            // this.IdKey = pageConfig.IdKey;
         } catch (error) {
             log.error("解析 JSON 出错", error);
             throw error;

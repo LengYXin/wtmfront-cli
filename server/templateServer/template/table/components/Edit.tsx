@@ -3,6 +3,7 @@ import { FormComponentProps } from 'antd/lib/form/Form';
 import FormItem from 'antd/lib/form/FormItem';
 import { observer } from 'mobx-react';
 import * as React from 'react';
+import lodash from 'lodash';
 import moment from 'moment';
 import { Store } from '../store';
 const Option = Select.Option;
@@ -11,26 +12,45 @@ interface Props extends FormComponentProps {
 }
 class FormComponent extends React.Component<Props, any> {
   Store = this.props.Store;
+ /**
+   * 提交数据
+   */
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        // 转换时间对象 为时间戳
-        this.momentKey.map(x => {
-          let date = values[x];
-          if (date instanceof moment) {
-            values[x] = date.valueOf();
-          }
-        })
+        // 转换时间对象  moment 对象 valueOf 为时间戳，其他类型数据 为原始数据。
+        values = lodash.mapValues(values, x => x.valueOf());
         this.Store.onEdit(values);
       }
     });
   }
+  /**
+   * 获取 数据类型默认值
+   * @param key 属性名称
+   * @param type 属性值类型
+   */
+  initialValue(key, type) {
+    const value = this.Store.details[key];
+    switch (type) {
+      case 'int32':
+        return value == null ? 0 : value;
+        break;
+      case 'date-time':
+        return this.moment(value);
+        break;
+      default://默认字符串
+        return value || ''
+        break;
+    }
+  }
   // 时间格式化
   dateFormat = 'YYYY-MM-DD';
-  // 存储被转换时间对象得key 提交数据转换回 时间戳
-  momentKey = [];
-  moment(date, key?) {
+  /**
+   * 时间转化
+   * @param date 
+   */
+  moment(date) {
     if (date == '' || date == null || date == undefined) {
       date = new Date();
     }
@@ -39,7 +59,6 @@ class FormComponent extends React.Component<Props, any> {
     } else {
       date = moment(date)
     }
-    this.momentKey.push(key)
     return date
   }
   renderItem() {
@@ -55,7 +74,7 @@ class FormComponent extends React.Component<Props, any> {
       },
     };
     return <>
-      {{{EditFormItem editKeys}}}
+      {{{EditFormItem edit}}}
     </>
   }
   render() {
@@ -91,10 +110,9 @@ export default class EditComponent extends React.Component<{ Store: Store }, any
           Delete
         </Button>
         <Modal
-          // title={this.Store.isUpdate ? 'Update' : 'Add'}
           title={this.Store.isUpdate ? 'Update' : 'Add'}
           visible={this.Store.pageConfig.visible}
-          onCancel={this.Store.onVisible.bind(this.Store)}
+          onCancel={this.Store.onVisible.bind(this.Store,false)}
           maskClosable={false}
           footer={null}
           destroyOnClose={true}

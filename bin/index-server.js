@@ -14,7 +14,6 @@ program.usage('<port>').parse(process.argv)
 const port = program.args[0]
 // 判断项目是否存在
 if (fsEditor.exists(path.join(rootPath, 'package.json'))) {
-    console.log("object");
     new server(rootPath).init(port || 8765);
 } else {
     return log.error(`找不到项目~`);
