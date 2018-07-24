@@ -5,6 +5,11 @@
             "path": "/",
             "exact": true,
             "component": "home"
+        },
+        {
+            "name": "富文本",
+            "path": "/editer",
+            "component": "editer"
         }
     ]
 }

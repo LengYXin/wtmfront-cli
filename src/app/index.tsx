@@ -1,25 +1,27 @@
 import Exception from 'ant-design-pro/lib/Exception';
-import { Provider } from 'mobx-react';
-import Animate from 'rc-animate';
+import containers from 'containers/index';
+import lodash from 'lodash';
 import Loadable from 'react-loadable';
+import { observer, Provider } from 'mobx-react';
+import Animate from 'rc-animate';
 import * as React from 'react';
 import { renderRoutes } from 'react-router-config';
 import { BrowserRouter } from 'react-router-dom';
 import store from 'store/index';
-import containers from 'containers/index';
-import layout from "./layout/index";
-import login from "./login";
 import container from "./container";
+import layout from "./layout/index";
+import Login from "./login";
 import routers from './routers.json';
+@observer
 export default class RootRoutes extends React.Component<any, any> {
     // 路由列表
     routes: any[] = [
-        {
-            // 登陆
-            path: "/login",
-            exact: true,
-            component: this.createCSSTransition(login),
-        },
+        // {
+        //     // 登陆
+        //     path: "/login",
+        //     exact: true,
+        //     component: this.createCSSTransition(login),
+        // },
         {
             // 组件管理
             path: "/container",
@@ -47,8 +49,7 @@ export default class RootRoutes extends React.Component<any, any> {
      * 初始化路由数据
      */
     initRouters() {
-        return routers.routers.map(x => {
-            // console.log(containers[x.component]);
+        return lodash.map(routers.routers, x => {
             x.component = this.createCSSTransition(containers[x.component] || this.NoMatch) as any;
             return x;
         })
@@ -120,15 +121,40 @@ export default class RootRoutes extends React.Component<any, any> {
             }
         }
     };
+    state = { error: null, errorInfo: null };
+    componentDidCatch(error, info) {
+        this.setState({
+            error: error,
+            errorInfo: info
+        })
+    }
     render() {
+        if (this.state.errorInfo) {
+            return (
+                <Exception type="500" desc={<div>
+                    <h2>组件出错~</h2>
+                    <details >
+                        {this.state.error && this.state.error.toString()}
+                        <br />
+                        {this.state.errorInfo.componentStack}
+                    </details>
+                </div>} />
+            );
+        }
         return (
             <Provider
                 {...store}
             >
-                <BrowserRouter >
-                    {renderRoutes(this.routes)}
-                </BrowserRouter>
+                {this.renderApp()}
             </Provider>
         );
+    }
+    renderApp() {
+        if (store.User.isLogin) {
+            return <BrowserRouter >
+                {renderRoutes(this.routes)}
+            </BrowserRouter>
+        }
+        return <Login />
     }
 }

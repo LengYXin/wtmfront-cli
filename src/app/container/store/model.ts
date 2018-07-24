@@ -1,7 +1,7 @@
 /**
  * 课程
  */
-import { HttpBasics } from "utils/index";
+import { HttpBasics } from "core/HttpBasics";
 import { action, observable, runInAction } from "mobx";
 import { notification } from 'antd';
 import wtmfront from 'wtmfront.json';

@@ -3,6 +3,7 @@ import { Layout, Menu, Avatar, Row, Col, Dropdown, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import * as React from 'react';
 import ContainerHeader from '../container/header';
+import store from 'store/index';
 const { Header } = Layout;
 export default class App extends React.Component<any, any> {
     shouldComponentUpdate() {
@@ -37,7 +38,7 @@ class UserMenu extends React.Component<any, any> {
         return (
             <Menu>
                 <Menu.Item>
-                    <Link to='/login'>退出</Link>
+                    <a onClick={() => { store.User.outLogin() }}>退出</a>
                 </Menu.Item>
                 {/* <Menu.Item>
                     <a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/">2nd menu item</a>
