@@ -114,7 +114,7 @@ module.exports = class {
             this.createTemporary(component.containers.template, temporaryPath);
             // 写入配置文件。
             fsExtra.writeJsonSync(path.join(temporaryPath, "pageConfig.json"), component.model, { spaces: 4 });
-            return await analysis.render();
+             await analysis.render();
             // 创建目录
             this.mkdirSync(fsPath);
             // 拷贝生成组件
