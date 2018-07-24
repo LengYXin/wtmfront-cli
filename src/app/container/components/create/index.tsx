@@ -55,8 +55,8 @@ class ContentComponent extends React.Component<any, any> {
                 break;
             case 2:
                 return (  <Result
-                    type="success"
-                    title="提交成功"
+                    type={Store.Model.createState?"success":"error"}
+                    title={Store.Model.createState?"提交成功":"提交失败"}
                     description="组件创建成功，等待编译~。"
                     // extra={extra}
                     actions={<Button type="primary" onClick={this.prev.bind(this)}>继续添加</Button>}

@@ -1,26 +1,23 @@
 const webpack = require('webpack');
 const path = require('path');
+const moment = require('moment');
 const HtmlWebpackPlugin = require('html-webpack-plugin');//模板
 const CleanWebpackPlugin = require('clean-webpack-plugin');//清理
 const CopyWebpackPlugin = require('copy-webpack-plugin');//拷贝
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");//提取css
 const tsImportPluginFactory = require('ts-import-plugin');//按需导入
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const CompressionPlugin = require("compression-webpack-plugin");
 const rootDir = path.dirname(__dirname);
 module.exports = (__dirname, port = 8000, proxy = {}) => {
-    // return console.log('路径-',path.resolve(rootDir,'model/index.ts') );
-    const pathName = path.basename(__dirname);
-    // const outputPaht = path.resolve(rootDir, "build", pathName);
     const outputPaht = path.resolve(rootDir, "build");
     // 打包时间戳
-    const time = +new Date();
+    const time =  moment().format('YYYY-MM-DD HH:mm:ss');
     // 分离css
     const styleCss = new MiniCssExtractPlugin({
-        filename: `css/style.css?t=${time}`,
+        filename: `css/style.css`,
         // chunkFilename: "css/[id].css"
     });
-    // 源代码根路径
-    const srcPath = path.resolve(__dirname, "src");
     // 插件
     let plugins = [
 
@@ -32,16 +29,17 @@ module.exports = (__dirname, port = 8000, proxy = {}) => {
     ];
     return (evn = {}) => {
         evn.Generative = evn.Generative == "true"
-        console.log(`-------------------------------------- ${evn.Generative ? '生产' : '开发'} ${evn.Dev}  --------------------------------------`);
+        console.log(`-------------------------------------- ${evn.Generative ? '生产' : '开发'} ${evn.Dev||''}  --------------------------------------`);
         plugins = [
             // 把生成的文件插入到 启动页中
             new HtmlWebpackPlugin({
-                template: './src/index.html', options: {
-                    minimize: true,
-                },
-                // 测试环境  加入 vconsole
-                //         vconsole: evn.Dev == 'beta' ? `<script src="./assets/vconsole.min.js"></script>
-                // <script> if (window.location.hostname !== "localhost") { var vConsole = new VConsole(); }</script>`: ''
+                template: './src/index.html',
+                hash: true,
+                minify: true,
+                vconsole:`
+        <!--              Q&A @冷颖鑫 (lengyingxin8966@gmail.com)          -->   
+        <!--              Build Time： ${time}   ( *¯ ꒳¯*)!!              -->
+                `
             }),
             ...plugins
         ]
@@ -53,8 +51,11 @@ module.exports = (__dirname, port = 8000, proxy = {}) => {
                 //         NODE_ENV: JSON.stringify("production")
                 //     }
                 // }),
+                // gzip压缩：
+                new CompressionPlugin({
+                    // deleteOriginalAssets: true
+                }),
                 // 清理目录
-                // new CleanWebpackPlugin([pathName], { root: path.resolve(rootDir, "build") }),
                 new CleanWebpackPlugin([outputPaht], { root: rootDir }),
                 ...plugins
             ]
@@ -66,14 +67,13 @@ module.exports = (__dirname, port = 8000, proxy = {}) => {
             output: {
                 path: outputPaht,
                 publicPath: evn.Generative ? './' : '/',
-                filename: `js/[name].js?t=${time}`,
-                chunkFilename: `js/[name].js?t=${time}`
+                filename: `js/[name].js`,
+                chunkFilename: `js/[name].js`
             },
             devServer: {
                 inline: true, //热更新
                 port: port,
-                compress: true,//为服务的所有内容启用gzip压缩：
-                // hotOnly: true,//在构建失败的情况下启用无需刷新页面作为回退的热模块替换
+                // compress: true,//为服务的所有内容启用gzip压缩：
                 // lazy: true,//懒惰模式
                 overlay: true,//显示错误
                 proxy: {
@@ -91,7 +91,8 @@ module.exports = (__dirname, port = 8000, proxy = {}) => {
                     "components": path.resolve(rootDir, 'src', 'components'),
                     "containers": path.resolve(rootDir, 'src', 'containers'),
                     "store": path.resolve(rootDir, 'src', 'store'),
-                    "utils": path.resolve(rootDir, 'src', 'utils')
+                    "utils": path.resolve(rootDir, 'src', 'utils'),
+                    "wtmfront.json": path.resolve(rootDir, "wtmfront.json")
                 }
             },
             module: {

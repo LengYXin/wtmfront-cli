@@ -4,7 +4,7 @@
 import { HttpBasics } from "utils/index";
 import { action, observable, runInAction } from "mobx";
 import { notification } from 'antd';
-
+import wtmfront from 'wtmfront.json';
 const Http = new HttpBasics();
 export default class ObservableStore {
     /**
@@ -32,11 +32,19 @@ export default class ObservableStore {
         // 模型信息
         model: {}
     };
-    map(x) {
+    @observable createState = true;
+    map = (x) => {
         if (x.code) {
             if (x.code == 200) {
                 return x.data;
             }
+            notification['error']({
+                message: x.message,
+                description: '',
+            });
+            runInAction(() => {
+                this.createState = false;
+            })
             throw x.message;
         }
         return x
@@ -45,28 +53,30 @@ export default class ObservableStore {
      * 初始化 项目信息
      */
     async init() {
-        const data = await Http.get("/server/").map(this.map).toPromise();
+        const data = await Http.post("/server/init", wtmfront).map(this.map).toPromise();
         runInAction(() => {
             this.project = data;
             this.startFrame = true;
-            notification['success']({
-                message: '成功链接组件服务',
-                description: '',
-            });
+            // notification['success']({
+            //     message: '成功链接组件服务',
+            //     description: '',
+            // });
         })
-        console.log(data);
     }
     /**
      * 获取现有模块
      */
     async getContainers() {
-        const data = await Http.get("/server/containers").map(this.map).map(data => {
-            return data.routers
-        }).toPromise();
+        // const data = await Http.get("/server/containers").map(this.map).map(data => {
+        //     return data.routers
+        // }).toPromise();
+        // runInAction(() => {
+        //     this.containers = data;
+        // })
+        const data = await Http.get("/server/containers").map(this.map).toPromise();
         runInAction(() => {
             this.containers = data;
         })
-        console.log(data);
     }
     /**
      * 创建模块
@@ -74,18 +84,13 @@ export default class ObservableStore {
      */
     async create(param = this.createParam) {
         const data = await Http.post("/server/create", param).map(this.map).toPromise();
-        if (data) {
-            notification['success']({
-                message: '创建成功',
-                description: '',
-            });
-        } else {
-            notification['error']({
-                message: '创建失败',
-                description: '',
-            });
-        }
-        console.log(data);
+        runInAction(() => {
+            this.createState = true;
+        });
+        notification['success']({
+            message: '创建成功',
+            description: '',
+        });
     }
     /**
      * 删除
@@ -93,24 +98,16 @@ export default class ObservableStore {
      */
     async  delete(param) {
         const data = await Http.post("/server/delete", param).map(this.map).toPromise();
-        if (data) {
-            notification['success']({
-                message: '删除成功',
-                description: '',
-            });
-        } else {
-            notification['error']({
-                message: '删除失败',
-                description: '',
-            });
-        }
-        console.log(data);
+        notification['success']({
+            message: '删除成功',
+            description: '',
+        });
     }
     /**
      * 获取model
      */
     async getModel() {
-        const data = await Http.get("/api/v2/api-docs").map(docs => this.groupingModel(docs)).toPromise();
+        const data = await Http.get("/swagger/v2/api-docs").map(docs => this.groupingModel(docs)).toPromise();
         return data
     }
     /**

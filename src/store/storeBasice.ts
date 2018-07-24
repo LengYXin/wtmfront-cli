@@ -2,8 +2,15 @@ import { action, observable, runInAction, toJS } from "mobx";
 import { HttpBasics } from "utils/HttpBasics";
 import { message } from "antd";
 export default class Store {
+    url = {
+        get: "/user",
+        post: "/user",
+        put: "/user",
+        delete: "/user/",
+        details: "/user/"
+    }
     /** Ajax 拦截器  */
-    Http = new HttpBasics('/api/user');
+    Http = new HttpBasics('/api');
     /** 数据 ID 索引 */
     IdKey = 'id';
     /** table 列配置 */
@@ -41,14 +48,17 @@ export default class Store {
     }
     /** model 框 显示隐藏 */
     @action.bound
-    onVisible() {
-        this.pageConfig.visible = !this.pageConfig.visible;
+    onVisible(visible = !this.pageConfig.visible) {
+        this.pageConfig.visible = visible;
     }
     /** 加载数据 */
-    @action.bound
+    // @action.bound
     async onGet(params?) {
-        this.pageConfig.loading = true;
-        const result = await this.Http.get("", params).map(result => {
+        runInAction(() => {
+            this.pageConfig.loading = true;
+        })
+        const result = await this.Http.get(this.url.get, params).map(result => {
+            // 设置 table 组件需要的唯一key
             return result.map((x, i) => {
                 if (!x.key) {
                     x.key = i;
@@ -65,7 +75,7 @@ export default class Store {
     /** 加载数据 */
     async onGetDetails(params) {
         const id = params[this.IdKey]
-        const result = await this.Http.get(`/${id}`).toPromise();
+        const result = await this.Http.get(this.url.details + id).toPromise();
         runInAction(() => {
             this.details = result;
         });
@@ -84,11 +94,11 @@ export default class Store {
     }
     /** 添加数据 */
     async onPost(params) {
-        const result = await this.Http.post("", params).toPromise();
+        const result = await this.Http.post(this.url.post, params).toPromise();
         if (result) {
             message.success('添加成功');
             this.onGet();
-            this.onVisible();
+            this.onVisible(false);
         } else {
             message.error('添加失败');
         }
@@ -96,11 +106,11 @@ export default class Store {
     }
     /** 更新数据 */
     async onPut(params) {
-        const result = await this.Http.put("", params).toPromise();
+        const result = await this.Http.put(this.url.put, params).toPromise();
         if (result) {
             message.success('更新成功');
             this.onGet();
-            this.onVisible();
+            this.onVisible(false);
         } else {
             message.error('更新失败');
         }
@@ -108,9 +118,8 @@ export default class Store {
     }
     /** 删除数据 */
     async onDelete(params: any[]) {
-        console.log(params);
         params = params.map(x => x[this.IdKey])
-        const result = await this.Http.delete("/", params.join(',')).toPromise();
+        const result = await this.Http.delete(this.url.delete, params.join(',')).toPromise();
         return result;
     }
 

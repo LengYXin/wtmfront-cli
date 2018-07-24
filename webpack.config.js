@@ -1,21 +1,30 @@
 const webpack = require('./config/webpack.config');
+const wtmfront = require('./wtmfront.json');
+const config={ 
+    secure: false,
+    changeOrigin: true,
+    logLevel: "debug"
+};
 module.exports = webpack(__dirname, 8100, {
     '/server': {
         target: 'http://localhost:8765',
         pathRewrite: {
             "^/server": ""
         },
-        secure: false,
-        changeOrigin: true,
-        logLevel: "debug"
+       ...config
+    },
+    '/swagger': {
+        target: wtmfront.swagger,
+        pathRewrite: {
+            "^/swagger": ""
+        },
+        ...config
     },
     '/api': {
-        target: 'http://10.120.112.126:8007',
+        target: wtmfront.swagger,
         pathRewrite: {
             "^/api": ""
         },
-        secure: false,
-        changeOrigin: true,
-        logLevel: "debug"
+        ...config
     },
 })
