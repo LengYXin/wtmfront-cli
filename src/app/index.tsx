@@ -8,7 +8,7 @@ import * as React from 'react';
 import { renderRoutes } from 'react-router-config';
 import { BrowserRouter } from 'react-router-dom';
 import store from 'store/index';
-import container from "./container";
+import swagger from "components/swagger/index";
 import layout from "./layout/index";
 import Login from "./login";
 import routers from './routers.json';
@@ -23,10 +23,10 @@ export default class RootRoutes extends React.Component<any, any> {
         //     component: this.createCSSTransition(login),
         // },
         {
-            // 组件管理
-            path: "/container",
+            // swagger 解析
+            path: "/analysis",
             exact: true,
-            component: this.createCSSTransition(container),
+            component: this.createCSSTransition(swagger),
         },
         {
             // 布局页面

@@ -1,6 +1,8 @@
 {
     "type": "typescript",
     "frame": "react",
+    "registerHelper": "wtmfront/registerHelper",
+    "template": "wtmfront/template",
     "swagger": "http://10.120.112.126:8007",
     "routers": "src/app/routers.json",
     "containers": "src/containers"

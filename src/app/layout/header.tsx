@@ -2,7 +2,7 @@
 import { Layout, Menu, Avatar, Row, Col, Dropdown, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import * as React from 'react';
-import ContainerHeader from '../container/header';
+import Swagger from "components/swagger/header";
 import store from 'store/index';
 const { Header } = Layout;
 export default class App extends React.Component<any, any> {
@@ -26,7 +26,7 @@ export default class App extends React.Component<any, any> {
                         <Dropdown overlay={<UserMenu />} placement="bottomCenter">
                             <div style={{ display: "inline-block" }}> <Avatar size="large" icon="user" /> &nbsp;<span>UserName</span></div>
                         </Dropdown>
-                        <ContainerHeader />
+                        <Swagger />
                     </Col>
                 </Row>
             </Header>

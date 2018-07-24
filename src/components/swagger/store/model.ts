@@ -19,7 +19,9 @@ export default class ObservableStore {
     /**是否连接脚手架 */
     @observable startFrame = false;
     /**项目信息 */
-    @observable project = {};
+    @observable project = {
+        templates:['default']
+    };
     /*** 模块列表 */
     @observable containers = [];
     /*** 模块列表 */

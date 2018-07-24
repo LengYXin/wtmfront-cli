@@ -1,8 +1,9 @@
-import { Button, Form, Icon, Input, Steps, message } from 'antd';
+import { Button, Form, Icon, Input, Steps, message, Select } from 'antd';
 import { inject, observer } from 'mobx-react';
 import * as React from 'react';
 import Store from '../../store';
 const FormItem = Form.Item;
+const Option = Select.Option;
 @inject(() => Store)
 @observer
 class App extends React.Component<any, any> {
@@ -18,16 +19,14 @@ class App extends React.Component<any, any> {
     }
     render() {
         const { containers } = this.props.Model.createParam
+        const { project } = this.props.Model
         const { getFieldDecorator } = this.props.form;
         return (
             <Form onSubmit={this.handleSubmit} style={{ width: 500, margin: "auto" }}>
                 <FormItem label="组件名称">
                     {getFieldDecorator('containersName', {
                         initialValue: containers.containersName || 'test',
-                        rules: [
-                            { required: true, message: '输入组件名称!' },
-                            { pattern: /^[a-zA-Z]+$/, message: '组件名称为纯英文组成!' },
-                        ],
+                        rules: [{ required: true, message: 'Please input your username!' }],
                     })(
                         <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="containersName" />
                     )}
@@ -37,6 +36,17 @@ class App extends React.Component<any, any> {
                         initialValue: containers.menuName || 'test',
                     })(
                         <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="menuName" />
+                    )}
+                </FormItem>
+                <FormItem label="模板">
+                    {getFieldDecorator('template', {
+                        initialValue: containers.template || 'default',
+                    })(
+                        <Select style={{ width: "100%" }} >
+                            {project.templates.map((x, i) => {
+                                return <Option key={i} value={x}>{x}</Option>
+                            })}
+                        </Select>
                     )}
                 </FormItem>
                 <FormItem>

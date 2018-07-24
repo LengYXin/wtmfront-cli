@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server --open",
     "server": "wtmfront server",
-    "build": "webpack  --env.Generative=true --env.Dev=build",
+    "build": "webpack --progress --env.Generative=true --env.Dev=build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

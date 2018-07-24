@@ -29,7 +29,7 @@ module.exports = (__dirname, port = 8000, proxy = {}) => {
     ];
     return (evn = {}) => {
         evn.Generative = evn.Generative == "true"
-        console.log(`-------------------------------------- ${evn.Generative ? '生产' : '开发'} ${evn.Dev||''}  --------------------------------------`);
+        console.log(`-------------------------------------- ${evn.Generative ? 'deploy' : 'devServer'} ${time}  --------------------------------------`);
         plugins = [
             // 把生成的文件插入到 启动页中
             new HtmlWebpackPlugin({
