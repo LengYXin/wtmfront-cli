@@ -200,26 +200,30 @@ module.exports = class {
      * @param {*} component 
      */
     writeRouters(component, type = 'add') {
-        // 读取路由json
-        let routers = this.readJSON();
-        if (type == 'add') {
-            routers.routers.push({
-                "name": component.menuName || component.containersName,
-                "path": `/${component.containersName}`,
-                "component": component.containersName
-            });
-        } else {
-            const index = routers.routers.findIndex(x => x.component == component);
-            if (index != -1) {
-                routers.routers.splice(index, 1);
+        if (this.exists(this.routersPath)) {
+            // 读取路由json
+            let routers = this.readJSON();
+            if (type == 'add') {
+                routers.routers.push({
+                    "name": component.menuName || component.containersName,
+                    "path": `/${component.containersName}`,
+                    "component": component.containersName
+                });
+            } else {
+                const index = routers.routers.findIndex(x => x.component == component);
+                if (index != -1) {
+                    routers.routers.splice(index, 1);
+                }
+                // console.log("index " + component, index);
             }
-            // console.log("index " + component, index);
+            // 写入json
+            // editorFs.writeJSON(path.join(this.contextRoot, "src", "app", "a.json"), routers);
+            // fs.writeFileSync(this.routersPath, JSON.stringify(routers, null, 4));
+            fsExtra.writeJsonSync(this.routersPath, routers, { spaces: 4 });
+            log.success("writeRouters " + type, routers);
+        }else{
+            log.error("没有找到对应的路由JSON文件");
         }
-        // 写入json
-        // editorFs.writeJSON(path.join(this.contextRoot, "src", "app", "a.json"), routers);
-        // fs.writeFileSync(this.routersPath, JSON.stringify(routers, null, 4));
-        fsExtra.writeJsonSync(this.routersPath, routers, { spaces: 4 });
-        log.success("writeRouters " + type, routers);
     }
     /**
      * 写入组件导出

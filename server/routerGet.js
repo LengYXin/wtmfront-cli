@@ -15,7 +15,12 @@ module.exports = function (router) {
         try {
             ctx.body = {
                 code: 200,
-                data: this.componentCreate.readJSON(),
+                data: this.componentCreate.getContainersDir().map(x => {
+                    return {
+                        name: x,
+                        component: x
+                    }
+                }),
                 message: `create 成功`
             };
         } catch (error) {
