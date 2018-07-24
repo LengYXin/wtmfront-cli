@@ -24,7 +24,10 @@ class App extends React.Component<any, any> {
                 <FormItem label="组件名称">
                     {getFieldDecorator('containersName', {
                         initialValue: containers.containersName || 'test',
-                        rules: [{ required: true, message: 'Please input your username!' }],
+                        rules: [
+                            { required: true, message: '输入组件名称!' },
+                            { pattern: /^[a-zA-Z]+$/, message: '组件名称为纯英文组成!' },
+                        ],
                     })(
                         <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="containersName" />
                     )}
