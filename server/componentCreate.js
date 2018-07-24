@@ -114,7 +114,7 @@ module.exports = class {
             this.createTemporary(component.containers.template, temporaryPath);
             // 写入配置文件。
             fsExtra.writeJsonSync(path.join(temporaryPath, "pageConfig.json"), component.model, { spaces: 4 });
-             await analysis.render();
+            await analysis.render();
             // 创建目录
             this.mkdirSync(fsPath);
             // 拷贝生成组件
@@ -125,8 +125,7 @@ module.exports = class {
             this.writeContainers();
             // 删除临时文件
             fsExtra.removeSync(temporaryPath);
-            // // 修改 页面配置 模型
-            // fsExtra.writeJsonSync(path.join(fsPath, "pageConfig.json"), component.model, { spaces: 4 });
+            //  修改 页面配置 模型
             log.success("create " + this.componentName);
         } catch (error) {
             log.error("error", error);

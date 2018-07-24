@@ -31,6 +31,7 @@ module.exports = class {
     async render() {
         await this.analysisJson();
         await this.readdirSync(this.contextRoot);
+        console.log("readdirSync");
         // return console.log(this);
         // const renderColumns = this.renderColumns();
         // const renderHeader = this.renderHeader();
@@ -41,24 +42,28 @@ module.exports = class {
     }
     async readdirSync(pathStr) {
         try {
-            fs.readdirSync(pathStr).filter(async x => {
+            const pathList = [];
+            fs.readdirSync(pathStr).filter(x => {
                 const children = path.join(pathStr, x);
                 if (fs.statSync(children).isDirectory()) {
-                    await this.readdirSync(children);
+                    this.readdirSync(children);
                 } else {
-                    await this.renderTemplate(children);
+                    pathList.push(children);
                 }
             })
+            for (const key in pathList) {
+                await this.renderTemplate(pathList[key]);
+            }
         } catch (error) {
             log.error("写入模板出错", error);
         }
-
     }
     async  renderTemplate(pathStr) {
         const source = await fsExtra.readFile(pathStr)
         const template = Handlebars.compile(source.toString());
         const result = template(this.pageConfig);
-        await fsExtra.writeFile(pathStr, result)
+        await fsExtra.writeFile(pathStr, result);
+        console.log(pathStr);
     }
     // /**
     // * 写入 Header
