@@ -1,7 +1,7 @@
 import { action, observable, runInAction, toJS } from "mobx";
-import { HttpBasics } from "utils/HttpBasics";
+import { HttpBasics } from "core/HttpBasics";
 import { message } from "antd";
-import storeBasice from 'store/storeBasice';
+import storeBasice from 'core/storeBasice';
 export class Store extends storeBasice {
     constructor() {
         super();
