@@ -6,6 +6,7 @@ const editor = require('mem-fs-editor');
 const store = memFs.create();
 const fsEditor = editor.create(store);
 const templateServer = require('./templateServer/analysis');
+const registerHelper = require('./templateServer/registerHelper');
 const log = require('../lib/log');
 module.exports = class {
     constructor(contextRoot) {
@@ -45,18 +46,32 @@ module.exports = class {
         /**
          * 项目配置
          */
-        this.wtmfrontConfig = {};
+        this.wtmfrontConfig = {
+            contextRoot: this.contextRoot
+        };
+        /**
+         * 模板文件列表
+         */
+        this.templates = ['default'];
         /**
          * 初始化配置
          */
         if (this.exists(this.wtmfrontPath)) {
-            this.init(fsExtra.readJsonSync(this.wtmfrontPath));
+            this.setWtmfrontConfig(fsExtra.readJsonSync(this.wtmfrontPath));
         }
+        this.init();
     }
     /**
      * 初始化项目信息
      */
-    init(body) {
+    init() {
+        registerHelper(this.wtmfrontConfig);
+        this.getTemplate();
+    }
+    /**
+    * 初始化项目信息
+    */
+    setWtmfrontConfig(body) {
         let containersPath = this.containersPath;
         let routersPath = this.routersPath;
         try {
@@ -64,19 +79,13 @@ module.exports = class {
             routersPath = path.join(this.contextRoot, body.routers);
             this.containersPath = containersPath;
             this.routersPath = routersPath;
-            this.wtmfrontConfig = body;
+            this.wtmfrontConfig = { ...this.wtmfrontConfig, ...body };
         } catch (error) {
             log.error(error);
             throw error;
         }
-        finally {
-            // log.success(JSON.stringify({
-            //     contextRoot: this.contextRoot,
-            //     containersPath: this.containersPath,
-            //     routersPath: this.routersPath,
-            // }, null, 4))
-        }
     }
+
     /**
      * 创建组件
      * @param {*} fsPath 
@@ -84,6 +93,7 @@ module.exports = class {
     async create(component) {
         try {
             this.componentName = component.containers.containersName;
+            // console.log(JSON.stringify(component.containers, null, 4));
             // 过滤
             if (!this.componentName) {
                 throw "组件名称不能为空";
@@ -101,10 +111,10 @@ module.exports = class {
             // 模板服务
             const analysis = new templateServer(temporaryPath);
             this.mkdirSync(temporaryPath);
-            // this.copy(path.join(this.templatePath, "table"), temporaryPath);
-            fsExtra.copySync(path.join(this.templatePath, "table"), temporaryPath);
+            this.createTemporary(component.containers.template, temporaryPath);
+            // 写入配置文件。
             fsExtra.writeJsonSync(path.join(temporaryPath, "pageConfig.json"), component.model, { spaces: 4 });
-            await analysis.render();
+            return await analysis.render();
             // 创建目录
             this.mkdirSync(fsPath);
             // 拷贝生成组件
@@ -123,6 +133,23 @@ module.exports = class {
             throw error
         }
 
+    }
+    /**
+     * 创建临时目录
+     * @param {*} template 模板名称
+     * @param {*} temporaryPath  临时目录
+     */
+    createTemporary(template, temporaryPath) {
+        if (template == null || template == "") {
+            template = "default";
+        }
+        let templatePath = this.templatePath;
+        // 不是默认 模板 取 项目中的模板。
+        if (template != "default") {
+            templatePath = path.join(this.contextRoot, this.wtmfrontConfig.template);
+        }
+        // 拷贝模板文件 到临时目录 写入数据
+        fsExtra.copySync(path.join(templatePath, template), temporaryPath);
     }
     fsExistsSync(path) {
         try {
@@ -221,7 +248,7 @@ module.exports = class {
             // fs.writeFileSync(this.routersPath, JSON.stringify(routers, null, 4));
             fsExtra.writeJsonSync(this.routersPath, routers, { spaces: 4 });
             log.success("writeRouters " + type, routers);
-        }else{
+        } else {
             log.error("没有找到对应的路由JSON文件");
         }
     }
@@ -248,5 +275,20 @@ module.exports = class {
             return this.exists(pathStr)
             // return fs.statSync(pathStr).isDirectory() && this.exists(path.join(pathStr, "index.tsx"))
         })
+    }
+    /**
+     * 获取模板列表
+     */
+    getTemplate() {
+        // const template = ['default'];
+        if (this.wtmfrontConfig.template) {
+            const templatePath = path.join(this.contextRoot, this.wtmfrontConfig.template);
+            fs.readdirSync(templatePath).filter(x => {
+                if (fs.statSync(path.join(templatePath, x)).isDirectory()) {
+                    this.templates.push(x);
+                }
+            })
+        }
+        // return template;
     }
 }

@@ -7,6 +7,7 @@ module.exports = function (router) {
                 componentName: this.componentCreate.componentName,
                 containersPath: this.componentCreate.containersPath,
                 routersPath: this.componentCreate.routersPath,
+                templates: this.componentCreate.templates
             },
             message: 'SamSundot 模板  服务'
         };

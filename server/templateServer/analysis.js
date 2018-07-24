@@ -2,7 +2,8 @@ const Handlebars = require("handlebars");
 const fsExtra = require('fs-extra');
 const path = require("path");
 const log = require('../../lib/log');
-const registerHelper = require('./registerHelper');
+const fs = require('fs');
+
 /**
  * 模板解析
  */
@@ -28,52 +29,73 @@ module.exports = class {
         this.IdKey = '';
     }
     async render() {
-        this.analysisJson();
+        await this.analysisJson();
+        await this.readdirSync(this.contextRoot);
         // return console.log(this);
-        const renderColumns = this.renderColumns();
-        const renderHeader = this.renderHeader();
-        const renderEdit = this.renderEdit();
-        await renderColumns;
-        await renderHeader;
-        await renderEdit;
+        // const renderColumns = this.renderColumns();
+        // const renderHeader = this.renderHeader();
+        // const renderEdit = this.renderEdit();
+        // await renderColumns;
+        // await renderHeader;
+        // await renderEdit;
+    }
+    async readdirSync(pathStr) {
+        try {
+            fs.readdirSync(pathStr).filter(async x => {
+                const children = path.join(pathStr, x);
+                if (fs.statSync(children).isDirectory()) {
+                    await this.readdirSync(children);
+                } else {
+                    await this.renderTemplate(children);
+                }
+            })
+        } catch (error) {
+            log.error("写入模板出错", error);
+        }
 
     }
-    /**
-    * 写入 Header
-    */
-    async  renderHeader() {
-        const source = await fsExtra.readFile(this.path.Header)
+    async  renderTemplate(pathStr) {
+        const source = await fsExtra.readFile(pathStr)
         const template = Handlebars.compile(source.toString());
         const result = template(this.pageConfig);
-        await fsExtra.writeFile(this.path.Header, result)
+        await fsExtra.writeFile(pathStr, result)
     }
-    /**
-    * 写入 Edit
-    */
-    async  renderEdit() {
-        const source = await fsExtra.readFile(this.path.edit)
-        const template = Handlebars.compile(source.toString());
-        const result = template(this.pageConfig);
-        await fsExtra.writeFile(this.path.edit, result)
-    }
-    /**
-     * 写入 列数据
-     */
-    async  renderColumns() {
-        const source = await fsExtra.readFile(this.path.store)
-        const template = Handlebars.compile(source.toString());
-        // const result = template({
-        //     url: JSON.stringify(this.pageConfig.url, null, 4),
-        //     columns: JSON.stringify(this.pageConfig.table.filter(x => x.show), null, 4),
-        //     IdKey: this.pageConfig.IdKey
-        // });
-        const result = template(this.pageConfig);
-        await fsExtra.writeFile(this.path.store, result)
-    }
+    // /**
+    // * 写入 Header
+    // */
+    // async  renderHeader() {
+    //     const source = await fsExtra.readFile(this.path.Header)
+    //     const template = Handlebars.compile(source.toString());
+    //     const result = template(this.pageConfig);
+    //     await fsExtra.writeFile(this.path.Header, result)
+    // }
+    // /**
+    // * 写入 Edit
+    // */
+    // async  renderEdit() {
+    //     const source = await fsExtra.readFile(this.path.edit)
+    //     const template = Handlebars.compile(source.toString());
+    //     const result = template(this.pageConfig);
+    //     await fsExtra.writeFile(this.path.edit, result)
+    // }
+    // /**
+    //  * 写入 列数据
+    //  */
+    // async  renderColumns() {
+    //     const source = await fsExtra.readFile(this.path.store)
+    //     const template = Handlebars.compile(source.toString());
+    //     // const result = template({
+    //     //     url: JSON.stringify(this.pageConfig.url, null, 4),
+    //     //     columns: JSON.stringify(this.pageConfig.table.filter(x => x.show), null, 4),
+    //     //     IdKey: this.pageConfig.IdKey
+    //     // });
+    //     const result = template(this.pageConfig);
+    //     await fsExtra.writeFile(this.path.store, result)
+    // }
     /**
      * 解析json
      */
-    analysisJson() {
+    async analysisJson() {
         try {
             const pageConfig = this.pageConfig = this.readJSON(this.path.pageConfig);
             // const ApiName = this.ApiName = Object.keys(pageConfig.value)[0];

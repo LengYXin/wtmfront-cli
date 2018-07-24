@@ -1,7 +1,7 @@
 module.exports = function (router) {
     router.post('/init', async (ctx, next) => {
         try {
-            await this.componentCreate.init(ctx.request.body)
+            // await this.componentCreate.init()
             ctx.body = {
                 code: 200,
                 data: {
@@ -9,6 +9,7 @@ module.exports = function (router) {
                     componentName: this.componentCreate.componentName,
                     containersPath: this.componentCreate.containersPath,
                     routersPath: this.componentCreate.routersPath,
+                    templates: this.componentCreate.templates
                 },
                 message: `init 成功`
             };
