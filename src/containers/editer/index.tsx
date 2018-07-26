@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { Form, Icon, Input, Button } from 'antd';
 import { inject, observer } from 'mobx-react';
-import Editor from 'components/Editer';
+import Editor from 'components/editer';
 const FormItem = Form.Item;
 class IApp extends React.Component<any, any> {
     handleSubmit = (e) => {
