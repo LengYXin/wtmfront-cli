@@ -1,6 +1,6 @@
 {
   "name": "wtmfront",
-  "version": "1.0.0-beta.5",
+  "version": "1.0.1-beta",
   "description": "",
   "main": "index.js",
   "scripts": {
