@@ -3,7 +3,8 @@ import { Tabs } from 'antd';
 import Create from './components/create/index';
 import List from './components/list';
 import Info from './components/info';
-import "./style.less"
+export * from "./entrance";
+import "./style.less";
 const TabPane = Tabs.TabPane;
 export default class IApp extends React.Component<any, any> {
     public render() {

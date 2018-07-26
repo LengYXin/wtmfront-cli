@@ -8,7 +8,7 @@ import * as React from 'react';
 import { renderRoutes } from 'react-router-config';
 import { BrowserRouter } from 'react-router-dom';
 import store from 'store/index';
-import swagger from "components/swagger/index";
+import swagger, { Entrance } from "components/swagger/index";
 import layout from "./layout/index";
 import Login from "./login";
 import routers from './routers.json';
@@ -152,7 +152,10 @@ export default class RootRoutes extends React.Component<any, any> {
     renderApp() {
         if (store.User.isLogin) {
             return <BrowserRouter >
-                {renderRoutes(this.routes)}
+                <>
+                    {renderRoutes(this.routes)}
+                    <Entrance />
+                </>
             </BrowserRouter>
         }
         return <Login />
