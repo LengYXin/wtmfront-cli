@@ -5,6 +5,7 @@ const memFs = require('mem-fs');
 const editor = require('mem-fs-editor');
 const store = memFs.create();
 const fsEditor = editor.create(store);
+const ora = require('ora');
 const templateServer = require('./templateServer/analysis');
 const registerHelper = require('./templateServer/registerHelper');
 const log = require('../lib/log');
@@ -105,26 +106,32 @@ module.exports = class {
             if (fs.readdirSync(this.containersPath).some(x => x == this.componentName)) {
                 throw "组件已经存在 " + this.componentName;
             }
+            const spinner = ora('Create ' + this.componentName).start();
             const fsPath = path.join(this.containersPath, this.componentName);
             // 创建临时文件
             const temporaryPath = path.join(this.temporaryPath, this.componentName);
             // 模板服务
             const analysis = new templateServer(temporaryPath);
             this.mkdirSync(temporaryPath);
+            spinner.text = 'Create template';
             this.createTemporary(component.containers.template, temporaryPath);
             // 写入配置文件。
+            spinner.text = 'Create pageConfig';
             fsExtra.writeJsonSync(path.join(temporaryPath, "pageConfig.json"), component.model, { spaces: 4 });
+            spinner.text = 'analysis template';
             await analysis.render();
             // 创建目录
             this.mkdirSync(fsPath);
             // 拷贝生成组件
             this.copy(temporaryPath, fsPath);
+            spinner.text = 'writeRouters';
             // 写入路由
             this.writeRouters(component.containers, 'add');
             // 生成导出
             this.writeContainers();
             // 删除临时文件
             fsExtra.removeSync(temporaryPath);
+            spinner.stop();
             //  修改 页面配置 模型
             log.success("create " + this.componentName);
         } catch (error) {
@@ -199,18 +206,8 @@ module.exports = class {
      * @param {*} to 
      */
     copy(from, to) {
-        // this.fs.copy(
-        //     from,
-        //     to, {
-
-        //     }, {
-        //         globOptions: {
-        //             dot: true
-        //         }
-        //     }
-        // );
         fsExtra.copySync(from, to)
-        log.info("create", to);
+        // log.info("create", to);
     }
     /**
      * 获取路由配置 json
@@ -236,6 +233,7 @@ module.exports = class {
                     "component": component.containersName
                 });
             } else {
+                // 删除
                 const index = routers.routers.findIndex(x => x.component == component);
                 if (index != -1) {
                     routers.routers.splice(index, 1);
@@ -246,7 +244,7 @@ module.exports = class {
             // editorFs.writeJSON(path.join(this.contextRoot, "src", "app", "a.json"), routers);
             // fs.writeFileSync(this.routersPath, JSON.stringify(routers, null, 4));
             fsExtra.writeJsonSync(this.routersPath, routers, { spaces: 4 });
-            log.success("writeRouters " + type, routers);
+            log.success("writeRouters " + type, JSON.stringify(component, null, 4));
         } else {
             log.error("没有找到对应的路由JSON文件");
         }

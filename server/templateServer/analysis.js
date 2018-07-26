@@ -29,9 +29,13 @@ module.exports = class {
         this.IdKey = '';
     }
     async render() {
+        // 需要写入的文件列表
+        const fileList = [];
         await this.analysisJson();
-        await this.readdirSync(this.contextRoot);
-        console.log("readdirSync");
+        await this.readdirSync(this.contextRoot, fileList);
+        for (const iterator of fileList) {
+            await this.renderTemplate(iterator);
+        }
         // return console.log(this);
         // const renderColumns = this.renderColumns();
         // const renderHeader = this.renderHeader();
@@ -40,20 +44,16 @@ module.exports = class {
         // await renderHeader;
         // await renderEdit;
     }
-    async readdirSync(pathStr) {
+    async readdirSync(pathStr, fileList) {
         try {
-            const pathList = [];
             fs.readdirSync(pathStr).filter(x => {
                 const children = path.join(pathStr, x);
                 if (fs.statSync(children).isDirectory()) {
-                    this.readdirSync(children);
+                    this.readdirSync(children, fileList);
                 } else {
-                    pathList.push(children);
+                    fileList.push(children);
                 }
             })
-            for (const key in pathList) {
-                await this.renderTemplate(pathList[key]);
-            }
         } catch (error) {
             log.error("写入模板出错", error);
         }
@@ -63,7 +63,7 @@ module.exports = class {
         const template = Handlebars.compile(source.toString());
         const result = template(this.pageConfig);
         await fsExtra.writeFile(pathStr, result);
-        console.log(pathStr);
+        // log.warning(pathStr);
     }
     // /**
     // * 写入 Header
