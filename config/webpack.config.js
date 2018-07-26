@@ -12,7 +12,7 @@ const rootDir = path.dirname(__dirname);
 module.exports = (__dirname, port = 8000, proxy = {}) => {
     const outputPaht = path.resolve(rootDir, "build");
     // 打包时间戳
-    const time =  moment().format('YYYY-MM-DD HH:mm:ss');
+    const time = moment().format('YYYY-MM-DD HH:mm:ss');
     // 分离css
     const styleCss = new MiniCssExtractPlugin({
         filename: `css/style.css`,
@@ -36,7 +36,7 @@ module.exports = (__dirname, port = 8000, proxy = {}) => {
                 template: './src/index.html',
                 hash: true,
                 minify: true,
-                vconsole:`
+                vconsole: `
         <!--              Q&A @冷颖鑫 (lengyingxin8966@gmail.com)          -->   
         <!--              Build Time： ${time}   ( *¯ ꒳¯*)!!              -->
                 `
@@ -104,13 +104,21 @@ module.exports = (__dirname, port = 8000, proxy = {}) => {
                         options: {
                             // 按需加载 ts 文件
                             getCustomTransformers: () => ({
-                                before: [tsImportPluginFactory([{
-                                    libraryDirectory: '../_esm2015/operators',
-                                    libraryName: 'rxjs/operators',
-                                    style: false,
-                                    camel2DashComponentName: false,
-                                    transformToDefaultImport: false
-                                }, { libraryName: 'antd', style: false }
+                                before: [tsImportPluginFactory([
+                                    {
+                                        libraryDirectory: '../_esm2015/operators',
+                                        libraryName: 'rxjs/operators',
+                                        style: false,
+                                        camel2DashComponentName: false,
+                                        transformToDefaultImport: false
+                                    },
+                                    { libraryName: 'antd', style: false },
+                                    {
+                                        libraryName: 'ant-design-pro',
+                                        libraryDirectory: 'lib',
+                                        style: true,
+                                        camel2DashComponentName: false,
+                                    }
                                 ])]
                             }),
                         },

@@ -23,22 +23,25 @@ class App extends React.Component<any, any> {
         const { getFieldDecorator } = this.props.form;
         return (
             <Form onSubmit={this.handleSubmit} style={{ width: 500, margin: "auto" }}>
-                <FormItem label="组件名称">
+                <FormItem label="组件名称" extra="全英文不包含空格等特殊字符">
                     {getFieldDecorator('containersName', {
                         initialValue: containers.containersName || 'test',
-                        rules: [{ required: true, message: 'Please input your username!' }],
+                        rules: [
+                            { required: true, message: '组件名称必填!' },
+                            { pattern: /^[a-zA-Z]+$/, message: '组件名称必须是全英文!' }
+                        ],
                     })(
                         <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="containersName" />
                     )}
                 </FormItem>
-                <FormItem label="菜单名称">
+                <FormItem label="菜单名称" extra="置空将使用组件名称">
                     {getFieldDecorator('menuName', {
                         initialValue: containers.menuName || 'test',
                     })(
                         <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="menuName" />
                     )}
                 </FormItem>
-                <FormItem label="模板">
+                <FormItem label="模板" extra="渲染模板（内置&自定义模板）">
                     {getFieldDecorator('template', {
                         initialValue: containers.template || 'default',
                     })(

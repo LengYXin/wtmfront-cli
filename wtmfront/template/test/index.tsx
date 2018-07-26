@@ -1,19 +1,21 @@
 import * as React from 'react';
-import Header from './components/Header';
-import Edit from './components/Edit';
-import Body from './components/Body';
-import Store from './store';
-import "./style.less";
+
 /**
  * 我是测试模板
  */
 export default class App extends React.Component<any, any> {
   render() {
+    const url=`{{{JSONStringify url }}}`;
+    const table=`{{{test table }}}`;
+    const txt=`{{{test aaaaaa }}}`;
+
     return (
       <div>
-        <Header Store={Store} />
-        <Edit Store={Store} />
-        <Body Store={Store} />
+        <div>{url}</div>
+        <div>{table}</div>
+        <div>{txt}</div>
+        <div></div>
+        <div></div>
       </div>
     );
   }
