@@ -109,16 +109,17 @@ export default class EditComponent extends React.Component<{ Store: Store }, any
         <Button type="primary" onClick={this.onDelete.bind(this)} disabled={this.Store.selectedRowKeys.length < 1}>
           Delete
         </Button>
-        <Modal
+        <Drawer
           title={this.Store.isUpdate ? 'Update' : 'Add'}
+          width={800}
+          placement="right"
+          closable={false}
+          onClose={this.Store.onVisible.bind(this.Store,false)}
           visible={this.Store.pageConfig.visible}
-          onCancel={this.Store.onVisible.bind(this.Store,false)}
-          maskClosable={false}
-          footer={null}
           destroyOnClose={true}
         >
           <WrappedFormComponent {...this.props} />
-        </Modal>
+         </Drawer>
       </Row>
     );
   }
