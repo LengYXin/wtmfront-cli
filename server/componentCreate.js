@@ -80,7 +80,7 @@ module.exports = class {
             routersPath = path.join(this.contextRoot, body.routers);
             this.containersPath = containersPath;
             this.routersPath = routersPath;
-            this.wtmfrontConfig = { ...this.wtmfrontConfig, ...body };
+            this.wtmfrontConfig = Object.assign({}, this.wtmfrontConfig, body);
         } catch (error) {
             log.error(error);
             throw error;

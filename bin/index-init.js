@@ -32,39 +32,20 @@ const projectPath = path.join(rootPath, projectName);
 if (fsEditor.exists(path.join(projectPath, 'package.json'))) {
     return log.error(`项目 ${projectName} 已存在`);
 }
-const spinner = ora('init').start();
 // 下载 拷贝文件
 goDownload();
 async function goDownload() {
     const target = await download(projectName);
-    spinner.start();
     fsExtra.copySync(target, projectPath);
     log.success("init Success");
-    // spinner.stop();
-    spinner.text = 'npm install ( *¯ ꒳¯*) 正在下载包依赖，还请耐心等待一会~';
-    const procChild = child_process.exec('npm install --loglevel=notice', { cwd: projectPath, maxBuffer: 999999999 }, (error, stdout, stderr) => {
-        spinner.stop();
-        if (error) {
-            log.error(error);
-            log.info('请到 项目重新安装依赖 npm install ');
-        } else {
-            start();
-            log.success("npm install Success");
-        }
-        // console.log(error, stdout, stderr);
-    });
-    // procChild.stdout.on("data", data => {
-    //     console.log('stdout', data);
-    // })
-    // procChild.stderr.on("data", data => {
-    //     console.log(chalk.blue(data));
-    // })
+    codeOpen();
+    runCommand('npm', ['install'], { cwd: projectPath })
 }
-function start() {
+function codeOpen() {
     // 服务
     new server(projectPath).init(8765);
     // open项目
-    const procChild = child_process.exec( `code -g -n ${projectPath}`, { cwd: projectPath, maxBuffer: 999999999 }, (error, stdout, stderr) => {
+    const procChild = child_process.exec(`code -g -n ${projectPath}`, { cwd: projectPath, maxBuffer: 999999999 }, (error, stdout, stderr) => {
         if (error) {
             log.error(error);
             log.error('vscode 打开项目出错啦~ 请手动打开项目 ( *¯ ꒳¯*)');
@@ -77,4 +58,30 @@ function start() {
     //     console.log('stderr', chalk.blue(data));
     // })
 }
-
+/**
+ * Spawns a child process and runs the specified command
+ * By default, runs in the CWD and inherits stdio
+ * Options are the same as node's child_process.spawn
+ * @param {string} cmd
+ * @param {array<string>} args
+ * @param {object} options
+ */
+function runCommand(cmd, args, options) {
+    return new Promise((resolve, reject) => {
+        const spwan = child_process.spawn(
+            cmd,
+            args,
+            Object.assign(
+                {
+                    cwd: process.cwd(),
+                    stdio: 'inherit',
+                    shell: true,
+                },
+                options
+            )
+        )
+        spwan.on('exit', () => {
+            resolve()
+        })
+    })
+}
