@@ -31,7 +31,7 @@ module.exports = class {
         /**
          * 路由路径
          */
-        this.routersPath = path.join(this.contextRoot, "src", "app", "routers.json");
+        this.subMenuPath = path.join(this.contextRoot, "src", "app", "subMenu.json");
         /**
          * 模板路径
          */
@@ -74,12 +74,12 @@ module.exports = class {
     */
     setWtmfrontConfig(body) {
         let containersPath = this.containersPath;
-        let routersPath = this.routersPath;
+        let subMenuPath = this.subMenuPath;
         try {
             containersPath = path.join(this.contextRoot, body.containers);
-            routersPath = path.join(this.contextRoot, body.routers);
+            subMenuPath = path.join(this.contextRoot, body.subMenu);
             this.containersPath = containersPath;
-            this.routersPath = routersPath;
+            this.subMenuPath = subMenuPath;
             this.wtmfrontConfig = Object.assign({}, this.wtmfrontConfig, body);
         } catch (error) {
             log.error(error);
@@ -179,7 +179,7 @@ module.exports = class {
         finally {
             setTimeout(() => {
                 this.writeContainers();
-            }, 1000);
+            }, 500);
             log.success("delete " + componentName);
         }
     }
@@ -213,37 +213,35 @@ module.exports = class {
      * 获取路由配置 json
      */
     readJSON() {
-        // let routers = this.fs.readJSON(this.routersPath);
-        let routers = fsExtra.readJsonSync(this.routersPath);
-        // console.log("readJSON", routers);
-        return routers
+        return fsExtra.readJsonSync(this.subMenuPath);
     }
     /**
-     * 写入路由
+     * 写入路由  菜单
      * @param {*} component 
      */
     writeRouters(component, type = 'add') {
-        if (this.exists(this.routersPath)) {
+        if (this.exists(this.subMenuPath)) {
             // 读取路由json
             let routers = this.readJSON();
             if (type == 'add') {
-                routers.routers.push({
-                    "name": component.menuName || component.containersName,
-                    "path": `/${component.containersName}`,
-                    "component": component.containersName
+                routers.subMenu.push({
+                    "Name": component.menuName || component.containersName,
+                    "Icon": "menu-fold",
+                    "Path": `/${component.containersName}`,
+                    "Component": component.containersName,
+                    "Meuu": []
                 });
             } else {
                 // 删除
-                const index = routers.routers.findIndex(x => x.component == component);
+                const index = routers.subMenu.findIndex(x => x.Component == component);
                 if (index != -1) {
-                    routers.routers.splice(index, 1);
+                    routers.subMenu.splice(index, 1);
                 }
                 // console.log("index " + component, index);
             }
             // 写入json
             // editorFs.writeJSON(path.join(this.contextRoot, "src", "app", "a.json"), routers);
-            // fs.writeFileSync(this.routersPath, JSON.stringify(routers, null, 4));
-            fsExtra.writeJsonSync(this.routersPath, routers, { spaces: 4 });
+            fsExtra.writeJsonSync(this.subMenuPath, routers, { spaces: 4 });
             log.success("writeRouters " + type, JSON.stringify(component, null, 4));
         } else {
             log.error("没有找到对应的路由JSON文件");
@@ -256,11 +254,16 @@ module.exports = class {
         // 获取所有组件，空目录排除
         const containersDir = this.getContainersDir();
         // import 列表
-        let importList = containersDir.map(x => `import ${x} from 'containers/${x}';`);
-        importList.push('export default {\n    '
-            + containersDir.join(",\n    ") +
-            '\n}')
-        fs.writeFileSync(path.join(this.containersPath, "index.ts"), importList.join("\n"));
+        // let importList = containersDir.map(x => `import ${x} from 'containers/${x}';`);
+        // importList.push('export default {\n    '
+        //     + containersDir.join(",\n    ") +
+        //     '\n}')
+        // fs.writeFileSync(path.join(this.containersPath, "index.ts"), importList.join("\n"));
+        let importList = containersDir.map(x => `${x}: () => import('./${x}').then(x => x.default)`);
+        fs.writeFileSync(path.join(this.containersPath, "index.ts"), 'export default {\n    '
+            + importList.join(",\n    ") +
+            '\n}'
+        );
         log.success("writeContainers");
     }
     /**
