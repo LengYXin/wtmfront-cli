@@ -215,6 +215,12 @@ module.exports = class {
     readJSON() {
         return fsExtra.readJsonSync(this.subMenuPath);
     }
+    guid() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+            let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
     /**
      * 写入路由  菜单
      * @param {*} component 
@@ -225,11 +231,12 @@ module.exports = class {
             let routers = this.readJSON();
             if (type == 'add') {
                 routers.subMenu.push({
+                    "Key": this.guid(),
                     "Name": component.menuName || component.containersName,
                     "Icon": "menu-fold",
                     "Path": `/${component.containersName}`,
                     "Component": component.containersName,
-                    "Meuu": []
+                    "Children": []
                 });
             } else {
                 // 删除
@@ -246,6 +253,15 @@ module.exports = class {
         } else {
             log.error("没有找到对应的路由JSON文件");
         }
+    }
+    /**
+     * 修改菜单
+     */
+    updateSubMenu(subMenu) {
+        let routers = this.readJSON();
+        routers.subMenu = subMenu;
+        fsExtra.writeJsonSync(this.subMenuPath, routers, { spaces: 4 });
+        log.success("updateSubMenu ");
     }
     /**
      * 写入组件导出

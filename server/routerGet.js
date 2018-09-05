@@ -4,9 +4,9 @@ module.exports = function (router) {
             code: 200,
             data: {
                 contextRoot: this.componentCreate.contextRoot,
-                componentName: this.componentCreate.componentName,
+                // componentName: this.componentCreate.componentName,
                 containersPath: this.componentCreate.containersPath,
-                routersPath: this.componentCreate.routersPath,
+                subMenuPath: this.componentCreate.subMenuPath,
                 templates: this.componentCreate.templates
             },
             message: 'SamSundot 模板  服务'

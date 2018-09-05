@@ -1,4 +1,7 @@
 module.exports = function (router) {
+    /**
+     * 初始化项目信息
+     */
     router.post('/init', async (ctx, next) => {
         try {
             // await this.componentCreate.init()
@@ -6,9 +9,9 @@ module.exports = function (router) {
                 code: 200,
                 data: {
                     contextRoot: this.componentCreate.contextRoot,
-                    componentName: this.componentCreate.componentName,
+                    // componentName: this.componentCreate.componentName,
                     containersPath: this.componentCreate.containersPath,
-                    routersPath: this.componentCreate.routersPath,
+                    subMenuPath: this.componentCreate.subMenuPath,
                     templates: this.componentCreate.templates
                 },
                 message: `init 成功`
@@ -21,6 +24,9 @@ module.exports = function (router) {
             };
         }
     });
+    /**
+     * 创建组件
+     */
     router.post('/create', async (ctx, next) => {
         // const data = await create(ctx.request.body, this.Generator.contextRoot)
         try {
@@ -40,6 +46,9 @@ module.exports = function (router) {
             };
         }
     });
+    /**
+     * 删除
+     */
     router.post('/delete', async (ctx, next) => {
         // const data = await create(ctx.request.body, this.Generator.contextRoot)
         try {
@@ -57,4 +66,26 @@ module.exports = function (router) {
             };
         }
     });
+    /**
+        * 修改菜单
+        */
+    router.post('/updateSubMenu', async (ctx, next) => {
+        // const data = await create(ctx.request.body, this.Generator.contextRoot)
+        try {
+            this.componentCreate.updateSubMenu(ctx.request.body)
+            ctx.body = {
+                code: 200,
+                data: true,
+                message: `delete 成功`
+            };
+        } catch (error) {
+            ctx.body = {
+                code: 500,
+                data: false,
+                message: error
+            };
+        }
+    });
+
+
 }
