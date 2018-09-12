@@ -1,3 +1,4 @@
+const test= require("./swaggerDoc.json")
 module.exports = function (router) {
     router.get('/', (ctx, next) => {
         ctx.body = {
@@ -32,19 +33,15 @@ module.exports = function (router) {
             };
         }
     });
-    // router.get('/model', (ctx, next) => {
-    //     try {
-    //         ctx.body = {
-    //             code: 200,
-    //             data: test,
-    //             message: `create 成功`
-    //         };
-    //     } catch (error) {
-    //         ctx.body = {
-    //             code: 200,
-    //             data: false,
-    //             message: error
-    //         };
-    //     }
-    // });
+    router.get('/model', (ctx, next) => {
+        try {
+            ctx.body = test
+        } catch (error) {
+            ctx.body = {
+                code: 200,
+                data: false,
+                message: error
+            };
+        }
+    });
 }

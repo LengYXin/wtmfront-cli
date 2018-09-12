@@ -1,0 +1,1335 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"description": "Demo",
+		"version": "1.0",
+		"title": "Nada-Demo API文档"
+	},
+	"host": "10.100.83.171:8010",
+	"basePath": "/",
+	"tags": [
+		{
+			"name": "公司操作接口",
+			"description": "Corp Controller"
+		},
+		{
+			"name": "共同下拉框查询接口",
+			"description": "Common Combo Controller"
+		},
+		{
+			"name": "用户操作接口",
+			"description": "User Controller"
+		}
+	],
+	"paths": {
+		"/common/combo": {
+			"get": {
+				"tags": [
+					"共同下拉框查询接口"
+				],
+				"summary": "获共同下拉框",
+				"operationId": "getUsingGET",
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "query",
+						"description": "id",
+						"required": false,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/corp/add": {
+			"post": {
+				"tags": [
+					"公司操作接口"
+				],
+				"summary": "创建公司",
+				"description": "创建公司信息",
+				"operationId": "addUsingPOST",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "corp",
+						"description": "corp",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Corp"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
+					}
+				}
+			}
+		},
+		"/corp/delete": {
+			"post": {
+				"tags": [
+					"公司操作接口"
+				],
+				"summary": "删除公司",
+				"description": "根据公司id来指定删除公司",
+				"operationId": "deleteUsingPOST",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "query",
+						"description": "公司id",
+						"required": true,
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"collectionFormat": "multi"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
+					}
+				}
+			}
+		},
+		"/corp/edit": {
+			"post": {
+				"tags": [
+					"公司操作接口"
+				],
+				"summary": "更新公司信息",
+				"description": "修改公司信息",
+				"operationId": "updateUsingPOST",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "corp",
+						"description": "corp",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Corp"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
+					}
+				}
+			}
+		},
+		"/corp/export": {
+			"post": {
+				"tags": [
+					"公司操作接口"
+				],
+				"summary": "获取公司详细信息",
+				"description": "获取公司详细信息",
+				"operationId": "exportExcelUsingPOST",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "corp",
+						"description": "corp",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/CorpSearch"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/corp/get/{id}": {
+			"get": {
+				"tags": [
+					"公司操作接口"
+				],
+				"summary": "获取公司详细信息(id)",
+				"description": "根据公司id获取匹配的公司信息",
+				"operationId": "getUsingGET_1",
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"description": "公司id",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet«Corp»"
+						}
+					}
+				}
+			}
+		},
+		"/corp/import": {
+			"post": {
+				"tags": [
+					"公司操作接口"
+				],
+				"summary": "上传公司信息",
+				"description": "上传公司信息",
+				"operationId": "importExcelUsingPOST",
+				"consumes": [
+					"multipart/form-data"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"name": "file",
+						"in": "formData",
+						"description": "上传Excel",
+						"required": true,
+						"type": "file"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/corp/search": {
+			"post": {
+				"tags": [
+					"公司操作接口"
+				],
+				"summary": "获取公司详细信息",
+				"description": "获取公司详细信息",
+				"operationId": "searchUsingPOST",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "corp",
+						"description": "corp",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/ASearch«CorpSearch»"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet«List«Corp»»"
+						}
+					}
+				}
+			}
+		},
+		"/corp/template": {
+			"post": {
+				"tags": [
+					"公司操作接口"
+				],
+				"summary": "下载模板",
+				"description": "下载模板",
+				"operationId": "templateUsingPOST",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/user/add": {
+			"post": {
+				"tags": [
+					"用户操作接口"
+				],
+				"summary": "创建用户",
+				"description": "创建用户信息",
+				"operationId": "addUsingPOST_1",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "user",
+						"description": "user",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/User"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
+					}
+				}
+			}
+		},
+		"/user/delete": {
+			"post": {
+				"tags": [
+					"用户操作接口"
+				],
+				"summary": "删除用户",
+				"description": "根据用户id来指定删除公司",
+				"operationId": "deleteUsingPOST_1",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "query",
+						"description": "用户id",
+						"required": true,
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"collectionFormat": "multi"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
+					}
+				}
+			}
+		},
+		"/user/edit": {
+			"post": {
+				"tags": [
+					"用户操作接口"
+				],
+				"summary": "更新用户信息",
+				"description": "修改用户信息",
+				"operationId": "updateUsingPOST_1",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "user",
+						"description": "user",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/User"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
+					}
+				}
+			}
+		},
+		"/user/export": {
+			"post": {
+				"tags": [
+					"用户操作接口"
+				],
+				"summary": "获取用户详细信息",
+				"description": "获取用户详细信息",
+				"operationId": "exportExcelUsingPOST_1",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "user",
+						"description": "user",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/UserSearch"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/user/get/{id}": {
+			"get": {
+				"tags": [
+					"用户操作接口"
+				],
+				"summary": "获取用户详细信息(id)",
+				"description": "根据用户id获取匹配的用户信息",
+				"operationId": "getUsingGET_2",
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"description": "公司id",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet«User»"
+						}
+					}
+				}
+			}
+		},
+		"/user/import": {
+			"post": {
+				"tags": [
+					"用户操作接口"
+				],
+				"summary": "上传用户信息",
+				"description": "上传用户信息",
+				"operationId": "importExcelUsingPOST_1",
+				"consumes": [
+					"multipart/form-data"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"name": "file",
+						"in": "formData",
+						"description": "上传Excel",
+						"required": true,
+						"type": "file"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/user/search": {
+			"post": {
+				"tags": [
+					"用户操作接口"
+				],
+				"summary": "获取用户详细信息",
+				"description": "获取用户详细信息",
+				"operationId": "searchUsingPOST_1",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "user",
+						"description": "user",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/ASearch«UserSearch»"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet«List«User»»"
+						}
+					}
+				}
+			}
+		},
+		"/user/template": {
+			"post": {
+				"tags": [
+					"用户操作接口"
+				],
+				"summary": "下载模板",
+				"description": "下载模板",
+				"operationId": "templateUsingPOST_1",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		}
+	},
+	"securityDefinitions": {
+		"spring_oauth": {
+			"type": "oauth2",
+			"authorizationUrl": "null/authorize",
+			"tokenUrl": "null/token",
+			"flow": "accessCode",
+			"scopes": {
+				"read": "for read operations",
+				"write": "for write operations",
+				"foo": "Access foo API"
+			}
+		}
+	},
+	"definitions": {
+		"AData": {
+			"type": "object",
+			"properties": {
+				"count": {
+					"type": "integer",
+					"format": "int64",
+					"description": "数据总数",
+					"allowEmptyValue": false
+				},
+				"list": {
+					"type": "object",
+					"description": "数据",
+					"allowEmptyValue": false
+				},
+				"pageNo": {
+					"type": "integer",
+					"format": "int32",
+					"description": "当前页",
+					"allowEmptyValue": false
+				},
+				"pageSize": {
+					"type": "integer",
+					"format": "int32",
+					"description": "页数据数",
+					"allowEmptyValue": false
+				}
+			},
+			"title": "AData"
+		},
+		"AData«Corp»": {
+			"type": "object",
+			"properties": {
+				"count": {
+					"type": "integer",
+					"format": "int64",
+					"description": "数据总数",
+					"allowEmptyValue": false
+				},
+				"list": {
+					"description": "数据",
+					"allowEmptyValue": false,
+					"$ref": "#/definitions/Corp"
+				},
+				"pageNo": {
+					"type": "integer",
+					"format": "int32",
+					"description": "当前页",
+					"allowEmptyValue": false
+				},
+				"pageSize": {
+					"type": "integer",
+					"format": "int32",
+					"description": "页数据数",
+					"allowEmptyValue": false
+				}
+			},
+			"title": "AData«Corp»"
+		},
+		"AData«List«Corp»»": {
+			"type": "object",
+			"properties": {
+				"count": {
+					"type": "integer",
+					"format": "int64",
+					"description": "数据总数",
+					"allowEmptyValue": false
+				},
+				"list": {
+					"type": "array",
+					"description": "数据",
+					"allowEmptyValue": false,
+					"items": {
+						"$ref": "#/definitions/Corp"
+					}
+				},
+				"pageNo": {
+					"type": "integer",
+					"format": "int32",
+					"description": "当前页",
+					"allowEmptyValue": false
+				},
+				"pageSize": {
+					"type": "integer",
+					"format": "int32",
+					"description": "页数据数",
+					"allowEmptyValue": false
+				}
+			},
+			"title": "AData«List«Corp»»"
+		},
+		"AData«List«User»»": {
+			"type": "object",
+			"properties": {
+				"count": {
+					"type": "integer",
+					"format": "int64",
+					"description": "数据总数",
+					"allowEmptyValue": false
+				},
+				"list": {
+					"type": "array",
+					"description": "数据",
+					"allowEmptyValue": false,
+					"items": {
+						"$ref": "#/definitions/User"
+					}
+				},
+				"pageNo": {
+					"type": "integer",
+					"format": "int32",
+					"description": "当前页",
+					"allowEmptyValue": false
+				},
+				"pageSize": {
+					"type": "integer",
+					"format": "int32",
+					"description": "页数据数",
+					"allowEmptyValue": false
+				}
+			},
+			"title": "AData«List«User»»"
+		},
+		"AData«User»": {
+			"type": "object",
+			"properties": {
+				"count": {
+					"type": "integer",
+					"format": "int64",
+					"description": "数据总数",
+					"allowEmptyValue": false
+				},
+				"list": {
+					"description": "数据",
+					"allowEmptyValue": false,
+					"$ref": "#/definitions/User"
+				},
+				"pageNo": {
+					"type": "integer",
+					"format": "int32",
+					"description": "当前页",
+					"allowEmptyValue": false
+				},
+				"pageSize": {
+					"type": "integer",
+					"format": "int32",
+					"description": "页数据数",
+					"allowEmptyValue": false
+				}
+			},
+			"title": "AData«User»"
+		},
+		"AResultSet": {
+			"type": "object",
+			"properties": {
+				"data": {
+					"$ref": "#/definitions/AData"
+				},
+				"message": {
+					"type": "string",
+					"description": "信息",
+					"allowEmptyValue": false
+				},
+				"status": {
+					"type": "integer",
+					"format": "int32",
+					"description": "状态编码",
+					"allowEmptyValue": false
+				}
+			},
+			"title": "AResultSet",
+			"description": "统一返回结果集类（非实体类）"
+		},
+		"AResultSet«Corp»": {
+			"type": "object",
+			"properties": {
+				"data": {
+					"$ref": "#/definitions/AData«Corp»"
+				},
+				"message": {
+					"type": "string",
+					"description": "信息",
+					"allowEmptyValue": false
+				},
+				"status": {
+					"type": "integer",
+					"format": "int32",
+					"description": "状态编码",
+					"allowEmptyValue": false
+				}
+			},
+			"title": "AResultSet«Corp»",
+			"description": "统一返回结果集类（非实体类）"
+		},
+		"AResultSet«List«Corp»»": {
+			"type": "object",
+			"properties": {
+				"data": {
+					"$ref": "#/definitions/AData«List«Corp»»"
+				},
+				"message": {
+					"type": "string",
+					"description": "信息",
+					"allowEmptyValue": false
+				},
+				"status": {
+					"type": "integer",
+					"format": "int32",
+					"description": "状态编码",
+					"allowEmptyValue": false
+				}
+			},
+			"title": "AResultSet«List«Corp»»",
+			"description": "统一返回结果集类（非实体类）"
+		},
+		"AResultSet«List«User»»": {
+			"type": "object",
+			"properties": {
+				"data": {
+					"$ref": "#/definitions/AData«List«User»»"
+				},
+				"message": {
+					"type": "string",
+					"description": "信息",
+					"allowEmptyValue": false
+				},
+				"status": {
+					"type": "integer",
+					"format": "int32",
+					"description": "状态编码",
+					"allowEmptyValue": false
+				}
+			},
+			"title": "AResultSet«List«User»»",
+			"description": "统一返回结果集类（非实体类）"
+		},
+		"AResultSet«User»": {
+			"type": "object",
+			"properties": {
+				"data": {
+					"$ref": "#/definitions/AData«User»"
+				},
+				"message": {
+					"type": "string",
+					"description": "信息",
+					"allowEmptyValue": false
+				},
+				"status": {
+					"type": "integer",
+					"format": "int32",
+					"description": "状态编码",
+					"allowEmptyValue": false
+				}
+			},
+			"title": "AResultSet«User»",
+			"description": "统一返回结果集类（非实体类）"
+		},
+		"ASearch«CorpSearch»": {
+			"type": "object",
+			"properties": {
+				"pageNo": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"pageSize": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"search": {
+					"$ref": "#/definitions/CorpSearch"
+				}
+			},
+			"title": "ASearch«CorpSearch»"
+		},
+		"ASearch«UserSearch»": {
+			"type": "object",
+			"properties": {
+				"pageNo": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"pageSize": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"search": {
+					"$ref": "#/definitions/UserSearch"
+				}
+			},
+			"title": "ASearch«UserSearch»"
+		},
+		"Corp": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "string",
+					"example": {
+						"combo": 1
+					},
+					"description": "公司ID",
+					"allowEmptyValue": false,
+					"minLength": 0,
+					"maxLength": 5
+				},
+				"corpName": {
+					"type": "string",
+					"description": "公司名",
+					"allowEmptyValue": false,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"managerID": {
+					"type": "string",
+					"example": {
+						"combo": 3
+					},
+					"description": "管理员ID",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 10
+				},
+				"parentCorpID": {
+					"type": "string",
+					"example": {
+						"combo": 1
+					},
+					"description": "上级公司ID",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 10
+				},
+				"corpEmpTotals": {
+					"type": "integer",
+					"format": "int32",
+					"description": "总员工数",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 10,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"useYN": {
+					"type": "integer",
+					"format": "int32",
+					"example": {
+						"combo": 4
+					},
+					"description": "使用与否",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 2,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"createUser": {
+					"type": "string",
+					"description": "创建用户ID",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 10
+				},
+				"createDate": {
+					"type": "string",
+					"format": "date-time",
+					"description": "创建日期",
+					"allowEmptyValue": true
+				},
+				"updateUser": {
+					"type": "string",
+					"description": "修改用户ID",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 10
+				},
+				"updateDate": {
+					"type": "string",
+					"format": "date-time",
+					"description": "修改日期",
+					"allowEmptyValue": true
+				}
+			},
+			"title": "Corp",
+			"description": "公司"
+		},
+		"CorpSearch": {
+			"type": "object",
+			"properties": {
+				"createDateFrom": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"createDateTo": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"id": {
+					"type": "string",
+					"example": {
+						"combo": 1
+					},
+					"description": "公司ID",
+					"allowEmptyValue": false,
+					"minLength": 0,
+					"maxLength": 5
+				},
+				"updateDateFrom": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"updateDateTo": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"corpName": {
+					"type": "string",
+					"description": "公司名",
+					"allowEmptyValue": false,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"managerID": {
+					"type": "string",
+					"example": {
+						"combo": 3
+					},
+					"description": "管理员ID",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 10
+				},
+				"parentCorpID": {
+					"type": "string",
+					"example": {
+						"combo": 1
+					},
+					"description": "上级公司ID",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 10
+				},
+				"corpEmpTotals": {
+					"type": "integer",
+					"format": "int32",
+					"description": "总员工数",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 10,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"useYN": {
+					"type": "integer",
+					"format": "int32",
+					"example": {
+						"combo": 4
+					},
+					"description": "使用与否",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 2,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"createUser": {
+					"type": "string",
+					"description": "创建用户ID",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 10
+				},
+				"createDate": {
+					"type": "string",
+					"format": "date-time",
+					"description": "创建日期",
+					"allowEmptyValue": true
+				},
+				"updateUser": {
+					"type": "string",
+					"description": "修改用户ID",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 10
+				},
+				"updateDate": {
+					"type": "string",
+					"format": "date-time",
+					"description": "修改日期",
+					"allowEmptyValue": true
+				}
+			},
+			"title": "CorpSearch",
+			"description": "公司"
+		},
+		"User": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "string",
+					"description": "用户ID",
+					"allowEmptyValue": false,
+					"minLength": 0,
+					"maxLength": 10
+				},
+				"corpID": {
+					"type": "string",
+					"example": {
+						"combo": 1
+					},
+					"description": "公司ID",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 5
+				},
+				"userName": {
+					"type": "string",
+					"description": "用户名",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"mobileNo": {
+					"type": "string",
+					"description": "手机号",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 20
+				},
+				"telNo": {
+					"type": "string",
+					"description": "座机号",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 20
+				},
+				"email": {
+					"type": "string",
+					"description": "邮箱",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"useYN": {
+					"type": "integer",
+					"format": "int32",
+					"example": {
+						"combo": 4
+					},
+					"description": "使用与否",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 2,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"posID": {
+					"type": "string",
+					"description": "职位ID",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 10
+				},
+				"dutyID": {
+					"type": "string",
+					"description": "职责ID",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 10
+				},
+				"password": {
+					"type": "string",
+					"description": "密码",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"deptGroup": {
+					"type": "string",
+					"example": {
+						"combo": 2
+					},
+					"description": "部门组织ID",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 10
+				},
+				"createUser": {
+					"type": "string",
+					"description": "创建用户ID",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 10
+				},
+				"createDate": {
+					"type": "string",
+					"format": "date-time",
+					"description": "创建日期",
+					"allowEmptyValue": true
+				},
+				"updateUser": {
+					"type": "string",
+					"description": "修改用户ID",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 10
+				},
+				"updateDate": {
+					"type": "string",
+					"format": "date-time",
+					"description": "修改日期",
+					"allowEmptyValue": true
+				}
+			},
+			"title": "User",
+			"description": "用户"
+		},
+		"UserSearch": {
+			"type": "object",
+			"properties": {
+				"createDateFrom": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"createDateTo": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"id": {
+					"type": "string",
+					"description": "用户ID",
+					"allowEmptyValue": false,
+					"minLength": 0,
+					"maxLength": 10
+				},
+				"updateDateFrom": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"updateDateTo": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"corpID": {
+					"type": "string",
+					"example": {
+						"combo": 1
+					},
+					"description": "公司ID",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 5
+				},
+				"userName": {
+					"type": "string",
+					"description": "用户名",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"mobileNo": {
+					"type": "string",
+					"description": "手机号",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 20
+				},
+				"telNo": {
+					"type": "string",
+					"description": "座机号",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 20
+				},
+				"email": {
+					"type": "string",
+					"description": "邮箱",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"useYN": {
+					"type": "integer",
+					"format": "int32",
+					"example": {
+						"combo": 4
+					},
+					"description": "使用与否",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 2,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"posID": {
+					"type": "string",
+					"description": "职位ID",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 10
+				},
+				"dutyID": {
+					"type": "string",
+					"description": "职责ID",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 10
+				},
+				"password": {
+					"type": "string",
+					"description": "密码",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"deptGroup": {
+					"type": "string",
+					"example": {
+						"combo": 2
+					},
+					"description": "部门组织ID",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 10
+				},
+				"createUser": {
+					"type": "string",
+					"description": "创建用户ID",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 10
+				},
+				"createDate": {
+					"type": "string",
+					"format": "date-time",
+					"description": "创建日期",
+					"allowEmptyValue": true
+				},
+				"updateUser": {
+					"type": "string",
+					"description": "修改用户ID",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 10
+				},
+				"updateDate": {
+					"type": "string",
+					"format": "date-time",
+					"description": "修改日期",
+					"allowEmptyValue": true
+				}
+			},
+			"title": "UserSearch",
+			"description": "用户"
+		}
+	}
+}

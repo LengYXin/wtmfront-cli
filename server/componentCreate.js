@@ -49,11 +49,17 @@ module.exports = class {
          */
         this.wtmfrontConfig = {
             contextRoot: this.contextRoot
+            // "type": "typescript",
+            // "frame": "react",
+            // "registerHelper": "wtmfront/registerHelper",
+            // "template": "wtmfront/template",
+            // "subMenu": "src/app/subMenu.json",
+            // "containers": "src/containers",
         };
         /**
          * 模板文件列表
          */
-        this.templates = ['default'];
+        this.templates = [];
         /**
          * 初始化配置
          */
@@ -92,6 +98,7 @@ module.exports = class {
      * @param {*} fsPath 
      */
     async create(component) {
+        const spinner = ora('Create ' + this.componentName).start();
         try {
             this.componentName = component.containers.containersName;
             // console.log(JSON.stringify(component.containers, null, 4));
@@ -106,7 +113,6 @@ module.exports = class {
             if (fs.readdirSync(this.containersPath).some(x => x == this.componentName)) {
                 throw "组件已经存在 " + this.componentName;
             }
-            const spinner = ora('Create ' + this.componentName).start();
             const fsPath = path.join(this.containersPath, this.componentName);
             // 创建临时文件
             const temporaryPath = path.join(this.temporaryPath, this.componentName);
@@ -120,6 +126,7 @@ module.exports = class {
             fsExtra.writeJsonSync(path.join(temporaryPath, "pageConfig.json"), component.model, { spaces: 4 });
             spinner.text = 'analysis template';
             await analysis.render();
+            // return
             // 创建目录
             this.mkdirSync(fsPath);
             // 拷贝生成组件
@@ -131,12 +138,13 @@ module.exports = class {
             this.writeContainers();
             // 删除临时文件
             fsExtra.removeSync(temporaryPath);
-            spinner.stop();
             //  修改 页面配置 模型
             log.success("create " + this.componentName);
         } catch (error) {
             log.error("error", error);
             throw error
+        } finally{
+            spinner.stop();
         }
 
     }
@@ -147,13 +155,15 @@ module.exports = class {
      */
     createTemporary(template, temporaryPath) {
         if (template == null || template == "") {
-            template = "default";
+            // template = "default";
+            throw "没有找到模板文件"
         }
-        let templatePath = this.templatePath;
-        // 不是默认 模板 取 项目中的模板。
-        if (template != "default") {
-            templatePath = path.join(this.contextRoot, this.wtmfrontConfig.template);
-        }
+        // let templatePath = this.templatePath;
+        let templatePath = path.join(this.contextRoot, this.wtmfrontConfig.template);
+        // // 不是默认 模板 取 项目中的模板。
+        // if (template != "default") {
+        //     templatePath = path.join(this.contextRoot, this.wtmfrontConfig.template);
+        // }
         // 拷贝模板文件 到临时目录 写入数据
         fsExtra.copySync(path.join(templatePath, template), temporaryPath);
     }

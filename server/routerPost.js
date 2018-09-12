@@ -12,7 +12,8 @@ module.exports = function (router) {
                     // componentName: this.componentCreate.componentName,
                     containersPath: this.componentCreate.containersPath,
                     subMenuPath: this.componentCreate.subMenuPath,
-                    templates: this.componentCreate.templates
+                    templates: this.componentCreate.templates,
+                    wtmfrontConfig:this.componentCreate.wtmfrontConfig
                 },
                 message: `init 成功`
             };

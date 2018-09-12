@@ -2,7 +2,7 @@ const Handlebars = require("handlebars");
 const path = require("path");
 const fs = require('fs');
 const log = require('../../lib/log');
-init();
+// init();
 /**
  * 注册帮助类
  * @param {*} wtmfrontConfig 
