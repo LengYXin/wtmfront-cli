@@ -71,20 +71,20 @@ $ wtmfront server 或者 npm run server
 ### 组件创建流程
 #### 组件生成完成后可根据项目需求自由修改
 >1：输入组件名称（必填 全英文），菜单名称 （可空，默认使用组件名称），选择模板
-![Alt text](/doc/img/1.png)
+![Alt text](https://raw.githubusercontent.com/LengYXin/samsundot-cli/master/doc/img/1.png)
 
 >2：编辑排序需要使用的字段
 >table  表格显示字段。
 >search 搜索条件字段。
 >add    添加&编辑字段。可用：添加数据使用，可编辑：编辑数据使用（模板未启用）
 >关联模型 为 swagger 返回关联数据选项。 通过公共接口返回
-![Alt text](/doc/img/2.png)
-![Alt text](/doc/img/3.png)
+![Alt text](https://raw.githubusercontent.com/LengYXin/samsundot-cli/master/doc/img/2.png)
+![Alt text](https://raw.githubusercontent.com/LengYXin/samsundot-cli/master/doc/img/3.png)
 
 >3：点击提交。提示 组件创建成功。等待重新编译完成。页面中就能看到创建的组件。
 >创建完成的组件结构如下（根据模板生成）
 >pageConfig.json 为swagger 解析后的数据原型
-![Alt text](/doc/img/5.png)
+![Alt text](https://raw.githubusercontent.com/LengYXin/samsundot-cli/master/doc/img/5.png)
 ### 组件创建内部流程
 >1：接受传入的组件参数 名称，菜单，swagger 信息
 >2：写入pageConfig.json 文件 （swagger 解析后的源数据）
@@ -95,7 +95,7 @@ $ wtmfront server 或者 npm run server
 
 #### 删除组件
 >1：组件列表中直接选择需要删除的组件点击删除即可
-![Alt text](/doc/img/4.png)
+![Alt text](https://raw.githubusercontent.com/LengYXin/samsundot-cli/master/doc/img/4.png)
 
 
 ### 模板编写  [引擎 handlebarsjs](http://handlebarsjs.com/) 
@@ -181,7 +181,7 @@ $ wtmfront server 或者 npm run server
 #### 菜单编辑
 >拖拽编辑信息，点击保存 即可 （可用手动修改）
 >每个菜单都有一个唯一Key 创建组件时生成，可作为权限管理使用
-![Alt text](/doc/img/6.png)
+![Alt text](https://raw.githubusercontent.com/LengYXin/samsundot-cli/master/doc/img/6.png)
 
 #### 模板模板继承  (面向对象编程) 支持重写，但是不支持重载（js引擎原因）
 >状态继承自  core/StoreBasice.ts 基础类
