@@ -116,6 +116,30 @@ export class HttpBasics {
             headers
         ).timeout(this.timeout).catch(err => Rx.Observable.of(err)).map(this.responseMap);
     }
+    jsonpCounter = 0;
+    /**
+     * jsonP
+     */
+    jsonp(url, body?: { [key: string]: any } | string, callbackKey = 'callback') {
+        body = this.formatBody(body);
+        url = `${this.address}${url}${body}&${callbackKey}=`;
+        return new Rx.Observable(observer => {
+            this.jsonpCounter++;
+            const key = '_jsonp_callback_' + this.jsonpCounter;
+            window[key] = (response) => {
+                // clean up
+                script.parentNode.removeChild(script);
+                delete window[key];
+                // push response downstream
+                observer.next(response);
+                observer.complete();
+            };
+            const script = document.createElement('script');
+            script.src = url + key;
+            script.onerror = (err) => observer.error(err);
+            document.body.appendChild(script);
+        })
+    };
     /**
      * 格式化 参数
      * @param body  参数 
