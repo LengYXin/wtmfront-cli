@@ -1,20 +1,52 @@
 // @import "../node_modules/antd/dist/antd.less";
-/* 过度动画 */
-.table-header-search {
-    .ant-form-item {
+body {
+    background-color: #f0f2f5;
+}
+
+#root {
+    background-image: url(/assets/svg/background.svg);
+    background-repeat: no-repeat;
+    background-position: center 110px;
+    background-size: 100%;
+    .app-loadable-loading {
+        height: 100vh;
         display: flex;
-        margin: 0;
-    }
-    .ant-form-item-control-wrapper {
-        flex: 1;
-    }
-    .ant-col-6 {
-        // padding: 5px 0;
-    }
-    .table-header-btn{
-        text-align: right;
+        justify-content: center;
+        align-items: center;
+        >div {
+            width: 200px;
+            height: 200px;
+            background-image: url(/assets/svg/loading.svg);
+            background-repeat: no-repeat;
+            background-position: center ;
+            background-size: 100%;
+        }
     }
 }
+
+::-webkit-scrollbar-track-piece {
+    width: 6px;
+    background-color: #bfbfbf;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(123, 123, 123);
+    cursor: pointer
+}
+
+/* 过度动画 */
+
 .fade-enter {
     opacity: 0;
     animation-duration: .2s;

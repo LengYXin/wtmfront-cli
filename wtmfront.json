@@ -3,7 +3,45 @@
     "frame": "react",
     "registerHelper": "wtmfront/registerHelper",
     "template": "wtmfront/template",
-    "swagger": "http://10.120.112.126:8007",
-    "routers": "src/app/routers.json",
-    "containers": "src/containers"
+    "subMenu": "src/app/subMenu.json",
+    "containers": "src/containers",
+    "api": "http://10.100.83.171:8010",
+    "swaggerDoc": "http://localhost:8765/model",
+    "standard": {
+        "search": {
+            "name": "search",
+            "type": "Post"
+        },
+        "details": {
+            "name": "get/{id}",
+            "type": "Get"
+        },
+        "install": {
+            "name": "add",
+            "type": "Post"
+        },
+        "update": {
+            "name": "edit",
+            "type": "Post"
+        },
+        "delete": {
+            "name": "delete",
+            "type": "Post"
+        },
+        "import": {
+            "name": "import",
+            "type": "Post"
+        },
+        "export": {
+            "name": "export",
+            "type": "Post"
+        },
+        "template": {
+            "name": "template",
+            "type": "Post"
+        },
+        "public": {
+            "name": "common"
+        }
+    }
 }

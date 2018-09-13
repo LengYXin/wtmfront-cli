@@ -1,7 +1,18 @@
+/**
+ * @author 冷 (https://github.com/LengYXin)
+ * @email lengyingxin8966@gmail.com
+ * @create date 2018-09-12 18:53:42
+ * @modify date 2018-09-12 18:53:42
+ * @desc [description]
+*/
 import { message } from 'antd';
-import BraftEditor from 'braft-editor';
+import BraftEditor, { EditorState } from 'braft-editor';
 import * as React from 'react';
-require('braft-editor/dist/braft.css');
+require('braft-editor/dist/index.css');
+/**
+ * https://github.com/margox/braft-editor
+ * 富文本编辑
+ */
 export default class extends React.Component<any, any> {
   state = {
     responseList: [],
@@ -14,8 +25,8 @@ export default class extends React.Component<any, any> {
     return false;
   }
   onChange = (content) => {
-    this.receiveHtml(content);
-    console.log('onChange', content)
+    this.receiveHtml(content.toHTML());
+    console.log('onChange', content.toHTML())
   }
 
   onRawChange = (rawContent) => {
@@ -26,7 +37,8 @@ export default class extends React.Component<any, any> {
     const editorProps = {
       height: 500,
       contentFormat: 'html',
-      initialContent: this.props.value,
+      // initialContent: this.props.value,
+      defaultValue: EditorState.createFrom(this.props.value),
       onChange: this.onChange,
       media: {
         allowPasteImage: true, // 是否允许直接粘贴剪贴板图片（例如QQ截图等）到编辑器

@@ -1,0 +1,1000 @@
+{
+    "idKey": "id",
+    "address": "/corp/",
+    "columns": [
+        {
+            "type": "string",
+            "example": {
+                "combo": 1
+            },
+            "description": "公司ID",
+            "allowEmptyValue": false,
+            "minLength": 0,
+            "maxLength": 5,
+            "rules": [
+                {
+                    "required": true,
+                    "message": "Please input your undefined!"
+                },
+                {
+                    "min": 0,
+                    "message": "min length 0!"
+                },
+                {
+                    "max": 5,
+                    "message": "max length 5!"
+                }
+            ],
+            "attribute": {
+                "available": true,
+                "update": true,
+                "common": {
+                    "address": "/common/combo",
+                    "params": {
+                        "id": 1
+                    }
+                }
+            },
+            "key": "id"
+        },
+        {
+            "type": "string",
+            "description": "公司名",
+            "allowEmptyValue": false,
+            "minLength": 0,
+            "maxLength": 50,
+            "rules": [
+                {
+                    "required": true,
+                    "message": "Please input your undefined!"
+                },
+                {
+                    "min": 0,
+                    "message": "min length 0!"
+                },
+                {
+                    "max": 50,
+                    "message": "max length 50!"
+                }
+            ],
+            "attribute": {
+                "available": true,
+                "update": true
+            },
+            "key": "corpName"
+        },
+        {
+            "type": "string",
+            "example": {
+                "combo": 3
+            },
+            "description": "管理员ID",
+            "allowEmptyValue": true,
+            "minLength": 0,
+            "maxLength": 10,
+            "rules": [
+                {
+                    "min": 0,
+                    "message": "min length 0!"
+                },
+                {
+                    "max": 10,
+                    "message": "max length 10!"
+                }
+            ],
+            "attribute": {
+                "available": true,
+                "update": true,
+                "common": {
+                    "address": "/common/combo",
+                    "params": {
+                        "id": 3
+                    }
+                }
+            },
+            "key": "managerID"
+        },
+        {
+            "type": "string",
+            "example": {
+                "combo": 1
+            },
+            "description": "上级公司ID",
+            "allowEmptyValue": true,
+            "minLength": 0,
+            "maxLength": 10,
+            "rules": [
+                {
+                    "min": 0,
+                    "message": "min length 0!"
+                },
+                {
+                    "max": 10,
+                    "message": "max length 10!"
+                }
+            ],
+            "attribute": {
+                "available": true,
+                "update": true,
+                "common": {
+                    "address": "/common/combo",
+                    "params": {
+                        "id": 1
+                    }
+                }
+            },
+            "key": "parentCorpID"
+        },
+        {
+            "type": "integer",
+            "format": "int32",
+            "description": "总员工数",
+            "allowEmptyValue": true,
+            "minimum": 0,
+            "maximum": 10,
+            "exclusiveMinimum": false,
+            "exclusiveMaximum": false,
+            "rules": [],
+            "attribute": {
+                "available": true,
+                "update": true
+            },
+            "key": "corpEmpTotals"
+        },
+        {
+            "type": "integer",
+            "format": "int32",
+            "example": {
+                "combo": 4
+            },
+            "description": "使用与否",
+            "allowEmptyValue": true,
+            "minimum": 0,
+            "maximum": 2,
+            "exclusiveMinimum": false,
+            "exclusiveMaximum": false,
+            "rules": [],
+            "attribute": {
+                "available": true,
+                "update": true,
+                "common": {
+                    "address": "/common/combo",
+                    "params": {
+                        "id": 4
+                    }
+                }
+            },
+            "key": "useYN"
+        },
+        {
+            "type": "string",
+            "description": "创建用户ID",
+            "allowEmptyValue": true,
+            "minLength": 0,
+            "maxLength": 10,
+            "rules": [
+                {
+                    "min": 0,
+                    "message": "min length 0!"
+                },
+                {
+                    "max": 10,
+                    "message": "max length 10!"
+                }
+            ],
+            "attribute": {
+                "available": true,
+                "update": true
+            },
+            "key": "createUser"
+        },
+        {
+            "type": "string",
+            "format": "date-time",
+            "description": "创建日期",
+            "allowEmptyValue": true,
+            "rules": [],
+            "attribute": {
+                "available": true,
+                "update": true
+            },
+            "key": "createDate"
+        },
+        {
+            "type": "string",
+            "description": "修改用户ID",
+            "allowEmptyValue": true,
+            "minLength": 0,
+            "maxLength": 10,
+            "rules": [
+                {
+                    "min": 0,
+                    "message": "min length 0!"
+                },
+                {
+                    "max": 10,
+                    "message": "max length 10!"
+                }
+            ],
+            "attribute": {
+                "available": true,
+                "update": true
+            },
+            "key": "updateUser"
+        },
+        {
+            "type": "string",
+            "format": "date-time",
+            "description": "修改日期",
+            "allowEmptyValue": true,
+            "rules": [],
+            "attribute": {
+                "available": true,
+                "update": true
+            },
+            "key": "updateDate"
+        }
+    ],
+    "search": [
+        {
+            "type": "string",
+            "format": "date-time",
+            "rules": [
+                {
+                    "required": true,
+                    "message": "Please input your undefined!"
+                }
+            ],
+            "attribute": {
+                "available": true,
+                "update": true
+            },
+            "key": "createDateFrom"
+        },
+        {
+            "type": "string",
+            "format": "date-time",
+            "rules": [
+                {
+                    "required": true,
+                    "message": "Please input your undefined!"
+                }
+            ],
+            "attribute": {
+                "available": true,
+                "update": true
+            },
+            "key": "createDateTo"
+        },
+        {
+            "type": "string",
+            "example": {
+                "combo": 1
+            },
+            "description": "公司ID",
+            "allowEmptyValue": false,
+            "minLength": 0,
+            "maxLength": 5,
+            "rules": [
+                {
+                    "required": true,
+                    "message": "Please input your undefined!"
+                },
+                {
+                    "min": 0,
+                    "message": "min length 0!"
+                },
+                {
+                    "max": 5,
+                    "message": "max length 5!"
+                }
+            ],
+            "attribute": {
+                "available": true,
+                "update": true,
+                "common": {
+                    "address": "/common/combo",
+                    "params": {
+                        "id": 1
+                    }
+                }
+            },
+            "key": "id"
+        },
+        {
+            "type": "string",
+            "format": "date-time",
+            "rules": [
+                {
+                    "required": true,
+                    "message": "Please input your undefined!"
+                }
+            ],
+            "attribute": {
+                "available": true,
+                "update": true
+            },
+            "key": "updateDateFrom"
+        },
+        {
+            "type": "string",
+            "format": "date-time",
+            "rules": [
+                {
+                    "required": true,
+                    "message": "Please input your undefined!"
+                }
+            ],
+            "attribute": {
+                "available": true,
+                "update": true
+            },
+            "key": "updateDateTo"
+        },
+        {
+            "type": "string",
+            "description": "公司名",
+            "allowEmptyValue": false,
+            "minLength": 0,
+            "maxLength": 50,
+            "rules": [
+                {
+                    "required": true,
+                    "message": "Please input your undefined!"
+                },
+                {
+                    "min": 0,
+                    "message": "min length 0!"
+                },
+                {
+                    "max": 50,
+                    "message": "max length 50!"
+                }
+            ],
+            "attribute": {
+                "available": true,
+                "update": true
+            },
+            "key": "corpName"
+        },
+        {
+            "type": "string",
+            "example": {
+                "combo": 3
+            },
+            "description": "管理员ID",
+            "allowEmptyValue": true,
+            "minLength": 0,
+            "maxLength": 10,
+            "rules": [
+                {
+                    "min": 0,
+                    "message": "min length 0!"
+                },
+                {
+                    "max": 10,
+                    "message": "max length 10!"
+                }
+            ],
+            "attribute": {
+                "available": true,
+                "update": true,
+                "common": {
+                    "address": "/common/combo",
+                    "params": {
+                        "id": 3
+                    }
+                }
+            },
+            "key": "managerID"
+        },
+        {
+            "type": "string",
+            "example": {
+                "combo": 1
+            },
+            "description": "上级公司ID",
+            "allowEmptyValue": true,
+            "minLength": 0,
+            "maxLength": 10,
+            "rules": [
+                {
+                    "min": 0,
+                    "message": "min length 0!"
+                },
+                {
+                    "max": 10,
+                    "message": "max length 10!"
+                }
+            ],
+            "attribute": {
+                "available": true,
+                "update": true,
+                "common": {
+                    "address": "/common/combo",
+                    "params": {
+                        "id": 1
+                    }
+                }
+            },
+            "key": "parentCorpID"
+        },
+        {
+            "type": "integer",
+            "format": "int32",
+            "description": "总员工数",
+            "allowEmptyValue": true,
+            "minimum": 0,
+            "maximum": 10,
+            "exclusiveMinimum": false,
+            "exclusiveMaximum": false,
+            "rules": [],
+            "attribute": {
+                "available": true,
+                "update": true
+            },
+            "key": "corpEmpTotals"
+        },
+        {
+            "type": "integer",
+            "format": "int32",
+            "example": {
+                "combo": 4
+            },
+            "description": "使用与否",
+            "allowEmptyValue": true,
+            "minimum": 0,
+            "maximum": 2,
+            "exclusiveMinimum": false,
+            "exclusiveMaximum": false,
+            "rules": [],
+            "attribute": {
+                "available": true,
+                "update": true,
+                "common": {
+                    "address": "/common/combo",
+                    "params": {
+                        "id": 4
+                    }
+                }
+            },
+            "key": "useYN"
+        },
+        {
+            "type": "string",
+            "description": "创建用户ID",
+            "allowEmptyValue": true,
+            "minLength": 0,
+            "maxLength": 10,
+            "rules": [
+                {
+                    "min": 0,
+                    "message": "min length 0!"
+                },
+                {
+                    "max": 10,
+                    "message": "max length 10!"
+                }
+            ],
+            "attribute": {
+                "available": true,
+                "update": true
+            },
+            "key": "createUser"
+        },
+        {
+            "type": "string",
+            "format": "date-time",
+            "description": "创建日期",
+            "allowEmptyValue": true,
+            "rules": [],
+            "attribute": {
+                "available": true,
+                "update": true
+            },
+            "key": "createDate"
+        },
+        {
+            "type": "string",
+            "description": "修改用户ID",
+            "allowEmptyValue": true,
+            "minLength": 0,
+            "maxLength": 10,
+            "rules": [
+                {
+                    "min": 0,
+                    "message": "min length 0!"
+                },
+                {
+                    "max": 10,
+                    "message": "max length 10!"
+                }
+            ],
+            "attribute": {
+                "available": true,
+                "update": true
+            },
+            "key": "updateUser"
+        },
+        {
+            "type": "string",
+            "format": "date-time",
+            "description": "修改日期",
+            "allowEmptyValue": true,
+            "rules": [],
+            "attribute": {
+                "available": true,
+                "update": true
+            },
+            "key": "updateDate"
+        }
+    ],
+    "install": [
+        {
+            "type": "string",
+            "example": {
+                "combo": 1
+            },
+            "description": "公司ID",
+            "allowEmptyValue": false,
+            "minLength": 0,
+            "maxLength": 5,
+            "rules": [
+                {
+                    "required": true,
+                    "message": "Please input your undefined!"
+                },
+                {
+                    "min": 0,
+                    "message": "min length 0!"
+                },
+                {
+                    "max": 5,
+                    "message": "max length 5!"
+                }
+            ],
+            "attribute": {
+                "available": true,
+                "update": true,
+                "common": {
+                    "address": "/common/combo",
+                    "params": {
+                        "id": 1
+                    }
+                }
+            },
+            "key": "id"
+        },
+        {
+            "type": "string",
+            "description": "公司名",
+            "allowEmptyValue": false,
+            "minLength": 0,
+            "maxLength": 50,
+            "rules": [
+                {
+                    "required": true,
+                    "message": "Please input your undefined!"
+                },
+                {
+                    "min": 0,
+                    "message": "min length 0!"
+                },
+                {
+                    "max": 50,
+                    "message": "max length 50!"
+                }
+            ],
+            "attribute": {
+                "available": true,
+                "update": true
+            },
+            "key": "corpName"
+        },
+        {
+            "type": "string",
+            "example": {
+                "combo": 3
+            },
+            "description": "管理员ID",
+            "allowEmptyValue": true,
+            "minLength": 0,
+            "maxLength": 10,
+            "rules": [
+                {
+                    "min": 0,
+                    "message": "min length 0!"
+                },
+                {
+                    "max": 10,
+                    "message": "max length 10!"
+                }
+            ],
+            "attribute": {
+                "available": true,
+                "update": true,
+                "common": {
+                    "address": "/common/combo",
+                    "params": {
+                        "id": 3
+                    }
+                }
+            },
+            "key": "managerID"
+        },
+        {
+            "type": "string",
+            "example": {
+                "combo": 1
+            },
+            "description": "上级公司ID",
+            "allowEmptyValue": true,
+            "minLength": 0,
+            "maxLength": 10,
+            "rules": [
+                {
+                    "min": 0,
+                    "message": "min length 0!"
+                },
+                {
+                    "max": 10,
+                    "message": "max length 10!"
+                }
+            ],
+            "attribute": {
+                "available": true,
+                "update": true,
+                "common": {
+                    "address": "/common/combo",
+                    "params": {
+                        "id": 1
+                    }
+                }
+            },
+            "key": "parentCorpID"
+        },
+        {
+            "type": "integer",
+            "format": "int32",
+            "description": "总员工数",
+            "allowEmptyValue": true,
+            "minimum": 0,
+            "maximum": 10,
+            "exclusiveMinimum": false,
+            "exclusiveMaximum": false,
+            "rules": [],
+            "attribute": {
+                "available": true,
+                "update": true
+            },
+            "key": "corpEmpTotals"
+        },
+        {
+            "type": "integer",
+            "format": "int32",
+            "example": {
+                "combo": 4
+            },
+            "description": "使用与否",
+            "allowEmptyValue": true,
+            "minimum": 0,
+            "maximum": 2,
+            "exclusiveMinimum": false,
+            "exclusiveMaximum": false,
+            "rules": [],
+            "attribute": {
+                "available": true,
+                "update": true,
+                "common": {
+                    "address": "/common/combo",
+                    "params": {
+                        "id": 4
+                    }
+                }
+            },
+            "key": "useYN"
+        },
+        {
+            "type": "string",
+            "description": "创建用户ID",
+            "allowEmptyValue": true,
+            "minLength": 0,
+            "maxLength": 10,
+            "rules": [
+                {
+                    "min": 0,
+                    "message": "min length 0!"
+                },
+                {
+                    "max": 10,
+                    "message": "max length 10!"
+                }
+            ],
+            "attribute": {
+                "available": true,
+                "update": true
+            },
+            "key": "createUser"
+        },
+        {
+            "type": "string",
+            "format": "date-time",
+            "description": "创建日期",
+            "allowEmptyValue": true,
+            "rules": [],
+            "attribute": {
+                "available": true,
+                "update": true
+            },
+            "key": "createDate"
+        },
+        {
+            "type": "string",
+            "description": "修改用户ID",
+            "allowEmptyValue": true,
+            "minLength": 0,
+            "maxLength": 10,
+            "rules": [
+                {
+                    "min": 0,
+                    "message": "min length 0!"
+                },
+                {
+                    "max": 10,
+                    "message": "max length 10!"
+                }
+            ],
+            "attribute": {
+                "available": true,
+                "update": true
+            },
+            "key": "updateUser"
+        },
+        {
+            "type": "string",
+            "format": "date-time",
+            "description": "修改日期",
+            "allowEmptyValue": true,
+            "rules": [],
+            "attribute": {
+                "available": true,
+                "update": true
+            },
+            "key": "updateDate"
+        }
+    ],
+    "update": [
+        {
+            "type": "string",
+            "example": {
+                "combo": 1
+            },
+            "description": "公司ID",
+            "allowEmptyValue": false,
+            "minLength": 0,
+            "maxLength": 5,
+            "rules": [
+                {
+                    "required": true,
+                    "message": "Please input your undefined!"
+                },
+                {
+                    "min": 0,
+                    "message": "min length 0!"
+                },
+                {
+                    "max": 5,
+                    "message": "max length 5!"
+                }
+            ],
+            "attribute": {
+                "available": true,
+                "update": true,
+                "common": {
+                    "address": "/common/combo",
+                    "params": {
+                        "id": 1
+                    }
+                }
+            },
+            "key": "id"
+        },
+        {
+            "type": "string",
+            "description": "公司名",
+            "allowEmptyValue": false,
+            "minLength": 0,
+            "maxLength": 50,
+            "rules": [
+                {
+                    "required": true,
+                    "message": "Please input your undefined!"
+                },
+                {
+                    "min": 0,
+                    "message": "min length 0!"
+                },
+                {
+                    "max": 50,
+                    "message": "max length 50!"
+                }
+            ],
+            "attribute": {
+                "available": true,
+                "update": true
+            },
+            "key": "corpName"
+        },
+        {
+            "type": "string",
+            "example": {
+                "combo": 3
+            },
+            "description": "管理员ID",
+            "allowEmptyValue": true,
+            "minLength": 0,
+            "maxLength": 10,
+            "rules": [
+                {
+                    "min": 0,
+                    "message": "min length 0!"
+                },
+                {
+                    "max": 10,
+                    "message": "max length 10!"
+                }
+            ],
+            "attribute": {
+                "available": true,
+                "update": true,
+                "common": {
+                    "address": "/common/combo",
+                    "params": {
+                        "id": 3
+                    }
+                }
+            },
+            "key": "managerID"
+        },
+        {
+            "type": "string",
+            "example": {
+                "combo": 1
+            },
+            "description": "上级公司ID",
+            "allowEmptyValue": true,
+            "minLength": 0,
+            "maxLength": 10,
+            "rules": [
+                {
+                    "min": 0,
+                    "message": "min length 0!"
+                },
+                {
+                    "max": 10,
+                    "message": "max length 10!"
+                }
+            ],
+            "attribute": {
+                "available": true,
+                "update": true,
+                "common": {
+                    "address": "/common/combo",
+                    "params": {
+                        "id": 1
+                    }
+                }
+            },
+            "key": "parentCorpID"
+        },
+        {
+            "type": "integer",
+            "format": "int32",
+            "description": "总员工数",
+            "allowEmptyValue": true,
+            "minimum": 0,
+            "maximum": 10,
+            "exclusiveMinimum": false,
+            "exclusiveMaximum": false,
+            "rules": [],
+            "attribute": {
+                "available": true,
+                "update": true
+            },
+            "key": "corpEmpTotals"
+        },
+        {
+            "type": "integer",
+            "format": "int32",
+            "example": {
+                "combo": 4
+            },
+            "description": "使用与否",
+            "allowEmptyValue": true,
+            "minimum": 0,
+            "maximum": 2,
+            "exclusiveMinimum": false,
+            "exclusiveMaximum": false,
+            "rules": [],
+            "attribute": {
+                "available": true,
+                "update": true,
+                "common": {
+                    "address": "/common/combo",
+                    "params": {
+                        "id": 4
+                    }
+                }
+            },
+            "key": "useYN"
+        },
+        {
+            "type": "string",
+            "description": "创建用户ID",
+            "allowEmptyValue": true,
+            "minLength": 0,
+            "maxLength": 10,
+            "rules": [
+                {
+                    "min": 0,
+                    "message": "min length 0!"
+                },
+                {
+                    "max": 10,
+                    "message": "max length 10!"
+                }
+            ],
+            "attribute": {
+                "available": true,
+                "update": true
+            },
+            "key": "createUser"
+        },
+        {
+            "type": "string",
+            "format": "date-time",
+            "description": "创建日期",
+            "allowEmptyValue": true,
+            "rules": [],
+            "attribute": {
+                "available": true,
+                "update": true
+            },
+            "key": "createDate"
+        },
+        {
+            "type": "string",
+            "description": "修改用户ID",
+            "allowEmptyValue": true,
+            "minLength": 0,
+            "maxLength": 10,
+            "rules": [
+                {
+                    "min": 0,
+                    "message": "min length 0!"
+                },
+                {
+                    "max": 10,
+                    "message": "max length 10!"
+                }
+            ],
+            "attribute": {
+                "available": true,
+                "update": true
+            },
+            "key": "updateUser"
+        },
+        {
+            "type": "string",
+            "format": "date-time",
+            "description": "修改日期",
+            "allowEmptyValue": true,
+            "rules": [],
+            "attribute": {
+                "available": true,
+                "update": true
+            },
+            "key": "updateDate"
+        }
+    ]
+}

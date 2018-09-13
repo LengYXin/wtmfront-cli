@@ -4,38 +4,87 @@ import { observer } from 'mobx-react';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 // import routersConfig from '../routersConfig';
-import routers from '../routers.json';
+import Store from '../store';
+import lodash from 'lodash';
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
+@observer
 export default class App extends React.Component<any, any> {
-  routers = routers.routers.slice();
-  renderMenu() {
-    return this.routers.map((x, i) => {
-      return <Menu.Item key={x.path}>
-        <Link to={x.path}>{x.name}</Link>
+  renderLink(menu) {
+    if (menu.Path) {
+      return <Link to={menu.Path}><Icon type={menu.Icon || 'appstore'} /> <span>{menu.Name}</span></Link>
+    }
+    return <><Icon type={menu.Icon || 'appstore'} /><span>{menu.Name}</span> </>
+  }
+  renderMenu(menus, index) {
+    return menus.Children.map((x, i) => {
+      return <Menu.Item key={x.Key} _key={x.Key}>
+        {this.renderLink(x)}
       </Menu.Item>
     })
   }
-  shouldComponentUpdate() {
-    return this.routers.length != routers.routers.length
+  runderSubMenu() {
+    return Store.subMenu.map((menu, index) => {
+      if (menu.Children && menu.Children.length > 0) {
+        return <SubMenu key={menu.Key} title={<span><Icon type={menu.Icon} /><span>{menu.Name}</span></span>}>
+          {
+            this.renderMenu(menu, index)
+          }
+        </SubMenu>
+      }
+      return <Menu.Item key={menu.Key} _key={menu.Key}>
+        {this.renderLink(menu)}
+      </Menu.Item>
+    })
   }
   render() {
+    let selectedKeys = "/", openKeys = "";
+    Store.subMenu.filter(x => {
+      if (this.props.location.pathname == "/" && selectedKeys == "/") {
+        return
+      }
+      if (x.Path == this.props.location.pathname) {
+        selectedKeys = x.Key;
+      } else {
+        x.Children.filter(y => {
+          if (this.props.location.pathname == "/" && selectedKeys == "/") {
+            return
+          }
+          if (y.Path == this.props.location.pathname) {
+            selectedKeys = y.Key;
+            openKeys = x.Key;
+          }
+        })
+      }
+    })
+    let config = {
+      selectedKeys: [selectedKeys],
+      defaultOpenKeys: [openKeys]
+    }
+    // if (openKeys == "") {
+    //   delete config.openKeys;
+    // }
+    // console.log(selectedKeys, openKeys);
+    const width = Store.collapsed ? 80 : 250
     return (
-      <Sider width={250} style={{ minHeight: "100vh" }}>
-        <div className="logo" >Logo</div>
+      <div className="app-layout-sider" style={{ width }} >
+        <div className="app-layout-logo" >Logo</div>
         <Menu
-          theme="dark" mode="inline"
-          defaultSelectedKeys={[this.props.location.pathname]}
-          defaultOpenKeys={['sub1']}
-          style={{ borderRight: 0 }}
+          theme="dark"
+          mode="inline"
+          defaultSelectedKeys={[selectedKeys]}
+          {...config}
+          style={{ borderRight: 0, width }}
+          inlineCollapsed={Store.collapsed}
         >
-          <SubMenu key="sub1" title={<span><Icon type="user" />菜单</span>}>
-            {
-              this.renderMenu()
-            }
-          </SubMenu>
+          <Menu.Item key="/">
+            <Link to="/">
+              <Icon type="home" /><span>首页</span>
+            </Link>
+          </Menu.Item>
+          {this.runderSubMenu()}
         </Menu>
-      </Sider>
+      </div>
     );
   }
 }

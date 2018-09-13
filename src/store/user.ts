@@ -1,3 +1,10 @@
+/**
+ * @author 冷 (https://github.com/LengYXin)
+ * @email lengyingxin8966@gmail.com
+ * @create date 2018-09-12 18:52:54
+ * @modify date 2018-09-12 18:52:54
+ * @desc [description]
+*/
 import { ColumnProps } from "antd/lib/table";
 import { action, observable, runInAction, toJS } from "mobx";
 import { HttpBasics } from 'core/HttpBasics';

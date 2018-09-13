@@ -37,6 +37,30 @@ class IApp extends React.Component<any, any> {
                         <Editor />
                     )}
                 </FormItem>
+                <FormItem label='内容'>
+                    {getFieldDecorator('content', {
+                        initialValue: '<p>默认内容</p>',
+                        rules: [{ required: true, message: 'Please input content note!' }],
+                    })(
+                        <Editor />
+                    )}
+                </FormItem>
+                <FormItem label='内容'>
+                    {getFieldDecorator('content', {
+                        initialValue: '<p>默认内容</p>',
+                        rules: [{ required: true, message: 'Please input content note!' }],
+                    })(
+                        <Editor />
+                    )}
+                </FormItem>
+                <FormItem label='内容'>
+                    {getFieldDecorator('content', {
+                        initialValue: '<p>默认内容</p>',
+                        rules: [{ required: true, message: 'Please input content note!' }],
+                    })(
+                        <Editor />
+                    )}
+                </FormItem>
                 <Button type="primary" htmlType="submit" >
                     提交
           </Button>

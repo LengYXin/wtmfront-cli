@@ -1,6 +1,4 @@
-import editer from 'containers/editer';
-import home from 'containers/home';
 export default {
-    editer,
-    home
+    editer: () => import('./editer').then(x => x.default),
+    test: () => import('./test').then(x => x.default)
 }
