@@ -16,17 +16,29 @@ const server = require('../server/index');
 
 // download('test');
 
-program.usage('<project-name>').parse(process.argv)
+program.usage('<project-name> <react|vue> <git-url>').parse(process.argv)
 
 // 根据输入，获取项目名称
 const projectName = program.args[0]
+let projectType = program.args[1]
+let projectUrl = program.args[2]
 
+// console.log(projectName, projectType, projectUrl);
 if (!projectName) {  // project-name 必填
     // 相当于执行命令的--help选项，显示help信息，这是commander内置的一个命令选项
     log.warning(`输入项目名称`);
     program.help()
     return
 }
+if (!projectType) {
+    projectType = "react"
+}
+if (projectType.toLocaleLowerCase() != "react" && !projectUrl) {
+    log.warning(`项目类型目前只内置了react模板 可使用 git-url 自定义模板`);
+    program.help()
+    return
+}
+
 const projectPath = path.join(rootPath, projectName);
 // 判断项目是否存在
 if (fsEditor.exists(path.join(projectPath, 'package.json'))) {
@@ -35,15 +47,18 @@ if (fsEditor.exists(path.join(projectPath, 'package.json'))) {
 // 下载 拷贝文件
 goDownload();
 async function goDownload() {
-    const target = await download(projectName);
+    const target = await download(projectName, projectType, projectUrl);
     fsExtra.copySync(target, projectPath);
     log.success("init Success");
     codeOpen();
-    runCommand('npm', ['install'], { cwd: projectPath })
-}
-function codeOpen() {
+    await runCommand('npm', ['install'], { cwd: projectPath });
+    log.info("请自行到项目根目录npm start 启动项目");
     // 服务
     new server(projectPath).init(8765);
+}
+function codeOpen() {
+    // // 服务
+    // new server(projectPath).init(8765);
     // open项目
     const procChild = child_process.exec(`code -g -n ${projectPath}`, { cwd: projectPath, maxBuffer: 999999999 }, (error, stdout, stderr) => {
         if (error) {
