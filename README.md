@@ -87,10 +87,15 @@ $ wtmfront server 或者 npm run server
 ![Alt text](https://raw.githubusercontent.com/LengYXin/samsundot-cli/master/doc/img/5.png)
 ### 组件创建内部流程
 >1：接受传入的组件参数 名称，菜单，swagger 信息
+>
 >2：写入pageConfig.json 文件 （swagger 解析后的源数据）
+>
 >3：将swagger 写入 模板 > 分析数据，创建组件
+>
 >4：写入导出，供外部路由使用，src/containers/index.ts
+>
 >5：写入菜单 src/app/subMenu.json  
+>
 >6：等待webpack编译，创建完成。
 
 #### 删除组件
@@ -185,8 +190,12 @@ $ wtmfront server 或者 npm run server
 
 #### 模板模板继承  (面向对象编程) 支持重写，但是不支持重载（js引擎原因）
 >状态继承自  core/StoreBasice.ts 基础类
+>
 >body (table表格) 继承  components/table/tableBody.tsx    基础组件
+>
 >edit (编辑) 继承  components/table/tableEdit.tsx         基础组件
+>
 >header (搜索条件)  继承  components/table/tableHeader.tsx 基础组件
+>
 >数据解析           components/table/dataEntry.tsx         数据处理组件
 
