@@ -1,4 +1,4 @@
-# ---> Node
+# ---> Node <!-- npm publish . --registry http://registry.npmjs.org  -->
 # Logs
 logs
 *.log
