@@ -1,2 +1,5 @@
 doc
 .vscode
+docs
+node_modules
+temporary

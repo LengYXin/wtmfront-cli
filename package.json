@@ -1,9 +1,11 @@
 {
   "name": "wtmfront",
-  "version": "1.0.8",
+  "version": "1.0.10",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "release": "npm publish . --registry http://registry.npmjs.org",
+    "docs": "docsify serve docs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": "./bin/index.js",
@@ -13,6 +15,7 @@
   "dependencies": {
     "chalk": "^2.4.1",
     "commander": "^2.16.0",
+    "docsify": "^4.7.1",
     "download-git-repo": "^1.0.2",
     "fs-extra": "^7.0.0",
     "handlebars": "^4.0.11",

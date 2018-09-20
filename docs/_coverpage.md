@@ -2,11 +2,12 @@
 
 # wtmfront
 
-> 详细操作文档（完善中~）
+> 详细操作文档（完善中...╥﹏╥...）
 
 * 自动解析 swagger 生成组件
-* 前卫开发模式，ECMAScript (esnext)
-* 开放性，组件化，继承，重写。
+* 超前语法，ECMAScript (esnext) 标准
+* 基于强大的 TypeScript
+* 开放性，组件化，面向对象封装。
 * 学习成本低，上手快。
 
 [GitHub](https://github.com/LengYXin/wtmfront-cli)
