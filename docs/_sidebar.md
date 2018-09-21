@@ -5,6 +5,7 @@
   * [撰写中~](test.md)
 
 * 指南
+  * [基础类介绍](class.md)
   * [菜单编辑](menu_edit.md)
   * [撰写中~](test.md)
 * 项目介绍
