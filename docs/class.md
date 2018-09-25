@@ -25,7 +25,8 @@ table 数据获取函数，数据保存属性，数据添加修改，导入导�
 
 ?>公共数据基类 默认导出为实例对象。命名导出为类定以<br>
 
-### table 组件 (src/components/table)
+## table 组件 
+### (src/components/table) (默认组件继承以下几个类)
 >* dataEntry.tsx 表单 组件解析，根据字段类型渲染对应的表单组件
 * tableBody.tsx  数据 表格 
 * tableEdit.tsx  数据 编辑
