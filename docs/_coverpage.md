@@ -2,7 +2,7 @@
 
 # wtmfront
 
-> 详细操作文档（完善中...╥﹏╥...）
+> 详细操作文档
 
 * 自动解析 swagger 生成组件
 * 超前语法，ECMAScript (esnext) 标准
