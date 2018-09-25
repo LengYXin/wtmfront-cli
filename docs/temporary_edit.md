@@ -1,16 +1,18 @@
-#模板编写
+# 模板编写
+
+## 模板数据
+
 ### [引擎 handlebarsjs](http://handlebarsjs.com/) 
 
 ?>只需要将模板文件目录放入 wtmfront/template 中，脚手架就会自动解析，放入模板选项中。
->注意：更改模板后需要重新启动模板服务才能生效
+<br> 所有swagger解析数据将会自动传入到 template/[模板] 每个文件当中。
 
-?>所有swagger解析数据将会自动传入到 template/[模板] 每个文件当中。
-
+!>注意：更改模板后需要重新启动模板服务才能生效
 ``` js
         <!-- 目前可用数据 -->
 
         idKey: "id",    //唯一标识
-        address: "",    //地址控制器
+        address: "",    //模型控制器
         columns: [],    //teble 列
         search: [],     //搜索条件
         install: [],    //添加字段
@@ -29,7 +31,9 @@
         }
   
 ```
-?>模板当中这么使用这些数据  {{{ <解析方法> <数据Key> }}}
+
+### 模板解析数据  {{{ <解析方法> <数据Key> }}}
+
 ``` jsx
     import { action, observable, runInAction, toJS } from "mobx";
     import { HttpBasics } from "core/HttpBasics";
@@ -49,7 +53,7 @@
     }
     export default new Store();
 ```
-### 解析后的文件 
+## 解析后的文件 
 ``` jsx
     import { action, observable, runInAction, toJS } from "mobx";
     import { HttpBasics } from "core/HttpBasics";
@@ -76,9 +80,8 @@
     }
     export default new Store();
 ```
-### 解析方法编写
+## 解析函数编写
 ?> {{{JSONColumns columns }}} 中的 JSONColumns
->wtmfront/registerHelper/JSON.js
 
 ``` js
     // registerHelper 接受2个参数  解析函数名称 （JSONColumns） & 解析 方法回调 返回解析后数据
@@ -94,4 +97,6 @@
     });
 
 ```
->jsx 模板 解析方法 在 wtmfront/registerHelper/FormItem.js 中
+!>文件：wtmfront/registerHelper/JSON.js
+
+!>jsx 模板 解析方法 在 wtmfront/registerHelper/FormItem.js 中

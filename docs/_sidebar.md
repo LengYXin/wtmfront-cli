@@ -1,5 +1,6 @@
 * 入门
   * [快速开始](quickstart.md)
+  * [所需技能](skill.md)
   * [创建组件](create.md)
 * 定制化
   * [模板编写](temporary_edit.md)
@@ -12,4 +13,4 @@
 * 项目介绍
   * [目录介绍](introduce_catalog.md)
   * [流程介绍](introduce_process.md)
-* [技术难点](technology.md)
+* [技术支持](technology.md)

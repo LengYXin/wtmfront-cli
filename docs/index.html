@@ -1,17 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" >
 <head>
   <meta charset="UTF-8">
   <title>wtmfront</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="description" content="Description">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
+  <link rel="stylesheet" href="https://cdn.bootcss.com/docsify/4.6.10/themes/vue.css">
+  <style>
+    html,body{
+      margin: 0;
+      border: 0;
+    }
+    #app {
+      background-image: url(./img/background.svg);
+      background-repeat: no-repeat;
+      background-position: center 110px;
+      background-size: 100%;
+    }
+
+    .app-loadable-loading {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .app-loadable-loading>div {
+      width: 200px;
+      height: 200px;
+      background-image: url(./img/loading.svg);
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 100%;
+    }
+  </style>
 </head>
 
 <body>
-  <div id="app">加载中...</div>
+  <div id="app">
+    <div class="app-loadable-loading">
+      <div></div>
+    </div>
+  </div>
   <script>
     window.$docsify = {
       name: 'wtmfront',
@@ -24,7 +55,7 @@
       }
     } 
   </script>
-  <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
+  <script src="https://cdn.bootcss.com/docsify/4.6.10/docsify.min.js"></script>
   <script src="//unpkg.com/prismjs/components/prism-jsx.min.js"></script>
 </body>
 
