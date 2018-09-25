@@ -42,3 +42,19 @@
 <br>button 操作按钮 （可用：添加数据使用，可编辑：编辑数据使用（模板未启用） 关联模型 为 swagger 返回关联数据选项。 通过公共接口返回 ）
 
 ![Alt text](./img/3.png)
+
+## 默认组件解析
+### 目录介绍
+
+!> [继承基类](class)
+``` bash
+    |-- components                                              
+    |   |-- Body.tsx                                            数据表格 继承 tableBody
+    |   |-- Edit.tsx                                            数据编辑组件 继承 tableEdit
+    |   |-- Header.tsx                                          数据搜索组件 继承 tableHeader
+    |-- store                                                   
+    |   |-- index.ts                                            组件状态 继承 StoreBasice.ts
+    |-- index.tsx                                               组件入口
+    |-- pageConfig.json                                         解析后的swagger数据源文件
+    |-- style.less                                              css
+```
