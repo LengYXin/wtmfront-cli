@@ -1,5 +1,6 @@
 * 入门
   * [快速开始](quickstart.md)
+  * [创建组件](create.md)
 * 定制化
   * [模板编写](temporary_edit.md)
   * [撰写中~](test.md)
