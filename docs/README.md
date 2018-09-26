@@ -3,7 +3,7 @@
 
 ### Installation
 
-Prerequisites: [Node.js](https://nodejs.org/en/) (>=8.x, 8.x preferred), npm version 5+ and [Git](https://git-scm.com/).
+Prerequisites: [Node.js](https://nodejs.org/en/) (>=8.x, 8.x preferred), npm version 6+ and [Git](https://git-scm.com/).
 
 ``` bash
 $ npm install -g wtmfront

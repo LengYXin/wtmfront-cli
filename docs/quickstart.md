@@ -1,10 +1,12 @@
 # 快速开始
 ## 安装cli
-安装 cli 工具，提供基础项目下载，模板服务
+
+安装 cli 工具，提供基础项目下载，模板服务 
 
 ```bash
 $ npm install -g wtmfront
 ```
+!>[Node.js](https://nodejs.org/en/) (>=8.x, 8.x preferred), npm version 6+ and [Git](https://git-scm.com/).
 
 ## 初始化项目
 ?> 参数顺序为   <项目名称>   <框架>（现只有react） <模板地址>
