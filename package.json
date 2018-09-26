@@ -12,6 +12,10 @@
   "keywords": [],
   "author": "lengyingxin <lengyingxin8966@gmail.com> (https://github.com/LengYXin)",
   "license": "ISC",
+  "engines": {
+    "node": ">=8.0.0",
+    "npm": ">=6.0.0"
+  },
   "dependencies": {
     "chalk": "^2.4.1",
     "commander": "^2.16.0",
