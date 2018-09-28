@@ -33,7 +33,7 @@ module.exports = function (router) {
             };
         }
     });
-    router.get('/model', (ctx, next) => {
+    router.get('/api-docs', (ctx, next) => {
         try {
             ctx.body = test
         } catch (error) {

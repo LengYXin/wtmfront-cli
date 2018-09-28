@@ -5,7 +5,7 @@
 		"version": "1.0",
 		"title": "Nada-Demo API文档"
 	},
-	"host": "10.100.83.171:8010",
+	"host": "10.99.246.52:8010",
 	"basePath": "/",
 	"tags": [
 		{
@@ -45,10 +45,7 @@
 					"200": {
 						"description": "OK",
 						"schema": {
-							"type": "array",
-							"items": {
-								"type": "object"
-							}
+							"$ref": "#/definitions/AResultSet"
 						}
 					}
 				}
@@ -105,15 +102,16 @@
 				],
 				"parameters": [
 					{
+						"in": "body",
 						"name": "id",
-						"in": "query",
 						"description": "公司id",
 						"required": true,
-						"type": "array",
-						"items": {
-							"type": "string"
-						},
-						"collectionFormat": "multi"
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						}
 					}
 				],
 				"responses": {
@@ -217,7 +215,7 @@
 					"200": {
 						"description": "OK",
 						"schema": {
-							"$ref": "#/definitions/AResultSet«Corp»"
+							"$ref": "#/definitions/AResultSet?Corp?"
 						}
 					}
 				}
@@ -248,7 +246,10 @@
 				],
 				"responses": {
 					"200": {
-						"description": "OK"
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
 					}
 				}
 			}
@@ -274,7 +275,7 @@
 						"description": "corp",
 						"required": true,
 						"schema": {
-							"$ref": "#/definitions/ASearch«CorpSearch»"
+							"$ref": "#/definitions/ASearch?CorpSearch?"
 						}
 					}
 				],
@@ -282,7 +283,7 @@
 					"200": {
 						"description": "OK",
 						"schema": {
-							"$ref": "#/definitions/AResultSet«List«Corp»»"
+							"$ref": "#/definitions/AResultSet?APage?List?Corp???"
 						}
 					}
 				}
@@ -360,15 +361,16 @@
 				],
 				"parameters": [
 					{
+						"in": "body",
 						"name": "id",
-						"in": "query",
 						"description": "用户id",
 						"required": true,
-						"type": "array",
-						"items": {
-							"type": "string"
-						},
-						"collectionFormat": "multi"
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						}
 					}
 				],
 				"responses": {
@@ -472,7 +474,7 @@
 					"200": {
 						"description": "OK",
 						"schema": {
-							"$ref": "#/definitions/AResultSet«User»"
+							"$ref": "#/definitions/AResultSet?User?"
 						}
 					}
 				}
@@ -503,7 +505,10 @@
 				],
 				"responses": {
 					"200": {
-						"description": "OK"
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
 					}
 				}
 			}
@@ -529,7 +534,7 @@
 						"description": "user",
 						"required": true,
 						"schema": {
-							"$ref": "#/definitions/ASearch«UserSearch»"
+							"$ref": "#/definitions/ASearch?UserSearch?"
 						}
 					}
 				],
@@ -537,7 +542,7 @@
 					"200": {
 						"description": "OK",
 						"schema": {
-							"$ref": "#/definitions/AResultSet«List«User»»"
+							"$ref": "#/definitions/AResultSet?APage?List?User???"
 						}
 					}
 				}
@@ -579,65 +584,7 @@
 		}
 	},
 	"definitions": {
-		"AData": {
-			"type": "object",
-			"properties": {
-				"count": {
-					"type": "integer",
-					"format": "int64",
-					"description": "数据总数",
-					"allowEmptyValue": false
-				},
-				"list": {
-					"type": "object",
-					"description": "数据",
-					"allowEmptyValue": false
-				},
-				"pageNo": {
-					"type": "integer",
-					"format": "int32",
-					"description": "当前页",
-					"allowEmptyValue": false
-				},
-				"pageSize": {
-					"type": "integer",
-					"format": "int32",
-					"description": "页数据数",
-					"allowEmptyValue": false
-				}
-			},
-			"title": "AData"
-		},
-		"AData«Corp»": {
-			"type": "object",
-			"properties": {
-				"count": {
-					"type": "integer",
-					"format": "int64",
-					"description": "数据总数",
-					"allowEmptyValue": false
-				},
-				"list": {
-					"description": "数据",
-					"allowEmptyValue": false,
-					"$ref": "#/definitions/Corp"
-				},
-				"pageNo": {
-					"type": "integer",
-					"format": "int32",
-					"description": "当前页",
-					"allowEmptyValue": false
-				},
-				"pageSize": {
-					"type": "integer",
-					"format": "int32",
-					"description": "页数据数",
-					"allowEmptyValue": false
-				}
-			},
-			"title": "AData«Corp»"
-		},
-		"AData«List«Corp»»": {
+		"APage?List?Corp??": {
 			"type": "object",
 			"properties": {
 				"count": {
@@ -667,9 +614,9 @@
 					"allowEmptyValue": false
 				}
 			},
-			"title": "AData«List«Corp»»"
+			"title": "APage?List?Corp??"
 		},
-		"AData«List«User»»": {
+		"APage?List?User??": {
 			"type": "object",
 			"properties": {
 				"count": {
@@ -699,42 +646,13 @@
 					"allowEmptyValue": false
 				}
 			},
-			"title": "AData«List«User»»"
-		},
-		"AData«User»": {
-			"type": "object",
-			"properties": {
-				"count": {
-					"type": "integer",
-					"format": "int64",
-					"description": "数据总数",
-					"allowEmptyValue": false
-				},
-				"list": {
-					"description": "数据",
-					"allowEmptyValue": false,
-					"$ref": "#/definitions/User"
-				},
-				"pageNo": {
-					"type": "integer",
-					"format": "int32",
-					"description": "当前页",
-					"allowEmptyValue": false
-				},
-				"pageSize": {
-					"type": "integer",
-					"format": "int32",
-					"description": "页数据数",
-					"allowEmptyValue": false
-				}
-			},
-			"title": "AData«User»"
+			"title": "APage?List?User??"
 		},
 		"AResultSet": {
 			"type": "object",
 			"properties": {
 				"data": {
-					"$ref": "#/definitions/AData"
+					"type": "object"
 				},
 				"message": {
 					"type": "string",
@@ -751,11 +669,11 @@
 			"title": "AResultSet",
 			"description": "统一返回结果集类（非实体类）"
 		},
-		"AResultSet«Corp»": {
+		"AResultSet?APage?List?Corp???": {
 			"type": "object",
 			"properties": {
 				"data": {
-					"$ref": "#/definitions/AData«Corp»"
+					"$ref": "#/definitions/APage?List?Corp??"
 				},
 				"message": {
 					"type": "string",
@@ -769,14 +687,14 @@
 					"allowEmptyValue": false
 				}
 			},
-			"title": "AResultSet«Corp»",
+			"title": "AResultSet?APage?List?Corp???",
 			"description": "统一返回结果集类（非实体类）"
 		},
-		"AResultSet«List«Corp»»": {
+		"AResultSet?APage?List?User???": {
 			"type": "object",
 			"properties": {
 				"data": {
-					"$ref": "#/definitions/AData«List«Corp»»"
+					"$ref": "#/definitions/APage?List?User??"
 				},
 				"message": {
 					"type": "string",
@@ -790,14 +708,14 @@
 					"allowEmptyValue": false
 				}
 			},
-			"title": "AResultSet«List«Corp»»",
+			"title": "AResultSet?APage?List?User???",
 			"description": "统一返回结果集类（非实体类）"
 		},
-		"AResultSet«List«User»»": {
+		"AResultSet?Corp?": {
 			"type": "object",
 			"properties": {
 				"data": {
-					"$ref": "#/definitions/AData«List«User»»"
+					"$ref": "#/definitions/Corp"
 				},
 				"message": {
 					"type": "string",
@@ -811,14 +729,14 @@
 					"allowEmptyValue": false
 				}
 			},
-			"title": "AResultSet«List«User»»",
+			"title": "AResultSet?Corp?",
 			"description": "统一返回结果集类（非实体类）"
 		},
-		"AResultSet«User»": {
+		"AResultSet?User?": {
 			"type": "object",
 			"properties": {
 				"data": {
-					"$ref": "#/definitions/AData«User»"
+					"$ref": "#/definitions/User"
 				},
 				"message": {
 					"type": "string",
@@ -832,10 +750,10 @@
 					"allowEmptyValue": false
 				}
 			},
-			"title": "AResultSet«User»",
+			"title": "AResultSet?User?",
 			"description": "统一返回结果集类（非实体类）"
 		},
-		"ASearch«CorpSearch»": {
+		"ASearch?CorpSearch?": {
 			"type": "object",
 			"properties": {
 				"pageNo": {
@@ -850,9 +768,9 @@
 					"$ref": "#/definitions/CorpSearch"
 				}
 			},
-			"title": "ASearch«CorpSearch»"
+			"title": "ASearch?CorpSearch?"
 		},
-		"ASearch«UserSearch»": {
+		"ASearch?UserSearch?": {
 			"type": "object",
 			"properties": {
 				"pageNo": {
@@ -867,16 +785,13 @@
 					"$ref": "#/definitions/UserSearch"
 				}
 			},
-			"title": "ASearch«UserSearch»"
+			"title": "ASearch?UserSearch?"
 		},
 		"Corp": {
 			"type": "object",
 			"properties": {
 				"id": {
 					"type": "string",
-					"example": {
-						"combo": 1
-					},
 					"description": "公司ID",
 					"allowEmptyValue": false,
 					"minLength": 0,
@@ -885,15 +800,12 @@
 				"corpName": {
 					"type": "string",
 					"description": "公司名",
-					"allowEmptyValue": false,
+					"allowEmptyValue": true,
 					"minLength": 0,
 					"maxLength": 50
 				},
 				"managerID": {
 					"type": "string",
-					"example": {
-						"combo": 3
-					},
 					"description": "管理员ID",
 					"allowEmptyValue": true,
 					"minLength": 0,
@@ -901,9 +813,6 @@
 				},
 				"parentCorpID": {
 					"type": "string",
-					"example": {
-						"combo": 1
-					},
 					"description": "上级公司ID",
 					"allowEmptyValue": true,
 					"minLength": 0,
@@ -923,7 +832,10 @@
 					"type": "integer",
 					"format": "int32",
 					"example": {
-						"combo": 4
+						"enum": {
+							"1": "是",
+							"0": "否"
+						}
 					},
 					"description": "使用与否",
 					"allowEmptyValue": true,
@@ -965,44 +877,22 @@
 		"CorpSearch": {
 			"type": "object",
 			"properties": {
-				"createDateFrom": {
-					"type": "string",
-					"format": "date-time"
-				},
-				"createDateTo": {
-					"type": "string",
-					"format": "date-time"
-				},
 				"id": {
 					"type": "string",
-					"example": {
-						"combo": 1
-					},
 					"description": "公司ID",
 					"allowEmptyValue": false,
 					"minLength": 0,
 					"maxLength": 5
 				},
-				"updateDateFrom": {
-					"type": "string",
-					"format": "date-time"
-				},
-				"updateDateTo": {
-					"type": "string",
-					"format": "date-time"
-				},
 				"corpName": {
 					"type": "string",
 					"description": "公司名",
-					"allowEmptyValue": false,
+					"allowEmptyValue": true,
 					"minLength": 0,
 					"maxLength": 50
 				},
 				"managerID": {
 					"type": "string",
-					"example": {
-						"combo": 3
-					},
 					"description": "管理员ID",
 					"allowEmptyValue": true,
 					"minLength": 0,
@@ -1010,9 +900,6 @@
 				},
 				"parentCorpID": {
 					"type": "string",
-					"example": {
-						"combo": 1
-					},
 					"description": "上级公司ID",
 					"allowEmptyValue": true,
 					"minLength": 0,
@@ -1032,7 +919,10 @@
 					"type": "integer",
 					"format": "int32",
 					"example": {
-						"combo": 4
+						"enum": {
+							"1": "是",
+							"0": "否"
+						}
 					},
 					"description": "使用与否",
 					"allowEmptyValue": true,
@@ -1052,6 +942,22 @@
 					"type": "string",
 					"format": "date-time",
 					"description": "创建日期",
+					"allowEmptyValue": true
+				},
+				"createDateStr": {
+					"type": "string",
+					"example": {
+						"datetime": true
+					},
+					"description": "创建日期",
+					"allowEmptyValue": true
+				},
+				"updateDateStr": {
+					"type": "string",
+					"example": {
+						"date": true
+					},
+					"description": "修改日期",
 					"allowEmptyValue": true
 				},
 				"updateUser": {
@@ -1084,7 +990,8 @@
 				"corpID": {
 					"type": "string",
 					"example": {
-						"combo": 1
+						"combo": 1,
+						"multi": true
 					},
 					"description": "公司ID",
 					"allowEmptyValue": true,
@@ -1122,9 +1029,6 @@
 				"useYN": {
 					"type": "integer",
 					"format": "int32",
-					"example": {
-						"combo": 4
-					},
 					"description": "使用与否",
 					"allowEmptyValue": true,
 					"minimum": 0,
@@ -1155,9 +1059,6 @@
 				},
 				"deptGroup": {
 					"type": "string",
-					"example": {
-						"combo": 2
-					},
 					"description": "部门组织ID",
 					"allowEmptyValue": true,
 					"minLength": 0,
@@ -1196,14 +1097,6 @@
 		"UserSearch": {
 			"type": "object",
 			"properties": {
-				"createDateFrom": {
-					"type": "string",
-					"format": "date-time"
-				},
-				"createDateTo": {
-					"type": "string",
-					"format": "date-time"
-				},
 				"id": {
 					"type": "string",
 					"description": "用户ID",
@@ -1211,18 +1104,11 @@
 					"minLength": 0,
 					"maxLength": 10
 				},
-				"updateDateFrom": {
-					"type": "string",
-					"format": "date-time"
-				},
-				"updateDateTo": {
-					"type": "string",
-					"format": "date-time"
-				},
 				"corpID": {
 					"type": "string",
 					"example": {
-						"combo": 1
+						"combo": 1,
+						"multi": true
 					},
 					"description": "公司ID",
 					"allowEmptyValue": true,
@@ -1260,9 +1146,6 @@
 				"useYN": {
 					"type": "integer",
 					"format": "int32",
-					"example": {
-						"combo": 4
-					},
 					"description": "使用与否",
 					"allowEmptyValue": true,
 					"minimum": 0,
@@ -1270,12 +1153,28 @@
 					"exclusiveMinimum": false,
 					"exclusiveMaximum": false
 				},
+				"createDateStr": {
+					"type": "string",
+					"example": {
+						"datetime": true
+					},
+					"description": "创建日期",
+					"allowEmptyValue": true
+				},
 				"posID": {
 					"type": "string",
 					"description": "职位ID",
 					"allowEmptyValue": true,
 					"minLength": 0,
 					"maxLength": 10
+				},
+				"updateDateStr": {
+					"type": "string",
+					"example": {
+						"date": true
+					},
+					"description": "修改日期",
+					"allowEmptyValue": true
 				},
 				"dutyID": {
 					"type": "string",
@@ -1293,9 +1192,6 @@
 				},
 				"deptGroup": {
 					"type": "string",
-					"example": {
-						"combo": 2
-					},
 					"description": "部门组织ID",
 					"allowEmptyValue": true,
 					"minLength": 0,

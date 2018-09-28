@@ -125,7 +125,7 @@ module.exports = class {
             spinner.text = 'Create pageConfig';
             fsExtra.writeJsonSync(path.join(temporaryPath, "pageConfig.json"), component.model, { spaces: 4 });
             spinner.text = 'analysis template';
-            await analysis.render();
+            return await analysis.render();
             // return
             // 创建目录
             this.mkdirSync(fsPath);
@@ -143,7 +143,7 @@ module.exports = class {
         } catch (error) {
             log.error("error", error);
             throw error
-        } finally{
+        } finally {
             spinner.stop();
         }
 
@@ -241,12 +241,13 @@ module.exports = class {
             let routers = this.readJSON();
             if (type == 'add') {
                 routers.subMenu.push({
-                    "Key": this.guid(),
-                    "Name": component.menuName || component.containersName,
-                    "Icon": "menu-fold",
-                    "Path": `/${component.containersName}`,
-                    "Component": component.containersName,
-                    "Children": []
+                    "Key": this.guid(),//唯一标识
+                    "Name": component.menuName || component.containersName,//菜单名称
+                    "Icon": "menu-fold",//图标
+                    "Path": `/${component.containersName}`,//路径
+                    "Component": component.containersName,//组件
+                    "Action": [],//操作
+                    "Children": []//子菜单
                 });
             } else {
                 // 删除
