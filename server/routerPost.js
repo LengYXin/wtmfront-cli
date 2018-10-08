@@ -2,7 +2,7 @@ module.exports = function (router) {
     /**
      * 初始化项目信息
      */
-    router.post('/init', async (ctx, next) => {
+    router.post('/server/init', async (ctx, next) => {
         try {
             // await this.componentCreate.init()
             ctx.body = {
@@ -28,7 +28,7 @@ module.exports = function (router) {
     /**
      * 创建组件
      */
-    router.post('/create', async (ctx, next) => {
+    router.post('/server/create', async (ctx, next) => {
         // const data = await create(ctx.request.body, this.Generator.contextRoot)
         try {
 
@@ -50,7 +50,7 @@ module.exports = function (router) {
     /**
      * 删除
      */
-    router.post('/delete', async (ctx, next) => {
+    router.post('/server/delete', async (ctx, next) => {
         // const data = await create(ctx.request.body, this.Generator.contextRoot)
         try {
             this.componentCreate.delete(ctx.request.body.containersName)
@@ -70,7 +70,7 @@ module.exports = function (router) {
     /**
         * 修改菜单
         */
-    router.post('/updateSubMenu', async (ctx, next) => {
+    router.post('/server/updateSubMenu', async (ctx, next) => {
         // const data = await create(ctx.request.body, this.Generator.contextRoot)
         try {
             this.componentCreate.updateSubMenu(ctx.request.body)

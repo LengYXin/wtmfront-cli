@@ -3,17 +3,19 @@ const Router = require('koa-router');
 // const Opn = require('opn');
 const bodyParser = require('koa-bodyparser');
 // const create = require('./create');
+const staticServer = require("koa-static");
 const componentCreate = require('./componentCreate');
 const routerGets = require('./routerGet');
 const routerPost = require('./routerPost');
-const log=require('../lib/log');
+const log = require('../lib/log');
 const path = require('path');
-
+const proxy = require('koa2-simple-proxy');
 const app = new Koa();
 const router = new Router();
 
 module.exports = class {
   constructor(contextRoot) {
+    this.contextRoot = contextRoot;
     this.componentCreate = new componentCreate(contextRoot);
   }
   init(port = 8765) {
@@ -38,6 +40,9 @@ module.exports = class {
   use() {
     app
       .use(bodyParser())
+      .use(proxy('/swaggerDoc', this.componentCreate.wtmfrontConfig.swaggerDoc))
+      .use(staticServer(path.join(this.contextRoot, "swagger", "dist")))
+      // .use(proxy(this.componentCreate.wtmfrontConfig.swaggerDoc))
       .use(router.routes())
       .use(router.allowedMethods());
   }

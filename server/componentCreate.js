@@ -125,7 +125,7 @@ module.exports = class {
             spinner.text = 'Create pageConfig';
             fsExtra.writeJsonSync(path.join(temporaryPath, "pageConfig.json"), component.model, { spaces: 4 });
             spinner.text = 'analysis template';
-            return await analysis.render();
+             await analysis.render();
             // return
             // 创建目录
             this.mkdirSync(fsPath);
