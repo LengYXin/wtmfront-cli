@@ -15,8 +15,8 @@ const port = program.args[0]
 // 判断项目是否存在
 if (fsEditor.exists(path.join(rootPath, 'package.json'))) {
     if (fsEditor.exists(path.join(rootPath, 'wtmfront.json'))) {
-        new server(rootPath).init(port || 8765);
-    }else{
+        console.log("更新项目中的文件");
+    } else {
         return log.error(`找不到 wtmfront.json 配置文件~`);
     }
 } else {

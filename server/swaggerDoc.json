@@ -5,59 +5,183 @@
 		"version": "1.0",
 		"title": "Nada-Demo API文档"
 	},
-	"host": "10.99.246.52:8010",
+	"host": "10.99.246.52:8001",
 	"basePath": "/",
 	"tags": [
 		{
-			"name": "公司操作接口",
-			"description": "Corp Controller"
+			"name": "SN操作接口",
+			"description": "Out Scanresultlist Controller"
+		},
+		{
+			"name": "operation-handler",
+			"description": "Operation Handler"
+		},
+		{
+			"name": "test-controller",
+			"description": "Test Controller"
+		},
+		{
+			"name": "web-mvc-endpoint-handler-mapping",
+			"description": "Web Mvc Endpoint Handler Mapping"
 		},
 		{
 			"name": "共同下拉框查询接口",
 			"description": "Common Combo Controller"
 		},
 		{
-			"name": "用户操作接口",
-			"description": "User Controller"
+			"name": "共同数据存储接口",
+			"description": "Common Data Controller"
+		},
+		{
+			"name": "商品操作接口",
+			"description": "Base Productinfo Controller"
+		},
+		{
+			"name": "学校操作接口",
+			"description": "School Controller"
+		},
+		{
+			"name": "学生操作接口",
+			"description": "Student Controller"
+		},
+		{
+			"name": "库存操作接口",
+			"description": "Productstocks Controller"
+		},
+		{
+			"name": "订单操作接口",
+			"description": "Omsorders Controller"
+		},
+		{
+			"name": "订单详细操作接口",
+			"description": "Omsorderdetails Controller"
 		}
 	],
 	"paths": {
-		"/common/combo": {
+		"/": {
 			"get": {
 				"tags": [
-					"共同下拉框查询接口"
+					"test-controller"
 				],
-				"summary": "获共同下拉框",
-				"operationId": "getUsingGET",
+				"summary": "test",
+				"operationId": "testUsingGET",
 				"produces": [
 					"*/*"
 				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"type": "string"
+						}
+					}
+				}
+			}
+		},
+		"/actuator": {
+			"get": {
+				"tags": [
+					"web-mvc-endpoint-handler-mapping"
+				],
+				"summary": "links",
+				"operationId": "linksUsingGET",
+				"produces": [
+					"application/json",
+					"application/vnd.spring-boot.actuator.v2+json"
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"type": "object",
+							"additionalProperties": {
+								"type": "object",
+								"additionalProperties": {
+									"$ref": "#/definitions/Link"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/actuator/health": {
+			"get": {
+				"tags": [
+					"operation-handler"
+				],
+				"summary": "handle",
+				"operationId": "handleUsingGET",
+				"produces": [
+					"application/json",
+					"application/vnd.spring-boot.actuator.v2+json"
+				],
 				"parameters": [
 					{
-						"name": "id",
-						"in": "query",
-						"description": "id",
+						"in": "body",
+						"name": "body",
+						"description": "body",
 						"required": false,
-						"type": "string"
+						"schema": {
+							"type": "object",
+							"additionalProperties": {
+								"type": "string"
+							}
+						}
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "OK",
 						"schema": {
-							"$ref": "#/definitions/AResultSet"
+							"type": "object"
 						}
 					}
 				}
 			}
 		},
-		"/corp/add": {
+		"/actuator/info": {
+			"get": {
+				"tags": [
+					"operation-handler"
+				],
+				"summary": "handle",
+				"operationId": "handleUsingGET_1",
+				"produces": [
+					"application/json",
+					"application/vnd.spring-boot.actuator.v2+json"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"description": "body",
+						"required": false,
+						"schema": {
+							"type": "object",
+							"additionalProperties": {
+								"type": "string"
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"type": "object"
+						}
+					}
+				}
+			}
+		},
+		"/baseProductinfo/add": {
 			"post": {
 				"tags": [
-					"公司操作接口"
+					"商品操作接口"
 				],
-				"summary": "创建公司",
-				"description": "创建公司信息",
+				"summary": "创建商品",
+				"description": "创建商品信息",
 				"operationId": "addUsingPOST",
 				"consumes": [
 					"application/json"
@@ -68,11 +192,11 @@
 				"parameters": [
 					{
 						"in": "body",
-						"name": "corp",
-						"description": "corp",
+						"name": "baseProductinfo",
+						"description": "baseProductinfo",
 						"required": true,
 						"schema": {
-							"$ref": "#/definitions/Corp"
+							"$ref": "#/definitions/BaseProductinfo"
 						}
 					}
 				],
@@ -86,13 +210,13 @@
 				}
 			}
 		},
-		"/corp/delete": {
+		"/baseProductinfo/delete": {
 			"post": {
 				"tags": [
-					"公司操作接口"
+					"商品操作接口"
 				],
-				"summary": "删除公司",
-				"description": "根据公司id来指定删除公司",
+				"summary": "删除商品",
+				"description": "根据商品productId来指定删除商品",
 				"operationId": "deleteUsingPOST",
 				"consumes": [
 					"application/json"
@@ -103,13 +227,14 @@
 				"parameters": [
 					{
 						"in": "body",
-						"name": "id",
-						"description": "公司id",
+						"name": "productId",
+						"description": "productId",
 						"required": true,
 						"schema": {
 							"type": "array",
 							"items": {
-								"type": "string"
+								"type": "integer",
+								"format": "int64"
 							}
 						}
 					}
@@ -124,13 +249,13 @@
 				}
 			}
 		},
-		"/corp/edit": {
+		"/baseProductinfo/edit": {
 			"post": {
 				"tags": [
-					"公司操作接口"
+					"商品操作接口"
 				],
-				"summary": "更新公司信息",
-				"description": "修改公司信息",
+				"summary": "更新商品信息",
+				"description": "修改商品信息",
 				"operationId": "updateUsingPOST",
 				"consumes": [
 					"application/json"
@@ -141,11 +266,11 @@
 				"parameters": [
 					{
 						"in": "body",
-						"name": "corp",
-						"description": "corp",
+						"name": "baseProductinfo",
+						"description": "baseProductinfo",
 						"required": true,
 						"schema": {
-							"$ref": "#/definitions/Corp"
+							"$ref": "#/definitions/BaseProductinfo"
 						}
 					}
 				],
@@ -159,13 +284,13 @@
 				}
 			}
 		},
-		"/corp/export": {
+		"/baseProductinfo/export": {
 			"post": {
 				"tags": [
-					"公司操作接口"
+					"商品操作接口"
 				],
-				"summary": "获取公司详细信息",
-				"description": "获取公司详细信息",
+				"summary": "下载商品详细信息",
+				"description": "获取商品详细信息",
 				"operationId": "exportExcelUsingPOST",
 				"consumes": [
 					"application/json"
@@ -176,11 +301,11 @@
 				"parameters": [
 					{
 						"in": "body",
-						"name": "corp",
-						"description": "corp",
+						"name": "baseProductinfo",
+						"description": "baseProductinfo",
 						"required": true,
 						"schema": {
-							"$ref": "#/definitions/CorpSearch"
+							"$ref": "#/definitions/BaseProductinfoSearch"
 						}
 					}
 				],
@@ -191,22 +316,22 @@
 				}
 			}
 		},
-		"/corp/get/{id}": {
+		"/baseProductinfo/get/{productId}": {
 			"get": {
 				"tags": [
-					"公司操作接口"
+					"商品操作接口"
 				],
-				"summary": "获取公司详细信息(id)",
-				"description": "根据公司id获取匹配的公司信息",
-				"operationId": "getUsingGET_1",
+				"summary": "获取商品信息(productId)",
+				"description": "根据商品productId获取匹配的商品信息",
+				"operationId": "getUsingGET",
 				"produces": [
 					"*/*"
 				],
 				"parameters": [
 					{
-						"name": "id",
+						"name": "productId",
 						"in": "path",
-						"description": "公司id",
+						"description": "商品productId",
 						"required": true,
 						"type": "string"
 					}
@@ -215,19 +340,19 @@
 					"200": {
 						"description": "OK",
 						"schema": {
-							"$ref": "#/definitions/AResultSet?Corp?"
+							"$ref": "#/definitions/AResultSet?BaseProductinfoList?"
 						}
 					}
 				}
 			}
 		},
-		"/corp/import": {
+		"/baseProductinfo/import": {
 			"post": {
 				"tags": [
-					"公司操作接口"
+					"商品操作接口"
 				],
-				"summary": "上传公司信息",
-				"description": "上传公司信息",
+				"summary": "上传商品信息",
+				"description": "上传商品信息",
 				"operationId": "importExcelUsingPOST",
 				"consumes": [
 					"multipart/form-data"
@@ -254,13 +379,13 @@
 				}
 			}
 		},
-		"/corp/search": {
+		"/baseProductinfo/search": {
 			"post": {
 				"tags": [
-					"公司操作接口"
+					"商品操作接口"
 				],
-				"summary": "获取公司详细信息",
-				"description": "获取公司详细信息",
+				"summary": "获取商品详细信息",
+				"description": "获取商品详细信息",
 				"operationId": "searchUsingPOST",
 				"consumes": [
 					"application/json"
@@ -271,11 +396,11 @@
 				"parameters": [
 					{
 						"in": "body",
-						"name": "corp",
-						"description": "corp",
+						"name": "baseProductinfo",
+						"description": "baseProductinfo",
 						"required": true,
 						"schema": {
-							"$ref": "#/definitions/ASearch?CorpSearch?"
+							"$ref": "#/definitions/ASearch?BaseProductinfoSearch?"
 						}
 					}
 				],
@@ -283,19 +408,19 @@
 					"200": {
 						"description": "OK",
 						"schema": {
-							"$ref": "#/definitions/AResultSet?APage?List?Corp???"
+							"$ref": "#/definitions/AResultSet?APage?List?BaseProductinfoList???"
 						}
 					}
 				}
 			}
 		},
-		"/corp/template": {
+		"/baseProductinfo/template": {
 			"post": {
 				"tags": [
-					"公司操作接口"
+					"商品操作接口"
 				],
-				"summary": "下载模板",
-				"description": "下载模板",
+				"summary": "下载商品模板",
+				"description": "下载商品模板",
 				"operationId": "templateUsingPOST",
 				"consumes": [
 					"application/json"
@@ -310,13 +435,96 @@
 				}
 			}
 		},
-		"/user/add": {
+		"/common/combo": {
+			"get": {
+				"tags": [
+					"共同下拉框查询接口"
+				],
+				"summary": "获共同下拉框",
+				"operationId": "getUsingGET_1",
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "query",
+						"description": "id",
+						"required": false,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
+					}
+				}
+			}
+		},
+		"/common/getCustomColumn": {
+			"get": {
+				"tags": [
+					"共同数据存储接口"
+				],
+				"summary": "获取自定义列",
+				"operationId": "getCustomColumnSettingUsingGET",
+				"produces": [
+					"*/*"
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet?List?AEntityColumns??"
+						}
+					}
+				}
+			}
+		},
+		"/common/setCustomColumn": {
 			"post": {
 				"tags": [
-					"用户操作接口"
+					"共同数据存储接口"
 				],
-				"summary": "创建用户",
-				"description": "创建用户信息",
+				"summary": "设置自定义列",
+				"operationId": "setCustomColumnSettingUsingPOST",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "entityColumns",
+						"description": "entityColumns",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/AEntityColumns"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet?List?AEntityColumns??"
+						}
+					}
+				}
+			}
+		},
+		"/omsorderdetails/add": {
+			"post": {
+				"tags": [
+					"订单详细操作接口"
+				],
+				"summary": "创建订单详细",
+				"description": "创建订单详细信息",
 				"operationId": "addUsingPOST_1",
 				"consumes": [
 					"application/json"
@@ -327,11 +535,11 @@
 				"parameters": [
 					{
 						"in": "body",
-						"name": "user",
-						"description": "user",
+						"name": "omsorderdetails",
+						"description": "omsorderdetails",
 						"required": true,
 						"schema": {
-							"$ref": "#/definitions/User"
+							"$ref": "#/definitions/Omsorderdetails"
 						}
 					}
 				],
@@ -345,13 +553,13 @@
 				}
 			}
 		},
-		"/user/delete": {
+		"/omsorderdetails/delete": {
 			"post": {
 				"tags": [
-					"用户操作接口"
+					"订单详细操作接口"
 				],
-				"summary": "删除用户",
-				"description": "根据用户id来指定删除公司",
+				"summary": "删除订单详细",
+				"description": "根据订单详细id来指定删除订单详细",
 				"operationId": "deleteUsingPOST_1",
 				"consumes": [
 					"application/json"
@@ -363,12 +571,13 @@
 					{
 						"in": "body",
 						"name": "id",
-						"description": "用户id",
+						"description": "id",
 						"required": true,
 						"schema": {
 							"type": "array",
 							"items": {
-								"type": "string"
+								"type": "integer",
+								"format": "int64"
 							}
 						}
 					}
@@ -383,13 +592,13 @@
 				}
 			}
 		},
-		"/user/edit": {
+		"/omsorderdetails/edit": {
 			"post": {
 				"tags": [
-					"用户操作接口"
+					"订单详细操作接口"
 				],
-				"summary": "更新用户信息",
-				"description": "修改用户信息",
+				"summary": "更新订单详细信息",
+				"description": "修改订单详细信息",
 				"operationId": "updateUsingPOST_1",
 				"consumes": [
 					"application/json"
@@ -400,11 +609,11 @@
 				"parameters": [
 					{
 						"in": "body",
-						"name": "user",
-						"description": "user",
+						"name": "omsorderdetails",
+						"description": "omsorderdetails",
 						"required": true,
 						"schema": {
-							"$ref": "#/definitions/User"
+							"$ref": "#/definitions/Omsorderdetails"
 						}
 					}
 				],
@@ -418,13 +627,13 @@
 				}
 			}
 		},
-		"/user/export": {
+		"/omsorderdetails/export": {
 			"post": {
 				"tags": [
-					"用户操作接口"
+					"订单详细操作接口"
 				],
-				"summary": "获取用户详细信息",
-				"description": "获取用户详细信息",
+				"summary": "下载订单详细详细信息",
+				"description": "获取订单详细详细信息",
 				"operationId": "exportExcelUsingPOST_1",
 				"consumes": [
 					"application/json"
@@ -435,11 +644,11 @@
 				"parameters": [
 					{
 						"in": "body",
-						"name": "user",
-						"description": "user",
+						"name": "omsorderdetails",
+						"description": "omsorderdetails",
 						"required": true,
 						"schema": {
-							"$ref": "#/definitions/UserSearch"
+							"$ref": "#/definitions/OmsorderdetailsSearch"
 						}
 					}
 				],
@@ -450,13 +659,13 @@
 				}
 			}
 		},
-		"/user/get/{id}": {
+		"/omsorderdetails/get/{id}": {
 			"get": {
 				"tags": [
-					"用户操作接口"
+					"订单详细操作接口"
 				],
-				"summary": "获取用户详细信息(id)",
-				"description": "根据用户id获取匹配的用户信息",
+				"summary": "获取订单详细信息(id)",
+				"description": "根据订单详细id获取匹配的订单详细信息",
 				"operationId": "getUsingGET_2",
 				"produces": [
 					"*/*"
@@ -465,7 +674,7 @@
 					{
 						"name": "id",
 						"in": "path",
-						"description": "公司id",
+						"description": "订单详细id",
 						"required": true,
 						"type": "string"
 					}
@@ -474,19 +683,19 @@
 					"200": {
 						"description": "OK",
 						"schema": {
-							"$ref": "#/definitions/AResultSet?User?"
+							"$ref": "#/definitions/AResultSet?OmsorderdetailsList?"
 						}
 					}
 				}
 			}
 		},
-		"/user/import": {
+		"/omsorderdetails/import": {
 			"post": {
 				"tags": [
-					"用户操作接口"
+					"订单详细操作接口"
 				],
-				"summary": "上传用户信息",
-				"description": "上传用户信息",
+				"summary": "上传订单详细信息",
+				"description": "上传订单详细信息",
 				"operationId": "importExcelUsingPOST_1",
 				"consumes": [
 					"multipart/form-data"
@@ -513,13 +722,13 @@
 				}
 			}
 		},
-		"/user/search": {
+		"/omsorderdetails/search": {
 			"post": {
 				"tags": [
-					"用户操作接口"
+					"订单详细操作接口"
 				],
-				"summary": "获取用户详细信息",
-				"description": "获取用户详细信息",
+				"summary": "获取订单详细详细信息",
+				"description": "获取订单详细详细信息",
 				"operationId": "searchUsingPOST_1",
 				"consumes": [
 					"application/json"
@@ -530,11 +739,11 @@
 				"parameters": [
 					{
 						"in": "body",
-						"name": "user",
-						"description": "user",
+						"name": "omsorderdetails",
+						"description": "omsorderdetails",
 						"required": true,
 						"schema": {
-							"$ref": "#/definitions/ASearch?UserSearch?"
+							"$ref": "#/definitions/ASearch?OmsorderdetailsSearch?"
 						}
 					}
 				],
@@ -542,20 +751,1385 @@
 					"200": {
 						"description": "OK",
 						"schema": {
-							"$ref": "#/definitions/AResultSet?APage?List?User???"
+							"$ref": "#/definitions/AResultSet?APage?List?OmsorderdetailsList???"
 						}
 					}
 				}
 			}
 		},
-		"/user/template": {
+		"/omsorderdetails/template": {
 			"post": {
 				"tags": [
-					"用户操作接口"
+					"订单详细操作接口"
 				],
-				"summary": "下载模板",
-				"description": "下载模板",
+				"summary": "下载订单详细模板",
+				"description": "下载订单详细模板",
 				"operationId": "templateUsingPOST_1",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/omsorders/add": {
+			"post": {
+				"tags": [
+					"订单操作接口"
+				],
+				"summary": "创建订单",
+				"description": "创建订单信息",
+				"operationId": "addUsingPOST_2",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "omsorders",
+						"description": "omsorders",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Omsorders"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
+					}
+				}
+			}
+		},
+		"/omsorders/delete": {
+			"post": {
+				"tags": [
+					"订单操作接口"
+				],
+				"summary": "删除订单",
+				"description": "根据订单id来指定删除订单",
+				"operationId": "deleteUsingPOST_2",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "id",
+						"description": "id",
+						"required": true,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "integer",
+								"format": "int64"
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
+					}
+				}
+			}
+		},
+		"/omsorders/edit": {
+			"post": {
+				"tags": [
+					"订单操作接口"
+				],
+				"summary": "更新订单信息",
+				"description": "修改订单信息",
+				"operationId": "updateUsingPOST_2",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "omsorders",
+						"description": "omsorders",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Omsorders"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
+					}
+				}
+			}
+		},
+		"/omsorders/export": {
+			"post": {
+				"tags": [
+					"订单操作接口"
+				],
+				"summary": "下载订单详细信息",
+				"description": "获取订单详细信息",
+				"operationId": "exportExcelUsingPOST_2",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "omsorders",
+						"description": "omsorders",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/OmsordersSearch"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/omsorders/get/{id}": {
+			"get": {
+				"tags": [
+					"订单操作接口"
+				],
+				"summary": "获取订单信息(id)",
+				"description": "根据订单id获取匹配的订单信息",
+				"operationId": "getUsingGET_3",
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"description": "订单id",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet?OmsordersList?"
+						}
+					}
+				}
+			}
+		},
+		"/omsorders/getdtl/{id}": {
+			"get": {
+				"tags": [
+					"订单操作接口"
+				],
+				"summary": "获取订单详细信息(iD)",
+				"description": "根据订单iD获取匹配的订单信息",
+				"operationId": "getDtlUsingGET",
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"description": "订单id",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet?OmsPlaceOrders?"
+						}
+					}
+				}
+			}
+		},
+		"/omsorders/import": {
+			"post": {
+				"tags": [
+					"订单操作接口"
+				],
+				"summary": "上传订单信息",
+				"description": "上传订单信息",
+				"operationId": "importExcelUsingPOST_2",
+				"consumes": [
+					"multipart/form-data"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"name": "file",
+						"in": "formData",
+						"description": "上传Excel",
+						"required": true,
+						"type": "file"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
+					}
+				}
+			}
+		},
+		"/omsorders/search": {
+			"post": {
+				"tags": [
+					"订单操作接口"
+				],
+				"summary": "获取订单详细信息",
+				"description": "获取订单详细信息",
+				"operationId": "searchUsingPOST_2",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "omsorders",
+						"description": "omsorders",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/ASearch?OmsordersSearch?"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet?APage?List?OmsordersList???"
+						}
+					}
+				}
+			}
+		},
+		"/omsorders/template": {
+			"post": {
+				"tags": [
+					"订单操作接口"
+				],
+				"summary": "下载订单模板",
+				"description": "下载订单模板",
+				"operationId": "templateUsingPOST_2",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/ordertest/place": {
+			"post": {
+				"tags": [
+					"订单操作接口"
+				],
+				"summary": "提交订单",
+				"description": "提交订单",
+				"operationId": "placeUsingPOST",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "mst",
+						"description": "mst",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/OmsPlaceOrders"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
+					}
+				}
+			}
+		},
+		"/outScanresultlist/add": {
+			"post": {
+				"tags": [
+					"SN操作接口"
+				],
+				"summary": "创建SN",
+				"description": "创建SN信息",
+				"operationId": "addUsingPOST_3",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "outScanresultlist",
+						"description": "outScanresultlist",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/OutScanresultlist"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
+					}
+				}
+			}
+		},
+		"/outScanresultlist/delete": {
+			"post": {
+				"tags": [
+					"SN操作接口"
+				],
+				"summary": "删除SN",
+				"description": "根据SNscanresultlistId来指定删除SN",
+				"operationId": "deleteUsingPOST_3",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "scanresultlistId",
+						"description": "scanresultlistId",
+						"required": true,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "integer",
+								"format": "int64"
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
+					}
+				}
+			}
+		},
+		"/outScanresultlist/edit": {
+			"post": {
+				"tags": [
+					"SN操作接口"
+				],
+				"summary": "更新SN信息",
+				"description": "修改SN信息",
+				"operationId": "updateUsingPOST_3",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "outScanresultlist",
+						"description": "outScanresultlist",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/OutScanresultlist"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
+					}
+				}
+			}
+		},
+		"/outScanresultlist/export": {
+			"post": {
+				"tags": [
+					"SN操作接口"
+				],
+				"summary": "下载SN详细信息",
+				"description": "获取SN详细信息",
+				"operationId": "exportExcelUsingPOST_3",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "outScanresultlist",
+						"description": "outScanresultlist",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/OutScanresultlistSearch"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/outScanresultlist/get/{scanresultlistId}": {
+			"get": {
+				"tags": [
+					"SN操作接口"
+				],
+				"summary": "获取SN信息(scanresultlistId)",
+				"description": "根据SNscanresultlistId获取匹配的SN信息",
+				"operationId": "getUsingGET_4",
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"name": "scanresultlistId",
+						"in": "path",
+						"description": "SNscanresultlistId",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet?OutScanresultlistList?"
+						}
+					}
+				}
+			}
+		},
+		"/outScanresultlist/import": {
+			"post": {
+				"tags": [
+					"SN操作接口"
+				],
+				"summary": "上传SN信息",
+				"description": "上传SN信息",
+				"operationId": "importExcelUsingPOST_3",
+				"consumes": [
+					"multipart/form-data"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"name": "file",
+						"in": "formData",
+						"description": "上传Excel",
+						"required": true,
+						"type": "file"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
+					}
+				}
+			}
+		},
+		"/outScanresultlist/search": {
+			"post": {
+				"tags": [
+					"SN操作接口"
+				],
+				"summary": "获取SN详细信息",
+				"description": "获取SN详细信息",
+				"operationId": "searchUsingPOST_3",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "outScanresultlist",
+						"description": "outScanresultlist",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/ASearch?OutScanresultlistSearch?"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet?APage?List?OutScanresultlistList???"
+						}
+					}
+				}
+			}
+		},
+		"/outScanresultlist/template": {
+			"post": {
+				"tags": [
+					"SN操作接口"
+				],
+				"summary": "下载SN模板",
+				"description": "下载SN模板",
+				"operationId": "templateUsingPOST_3",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/productstocks/add": {
+			"post": {
+				"tags": [
+					"库存操作接口"
+				],
+				"summary": "创建库存",
+				"description": "创建库存信息",
+				"operationId": "addUsingPOST_4",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "productstocks",
+						"description": "productstocks",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Productstocks"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
+					}
+				}
+			}
+		},
+		"/productstocks/delete": {
+			"post": {
+				"tags": [
+					"库存操作接口"
+				],
+				"summary": "删除库存",
+				"description": "根据库存id来指定删除库存",
+				"operationId": "deleteUsingPOST_4",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "id",
+						"description": "id",
+						"required": true,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "integer",
+								"format": "int64"
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
+					}
+				}
+			}
+		},
+		"/productstocks/edit": {
+			"post": {
+				"tags": [
+					"库存操作接口"
+				],
+				"summary": "更新库存信息",
+				"description": "修改库存信息",
+				"operationId": "updateUsingPOST_4",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "productstocks",
+						"description": "productstocks",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Productstocks"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
+					}
+				}
+			}
+		},
+		"/productstocks/export": {
+			"post": {
+				"tags": [
+					"库存操作接口"
+				],
+				"summary": "下载库存详细信息",
+				"description": "获取库存详细信息",
+				"operationId": "exportExcelUsingPOST_4",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "productstocks",
+						"description": "productstocks",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/ProductstocksSearch"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/productstocks/get/{id}": {
+			"get": {
+				"tags": [
+					"库存操作接口"
+				],
+				"summary": "获取库存信息(id)",
+				"description": "根据库存id获取匹配的库存信息",
+				"operationId": "getUsingGET_5",
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"description": "库存id",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet?ProductstocksList?"
+						}
+					}
+				}
+			}
+		},
+		"/productstocks/import": {
+			"post": {
+				"tags": [
+					"库存操作接口"
+				],
+				"summary": "上传库存信息",
+				"description": "上传库存信息",
+				"operationId": "importExcelUsingPOST_4",
+				"consumes": [
+					"multipart/form-data"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"name": "file",
+						"in": "formData",
+						"description": "上传Excel",
+						"required": true,
+						"type": "file"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
+					}
+				}
+			}
+		},
+		"/productstocks/search": {
+			"post": {
+				"tags": [
+					"库存操作接口"
+				],
+				"summary": "获取库存详细信息",
+				"description": "获取库存详细信息",
+				"operationId": "searchUsingPOST_4",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "productstocks",
+						"description": "productstocks",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/ASearch?ProductstocksSearch?"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet?APage?List?ProductstocksList???"
+						}
+					}
+				}
+			}
+		},
+		"/productstocks/template": {
+			"post": {
+				"tags": [
+					"库存操作接口"
+				],
+				"summary": "下载库存模板",
+				"description": "下载库存模板",
+				"operationId": "templateUsingPOST_4",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/school/add": {
+			"post": {
+				"tags": [
+					"学校操作接口"
+				],
+				"summary": "创建学校",
+				"description": "创建学校信息",
+				"operationId": "addUsingPOST_5",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "school",
+						"description": "school",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/School"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
+					}
+				}
+			}
+		},
+		"/school/delete": {
+			"post": {
+				"tags": [
+					"学校操作接口"
+				],
+				"summary": "删除学校",
+				"description": "根据学校id来指定删除学校",
+				"operationId": "deleteUsingPOST_5",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "id",
+						"description": "id",
+						"required": true,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "integer",
+								"format": "int64"
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
+					}
+				}
+			}
+		},
+		"/school/edit": {
+			"post": {
+				"tags": [
+					"学校操作接口"
+				],
+				"summary": "更新学校信息",
+				"description": "修改学校信息",
+				"operationId": "updateUsingPOST_5",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "school",
+						"description": "school",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/School"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
+					}
+				}
+			}
+		},
+		"/school/export": {
+			"post": {
+				"tags": [
+					"学校操作接口"
+				],
+				"summary": "下载学校详细信息",
+				"description": "获取学校详细信息",
+				"operationId": "exportExcelUsingPOST_5",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "school",
+						"description": "school",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/SchoolSearch"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/school/get/{id}": {
+			"get": {
+				"tags": [
+					"学校操作接口"
+				],
+				"summary": "获取学校信息(id)",
+				"description": "根据学校id获取匹配的学校信息",
+				"operationId": "getUsingGET_6",
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"description": "学校id",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet?SchoolList?"
+						}
+					}
+				}
+			}
+		},
+		"/school/import": {
+			"post": {
+				"tags": [
+					"学校操作接口"
+				],
+				"summary": "上传学校信息",
+				"description": "上传学校信息",
+				"operationId": "importExcelUsingPOST_5",
+				"consumes": [
+					"multipart/form-data"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"name": "file",
+						"in": "formData",
+						"description": "上传Excel",
+						"required": true,
+						"type": "file"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
+					}
+				}
+			}
+		},
+		"/school/search": {
+			"post": {
+				"tags": [
+					"学校操作接口"
+				],
+				"summary": "获取学校详细信息",
+				"description": "获取学校详细信息",
+				"operationId": "searchUsingPOST_5",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "school",
+						"description": "school",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/ASearch?SchoolSearch?"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet?APage?List?SchoolList???"
+						}
+					}
+				}
+			}
+		},
+		"/school/template": {
+			"post": {
+				"tags": [
+					"学校操作接口"
+				],
+				"summary": "下载学校模板",
+				"description": "下载学校模板",
+				"operationId": "templateUsingPOST_5",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/student/add": {
+			"post": {
+				"tags": [
+					"学生操作接口"
+				],
+				"summary": "创建学生",
+				"description": "创建学生信息",
+				"operationId": "addUsingPOST_6",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "student",
+						"description": "student",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Student"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
+					}
+				}
+			}
+		},
+		"/student/delete": {
+			"post": {
+				"tags": [
+					"学生操作接口"
+				],
+				"summary": "删除学生",
+				"description": "根据学生id来指定删除学生",
+				"operationId": "deleteUsingPOST_6",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "id",
+						"description": "id",
+						"required": true,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "integer",
+								"format": "int64"
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
+					}
+				}
+			}
+		},
+		"/student/edit": {
+			"post": {
+				"tags": [
+					"学生操作接口"
+				],
+				"summary": "更新学生信息",
+				"description": "修改学生信息",
+				"operationId": "updateUsingPOST_6",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "student",
+						"description": "student",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/Student"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
+					}
+				}
+			}
+		},
+		"/student/export": {
+			"post": {
+				"tags": [
+					"学生操作接口"
+				],
+				"summary": "下载学生详细信息",
+				"description": "获取学生详细信息",
+				"operationId": "exportExcelUsingPOST_6",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "student",
+						"description": "student",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/StudentSearch"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
+			}
+		},
+		"/student/get/{id}": {
+			"get": {
+				"tags": [
+					"学生操作接口"
+				],
+				"summary": "获取学生信息(id)",
+				"description": "根据学生id获取匹配的学生信息",
+				"operationId": "getUsingGET_7",
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"description": "学生id",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet?StudentList?"
+						}
+					}
+				}
+			}
+		},
+		"/student/import": {
+			"post": {
+				"tags": [
+					"学生操作接口"
+				],
+				"summary": "上传学生信息",
+				"description": "上传学生信息",
+				"operationId": "importExcelUsingPOST_6",
+				"consumes": [
+					"multipart/form-data"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"name": "file",
+						"in": "formData",
+						"description": "上传Excel",
+						"required": true,
+						"type": "file"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet"
+						}
+					}
+				}
+			}
+		},
+		"/student/search": {
+			"post": {
+				"tags": [
+					"学生操作接口"
+				],
+				"summary": "获取学生详细信息",
+				"description": "获取学生详细信息",
+				"operationId": "searchUsingPOST_6",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"*/*"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "student",
+						"description": "student",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/ASearch?StudentSearch?"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/AResultSet?APage?List?StudentList???"
+						}
+					}
+				}
+			}
+		},
+		"/student/template": {
+			"post": {
+				"tags": [
+					"学生操作接口"
+				],
+				"summary": "下载学生模板",
+				"description": "下载学生模板",
+				"operationId": "templateUsingPOST_6",
 				"consumes": [
 					"application/json"
 				],
@@ -584,39 +2158,22 @@
 		}
 	},
 	"definitions": {
-		"APage?List?Corp??": {
+		"AEntityColumns": {
 			"type": "object",
 			"properties": {
-				"count": {
-					"type": "integer",
-					"format": "int64",
-					"description": "数据总数",
-					"allowEmptyValue": false
-				},
-				"list": {
+				"columns": {
 					"type": "array",
-					"description": "数据",
-					"allowEmptyValue": false,
 					"items": {
-						"$ref": "#/definitions/Corp"
+						"type": "string"
 					}
 				},
-				"pageNo": {
-					"type": "integer",
-					"format": "int32",
-					"description": "当前页",
-					"allowEmptyValue": false
-				},
-				"pageSize": {
-					"type": "integer",
-					"format": "int32",
-					"description": "页数据数",
-					"allowEmptyValue": false
+				"entity": {
+					"type": "string"
 				}
 			},
-			"title": "APage?List?Corp??"
+			"title": "AEntityColumns"
 		},
-		"APage?List?User??": {
+		"APage?List?BaseProductinfoList??": {
 			"type": "object",
 			"properties": {
 				"count": {
@@ -630,7 +2187,7 @@
 					"description": "数据",
 					"allowEmptyValue": false,
 					"items": {
-						"$ref": "#/definitions/User"
+						"$ref": "#/definitions/BaseProductinfoList"
 					}
 				},
 				"pageNo": {
@@ -646,7 +2203,199 @@
 					"allowEmptyValue": false
 				}
 			},
-			"title": "APage?List?User??"
+			"title": "APage?List?BaseProductinfoList??"
+		},
+		"APage?List?OmsorderdetailsList??": {
+			"type": "object",
+			"properties": {
+				"count": {
+					"type": "integer",
+					"format": "int64",
+					"description": "数据总数",
+					"allowEmptyValue": false
+				},
+				"list": {
+					"type": "array",
+					"description": "数据",
+					"allowEmptyValue": false,
+					"items": {
+						"$ref": "#/definitions/OmsorderdetailsList"
+					}
+				},
+				"pageNo": {
+					"type": "integer",
+					"format": "int32",
+					"description": "当前页",
+					"allowEmptyValue": false
+				},
+				"pageSize": {
+					"type": "integer",
+					"format": "int32",
+					"description": "页数据数",
+					"allowEmptyValue": false
+				}
+			},
+			"title": "APage?List?OmsorderdetailsList??"
+		},
+		"APage?List?OmsordersList??": {
+			"type": "object",
+			"properties": {
+				"count": {
+					"type": "integer",
+					"format": "int64",
+					"description": "数据总数",
+					"allowEmptyValue": false
+				},
+				"list": {
+					"type": "array",
+					"description": "数据",
+					"allowEmptyValue": false,
+					"items": {
+						"$ref": "#/definitions/OmsordersList"
+					}
+				},
+				"pageNo": {
+					"type": "integer",
+					"format": "int32",
+					"description": "当前页",
+					"allowEmptyValue": false
+				},
+				"pageSize": {
+					"type": "integer",
+					"format": "int32",
+					"description": "页数据数",
+					"allowEmptyValue": false
+				}
+			},
+			"title": "APage?List?OmsordersList??"
+		},
+		"APage?List?OutScanresultlistList??": {
+			"type": "object",
+			"properties": {
+				"count": {
+					"type": "integer",
+					"format": "int64",
+					"description": "数据总数",
+					"allowEmptyValue": false
+				},
+				"list": {
+					"type": "array",
+					"description": "数据",
+					"allowEmptyValue": false,
+					"items": {
+						"$ref": "#/definitions/OutScanresultlistList"
+					}
+				},
+				"pageNo": {
+					"type": "integer",
+					"format": "int32",
+					"description": "当前页",
+					"allowEmptyValue": false
+				},
+				"pageSize": {
+					"type": "integer",
+					"format": "int32",
+					"description": "页数据数",
+					"allowEmptyValue": false
+				}
+			},
+			"title": "APage?List?OutScanresultlistList??"
+		},
+		"APage?List?ProductstocksList??": {
+			"type": "object",
+			"properties": {
+				"count": {
+					"type": "integer",
+					"format": "int64",
+					"description": "数据总数",
+					"allowEmptyValue": false
+				},
+				"list": {
+					"type": "array",
+					"description": "数据",
+					"allowEmptyValue": false,
+					"items": {
+						"$ref": "#/definitions/ProductstocksList"
+					}
+				},
+				"pageNo": {
+					"type": "integer",
+					"format": "int32",
+					"description": "当前页",
+					"allowEmptyValue": false
+				},
+				"pageSize": {
+					"type": "integer",
+					"format": "int32",
+					"description": "页数据数",
+					"allowEmptyValue": false
+				}
+			},
+			"title": "APage?List?ProductstocksList??"
+		},
+		"APage?List?SchoolList??": {
+			"type": "object",
+			"properties": {
+				"count": {
+					"type": "integer",
+					"format": "int64",
+					"description": "数据总数",
+					"allowEmptyValue": false
+				},
+				"list": {
+					"type": "array",
+					"description": "数据",
+					"allowEmptyValue": false,
+					"items": {
+						"$ref": "#/definitions/SchoolList"
+					}
+				},
+				"pageNo": {
+					"type": "integer",
+					"format": "int32",
+					"description": "当前页",
+					"allowEmptyValue": false
+				},
+				"pageSize": {
+					"type": "integer",
+					"format": "int32",
+					"description": "页数据数",
+					"allowEmptyValue": false
+				}
+			},
+			"title": "APage?List?SchoolList??"
+		},
+		"APage?List?StudentList??": {
+			"type": "object",
+			"properties": {
+				"count": {
+					"type": "integer",
+					"format": "int64",
+					"description": "数据总数",
+					"allowEmptyValue": false
+				},
+				"list": {
+					"type": "array",
+					"description": "数据",
+					"allowEmptyValue": false,
+					"items": {
+						"$ref": "#/definitions/StudentList"
+					}
+				},
+				"pageNo": {
+					"type": "integer",
+					"format": "int32",
+					"description": "当前页",
+					"allowEmptyValue": false
+				},
+				"pageSize": {
+					"type": "integer",
+					"format": "int32",
+					"description": "页数据数",
+					"allowEmptyValue": false
+				}
+			},
+			"title": "APage?List?StudentList??"
 		},
 		"AResultSet": {
 			"type": "object",
@@ -669,11 +2418,11 @@
 			"title": "AResultSet",
 			"description": "统一返回结果集类（非实体类）"
 		},
-		"AResultSet?APage?List?Corp???": {
+		"AResultSet?APage?List?BaseProductinfoList???": {
 			"type": "object",
 			"properties": {
 				"data": {
-					"$ref": "#/definitions/APage?List?Corp??"
+					"$ref": "#/definitions/APage?List?BaseProductinfoList??"
 				},
 				"message": {
 					"type": "string",
@@ -687,14 +2436,14 @@
 					"allowEmptyValue": false
 				}
 			},
-			"title": "AResultSet?APage?List?Corp???",
+			"title": "AResultSet?APage?List?BaseProductinfoList???",
 			"description": "统一返回结果集类（非实体类）"
 		},
-		"AResultSet?APage?List?User???": {
+		"AResultSet?APage?List?OmsorderdetailsList???": {
 			"type": "object",
 			"properties": {
 				"data": {
-					"$ref": "#/definitions/APage?List?User??"
+					"$ref": "#/definitions/APage?List?OmsorderdetailsList??"
 				},
 				"message": {
 					"type": "string",
@@ -708,14 +2457,14 @@
 					"allowEmptyValue": false
 				}
 			},
-			"title": "AResultSet?APage?List?User???",
+			"title": "AResultSet?APage?List?OmsorderdetailsList???",
 			"description": "统一返回结果集类（非实体类）"
 		},
-		"AResultSet?Corp?": {
+		"AResultSet?APage?List?OmsordersList???": {
 			"type": "object",
 			"properties": {
 				"data": {
-					"$ref": "#/definitions/Corp"
+					"$ref": "#/definitions/APage?List?OmsordersList??"
 				},
 				"message": {
 					"type": "string",
@@ -729,14 +2478,14 @@
 					"allowEmptyValue": false
 				}
 			},
-			"title": "AResultSet?Corp?",
+			"title": "AResultSet?APage?List?OmsordersList???",
 			"description": "统一返回结果集类（非实体类）"
 		},
-		"AResultSet?User?": {
+		"AResultSet?APage?List?OutScanresultlistList???": {
 			"type": "object",
 			"properties": {
 				"data": {
-					"$ref": "#/definitions/User"
+					"$ref": "#/definitions/APage?List?OutScanresultlistList??"
 				},
 				"message": {
 					"type": "string",
@@ -750,10 +2499,265 @@
 					"allowEmptyValue": false
 				}
 			},
-			"title": "AResultSet?User?",
+			"title": "AResultSet?APage?List?OutScanresultlistList???",
 			"description": "统一返回结果集类（非实体类）"
 		},
-		"ASearch?CorpSearch?": {
+		"AResultSet?APage?List?ProductstocksList???": {
+			"type": "object",
+			"properties": {
+				"data": {
+					"$ref": "#/definitions/APage?List?ProductstocksList??"
+				},
+				"message": {
+					"type": "string",
+					"description": "信息",
+					"allowEmptyValue": false
+				},
+				"status": {
+					"type": "integer",
+					"format": "int32",
+					"description": "状态编码",
+					"allowEmptyValue": false
+				}
+			},
+			"title": "AResultSet?APage?List?ProductstocksList???",
+			"description": "统一返回结果集类（非实体类）"
+		},
+		"AResultSet?APage?List?SchoolList???": {
+			"type": "object",
+			"properties": {
+				"data": {
+					"$ref": "#/definitions/APage?List?SchoolList??"
+				},
+				"message": {
+					"type": "string",
+					"description": "信息",
+					"allowEmptyValue": false
+				},
+				"status": {
+					"type": "integer",
+					"format": "int32",
+					"description": "状态编码",
+					"allowEmptyValue": false
+				}
+			},
+			"title": "AResultSet?APage?List?SchoolList???",
+			"description": "统一返回结果集类（非实体类）"
+		},
+		"AResultSet?APage?List?StudentList???": {
+			"type": "object",
+			"properties": {
+				"data": {
+					"$ref": "#/definitions/APage?List?StudentList??"
+				},
+				"message": {
+					"type": "string",
+					"description": "信息",
+					"allowEmptyValue": false
+				},
+				"status": {
+					"type": "integer",
+					"format": "int32",
+					"description": "状态编码",
+					"allowEmptyValue": false
+				}
+			},
+			"title": "AResultSet?APage?List?StudentList???",
+			"description": "统一返回结果集类（非实体类）"
+		},
+		"AResultSet?BaseProductinfoList?": {
+			"type": "object",
+			"properties": {
+				"data": {
+					"$ref": "#/definitions/BaseProductinfoList"
+				},
+				"message": {
+					"type": "string",
+					"description": "信息",
+					"allowEmptyValue": false
+				},
+				"status": {
+					"type": "integer",
+					"format": "int32",
+					"description": "状态编码",
+					"allowEmptyValue": false
+				}
+			},
+			"title": "AResultSet?BaseProductinfoList?",
+			"description": "统一返回结果集类（非实体类）"
+		},
+		"AResultSet?List?AEntityColumns??": {
+			"type": "object",
+			"properties": {
+				"data": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/AEntityColumns"
+					}
+				},
+				"message": {
+					"type": "string",
+					"description": "信息",
+					"allowEmptyValue": false
+				},
+				"status": {
+					"type": "integer",
+					"format": "int32",
+					"description": "状态编码",
+					"allowEmptyValue": false
+				}
+			},
+			"title": "AResultSet?List?AEntityColumns??",
+			"description": "统一返回结果集类（非实体类）"
+		},
+		"AResultSet?OmsPlaceOrders?": {
+			"type": "object",
+			"properties": {
+				"data": {
+					"$ref": "#/definitions/OmsPlaceOrders"
+				},
+				"message": {
+					"type": "string",
+					"description": "信息",
+					"allowEmptyValue": false
+				},
+				"status": {
+					"type": "integer",
+					"format": "int32",
+					"description": "状态编码",
+					"allowEmptyValue": false
+				}
+			},
+			"title": "AResultSet?OmsPlaceOrders?",
+			"description": "统一返回结果集类（非实体类）"
+		},
+		"AResultSet?OmsorderdetailsList?": {
+			"type": "object",
+			"properties": {
+				"data": {
+					"$ref": "#/definitions/OmsorderdetailsList"
+				},
+				"message": {
+					"type": "string",
+					"description": "信息",
+					"allowEmptyValue": false
+				},
+				"status": {
+					"type": "integer",
+					"format": "int32",
+					"description": "状态编码",
+					"allowEmptyValue": false
+				}
+			},
+			"title": "AResultSet?OmsorderdetailsList?",
+			"description": "统一返回结果集类（非实体类）"
+		},
+		"AResultSet?OmsordersList?": {
+			"type": "object",
+			"properties": {
+				"data": {
+					"$ref": "#/definitions/OmsordersList"
+				},
+				"message": {
+					"type": "string",
+					"description": "信息",
+					"allowEmptyValue": false
+				},
+				"status": {
+					"type": "integer",
+					"format": "int32",
+					"description": "状态编码",
+					"allowEmptyValue": false
+				}
+			},
+			"title": "AResultSet?OmsordersList?",
+			"description": "统一返回结果集类（非实体类）"
+		},
+		"AResultSet?OutScanresultlistList?": {
+			"type": "object",
+			"properties": {
+				"data": {
+					"$ref": "#/definitions/OutScanresultlistList"
+				},
+				"message": {
+					"type": "string",
+					"description": "信息",
+					"allowEmptyValue": false
+				},
+				"status": {
+					"type": "integer",
+					"format": "int32",
+					"description": "状态编码",
+					"allowEmptyValue": false
+				}
+			},
+			"title": "AResultSet?OutScanresultlistList?",
+			"description": "统一返回结果集类（非实体类）"
+		},
+		"AResultSet?ProductstocksList?": {
+			"type": "object",
+			"properties": {
+				"data": {
+					"$ref": "#/definitions/ProductstocksList"
+				},
+				"message": {
+					"type": "string",
+					"description": "信息",
+					"allowEmptyValue": false
+				},
+				"status": {
+					"type": "integer",
+					"format": "int32",
+					"description": "状态编码",
+					"allowEmptyValue": false
+				}
+			},
+			"title": "AResultSet?ProductstocksList?",
+			"description": "统一返回结果集类（非实体类）"
+		},
+		"AResultSet?SchoolList?": {
+			"type": "object",
+			"properties": {
+				"data": {
+					"$ref": "#/definitions/SchoolList"
+				},
+				"message": {
+					"type": "string",
+					"description": "信息",
+					"allowEmptyValue": false
+				},
+				"status": {
+					"type": "integer",
+					"format": "int32",
+					"description": "状态编码",
+					"allowEmptyValue": false
+				}
+			},
+			"title": "AResultSet?SchoolList?",
+			"description": "统一返回结果集类（非实体类）"
+		},
+		"AResultSet?StudentList?": {
+			"type": "object",
+			"properties": {
+				"data": {
+					"$ref": "#/definitions/StudentList"
+				},
+				"message": {
+					"type": "string",
+					"description": "信息",
+					"allowEmptyValue": false
+				},
+				"status": {
+					"type": "integer",
+					"format": "int32",
+					"description": "状态编码",
+					"allowEmptyValue": false
+				}
+			},
+			"title": "AResultSet?StudentList?",
+			"description": "统一返回结果集类（非实体类）"
+		},
+		"ASearch?BaseProductinfoSearch?": {
 			"type": "object",
 			"properties": {
 				"pageNo": {
@@ -765,12 +2769,12 @@
 					"format": "int32"
 				},
 				"search": {
-					"$ref": "#/definitions/CorpSearch"
+					"$ref": "#/definitions/BaseProductinfoSearch"
 				}
 			},
-			"title": "ASearch?CorpSearch?"
+			"title": "ASearch?BaseProductinfoSearch?"
 		},
-		"ASearch?UserSearch?": {
+		"ASearch?OmsorderdetailsSearch?": {
 			"type": "object",
 			"properties": {
 				"pageNo": {
@@ -782,450 +2786,5313 @@
 					"format": "int32"
 				},
 				"search": {
-					"$ref": "#/definitions/UserSearch"
+					"$ref": "#/definitions/OmsorderdetailsSearch"
 				}
 			},
-			"title": "ASearch?UserSearch?"
+			"title": "ASearch?OmsorderdetailsSearch?"
 		},
-		"Corp": {
+		"ASearch?OmsordersSearch?": {
 			"type": "object",
 			"properties": {
-				"id": {
-					"type": "string",
-					"description": "公司ID",
-					"allowEmptyValue": false,
-					"minLength": 0,
-					"maxLength": 5
-				},
-				"corpName": {
-					"type": "string",
-					"description": "公司名",
-					"allowEmptyValue": true,
-					"minLength": 0,
-					"maxLength": 50
-				},
-				"managerID": {
-					"type": "string",
-					"description": "管理员ID",
-					"allowEmptyValue": true,
-					"minLength": 0,
-					"maxLength": 10
-				},
-				"parentCorpID": {
-					"type": "string",
-					"description": "上级公司ID",
-					"allowEmptyValue": true,
-					"minLength": 0,
-					"maxLength": 10
-				},
-				"corpEmpTotals": {
+				"pageNo": {
 					"type": "integer",
-					"format": "int32",
-					"description": "总员工数",
-					"allowEmptyValue": true,
-					"minimum": 0,
-					"maximum": 10,
-					"exclusiveMinimum": false,
-					"exclusiveMaximum": false
+					"format": "int32"
 				},
-				"useYN": {
+				"pageSize": {
 					"type": "integer",
-					"format": "int32",
-					"example": {
-						"enum": {
-							"1": "是",
-							"0": "否"
-						}
-					},
-					"description": "使用与否",
-					"allowEmptyValue": true,
-					"minimum": 0,
-					"maximum": 2,
-					"exclusiveMinimum": false,
-					"exclusiveMaximum": false
+					"format": "int32"
 				},
-				"createUser": {
-					"type": "string",
-					"description": "创建用户ID",
-					"allowEmptyValue": true,
-					"minLength": 0,
-					"maxLength": 10
-				},
-				"createDate": {
-					"type": "string",
-					"format": "date-time",
-					"description": "创建日期",
-					"allowEmptyValue": true
-				},
-				"updateUser": {
-					"type": "string",
-					"description": "修改用户ID",
-					"allowEmptyValue": true,
-					"minLength": 0,
-					"maxLength": 10
-				},
-				"updateDate": {
-					"type": "string",
-					"format": "date-time",
-					"description": "修改日期",
-					"allowEmptyValue": true
+				"search": {
+					"$ref": "#/definitions/OmsordersSearch"
 				}
 			},
-			"title": "Corp",
-			"description": "公司"
+			"title": "ASearch?OmsordersSearch?"
 		},
-		"CorpSearch": {
+		"ASearch?OutScanresultlistSearch?": {
 			"type": "object",
 			"properties": {
-				"id": {
-					"type": "string",
-					"description": "公司ID",
-					"allowEmptyValue": false,
-					"minLength": 0,
-					"maxLength": 5
-				},
-				"corpName": {
-					"type": "string",
-					"description": "公司名",
-					"allowEmptyValue": true,
-					"minLength": 0,
-					"maxLength": 50
-				},
-				"managerID": {
-					"type": "string",
-					"description": "管理员ID",
-					"allowEmptyValue": true,
-					"minLength": 0,
-					"maxLength": 10
-				},
-				"parentCorpID": {
-					"type": "string",
-					"description": "上级公司ID",
-					"allowEmptyValue": true,
-					"minLength": 0,
-					"maxLength": 10
-				},
-				"corpEmpTotals": {
+				"pageNo": {
 					"type": "integer",
-					"format": "int32",
-					"description": "总员工数",
-					"allowEmptyValue": true,
-					"minimum": 0,
-					"maximum": 10,
-					"exclusiveMinimum": false,
-					"exclusiveMaximum": false
+					"format": "int32"
 				},
-				"useYN": {
+				"pageSize": {
 					"type": "integer",
-					"format": "int32",
-					"example": {
-						"enum": {
-							"1": "是",
-							"0": "否"
-						}
-					},
-					"description": "使用与否",
-					"allowEmptyValue": true,
-					"minimum": 0,
-					"maximum": 2,
-					"exclusiveMinimum": false,
-					"exclusiveMaximum": false
+					"format": "int32"
 				},
-				"createUser": {
-					"type": "string",
-					"description": "创建用户ID",
-					"allowEmptyValue": true,
-					"minLength": 0,
-					"maxLength": 10
-				},
-				"createDate": {
-					"type": "string",
-					"format": "date-time",
-					"description": "创建日期",
-					"allowEmptyValue": true
-				},
-				"createDateStr": {
-					"type": "string",
-					"example": {
-						"datetime": true
-					},
-					"description": "创建日期",
-					"allowEmptyValue": true
-				},
-				"updateDateStr": {
-					"type": "string",
-					"example": {
-						"date": true
-					},
-					"description": "修改日期",
-					"allowEmptyValue": true
-				},
-				"updateUser": {
-					"type": "string",
-					"description": "修改用户ID",
-					"allowEmptyValue": true,
-					"minLength": 0,
-					"maxLength": 10
-				},
-				"updateDate": {
-					"type": "string",
-					"format": "date-time",
-					"description": "修改日期",
-					"allowEmptyValue": true
+				"search": {
+					"$ref": "#/definitions/OutScanresultlistSearch"
 				}
 			},
-			"title": "CorpSearch",
-			"description": "公司"
+			"title": "ASearch?OutScanresultlistSearch?"
 		},
-		"User": {
+		"ASearch?ProductstocksSearch?": {
 			"type": "object",
 			"properties": {
-				"id": {
-					"type": "string",
-					"description": "用户ID",
-					"allowEmptyValue": false,
-					"minLength": 0,
-					"maxLength": 10
-				},
-				"corpID": {
-					"type": "string",
-					"example": {
-						"combo": 1,
-						"multi": true
-					},
-					"description": "公司ID",
-					"allowEmptyValue": true,
-					"minLength": 0,
-					"maxLength": 5
-				},
-				"userName": {
-					"type": "string",
-					"description": "用户名",
-					"allowEmptyValue": true,
-					"minLength": 0,
-					"maxLength": 50
-				},
-				"mobileNo": {
-					"type": "string",
-					"description": "手机号",
-					"allowEmptyValue": true,
-					"minLength": 0,
-					"maxLength": 20
-				},
-				"telNo": {
-					"type": "string",
-					"description": "座机号",
-					"allowEmptyValue": true,
-					"minLength": 0,
-					"maxLength": 20
-				},
-				"email": {
-					"type": "string",
-					"description": "邮箱",
-					"allowEmptyValue": true,
-					"minLength": 0,
-					"maxLength": 50
-				},
-				"useYN": {
+				"pageNo": {
 					"type": "integer",
-					"format": "int32",
-					"description": "使用与否",
-					"allowEmptyValue": true,
+					"format": "int32"
+				},
+				"pageSize": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"search": {
+					"$ref": "#/definitions/ProductstocksSearch"
+				}
+			},
+			"title": "ASearch?ProductstocksSearch?"
+		},
+		"ASearch?SchoolSearch?": {
+			"type": "object",
+			"properties": {
+				"pageNo": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"pageSize": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"search": {
+					"$ref": "#/definitions/SchoolSearch"
+				}
+			},
+			"title": "ASearch?SchoolSearch?"
+		},
+		"ASearch?StudentSearch?": {
+			"type": "object",
+			"properties": {
+				"pageNo": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"pageSize": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"search": {
+					"$ref": "#/definitions/StudentSearch"
+				}
+			},
+			"title": "ASearch?StudentSearch?"
+		},
+		"BaseProductinfo": {
+			"type": "object",
+			"properties": {
+				"productId": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": false,
 					"minimum": 0,
-					"maximum": 2,
+					"maximum": 20,
 					"exclusiveMinimum": false,
 					"exclusiveMaximum": false
 				},
-				"posID": {
+				"productcode": {
 					"type": "string",
-					"description": "职位ID",
 					"allowEmptyValue": true,
 					"minLength": 0,
-					"maxLength": 10
+					"maxLength": 50
 				},
-				"dutyID": {
+				"iipcproductcode": {
 					"type": "string",
-					"description": "职责ID",
 					"allowEmptyValue": true,
 					"minLength": 0,
-					"maxLength": 10
+					"maxLength": 50
 				},
-				"password": {
+				"productname": {
 					"type": "string",
-					"description": "密码",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"volume": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"weight": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"roadtabnum": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"traintabnum": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"airtabnum": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"unit": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"packingmulti": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"packingdivisor": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"productgroupid": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"ispracticality": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"mustscan": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 4,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"remark": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"enable": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"orderno": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"createid": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"creator": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"createdate": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"modifyid": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"modifier": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"modifydate": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"productbigtypeId": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"productbigname": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 30
+				},
+				"storageId": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"flag": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 1
+				},
+				"isx86": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"syncflag": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 1
+				},
+				"tranTmsflag": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 1
+				}
+			},
+			"title": "BaseProductinfo",
+			"description": "商品"
+		},
+		"BaseProductinfoList": {
+			"type": "object",
+			"properties": {
+				"airtabnum": {
+					"type": "number"
+				},
+				"createdate": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"createid": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"creator": {
+					"type": "string"
+				},
+				"enable": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"flag": {
+					"type": "string"
+				},
+				"iipcproductcode": {
+					"type": "string"
+				},
+				"ispracticality": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"isx86": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"modifier": {
+					"type": "string"
+				},
+				"modifydate": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"modifyid": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"mustscan": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"orderno": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"packingdivisor": {
+					"type": "number"
+				},
+				"packingmulti": {
+					"type": "number"
+				},
+				"productId": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": false,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"productbigname": {
+					"type": "string"
+				},
+				"productbigtypeId": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"productcode": {
+					"type": "string"
+				},
+				"productgroupid": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"productname": {
+					"type": "string"
+				},
+				"remark": {
+					"type": "string"
+				},
+				"roadtabnum": {
+					"type": "number"
+				},
+				"storageId": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"syncflag": {
+					"type": "string"
+				},
+				"traintabnum": {
+					"type": "number"
+				},
+				"tranTmsflag": {
+					"type": "string"
+				},
+				"unit": {
+					"type": "string"
+				},
+				"volume": {
+					"type": "number"
+				},
+				"weight": {
+					"type": "number"
+				}
+			},
+			"title": "BaseProductinfoList",
+			"description": "商品"
+		},
+		"BaseProductinfoSearch": {
+			"type": "object",
+			"properties": {
+				"createdateFrom": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"createdateTo": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"modifydateFrom": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"modifydateTo": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"productId": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": false,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"productcode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"iipcproductcode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"productname": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"volume": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"weight": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"roadtabnum": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"traintabnum": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"airtabnum": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"unit": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"packingmulti": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"packingdivisor": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"productgroupid": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"ispracticality": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"mustscan": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 4,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"remark": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"enable": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"orderno": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"createid": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"creator": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"createdate": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"modifyid": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"modifier": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"modifydate": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"productbigtypeId": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"productbigname": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 30
+				},
+				"storageId": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"flag": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 1
+				},
+				"isx86": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"syncflag": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 1
+				},
+				"tranTmsflag": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 1
+				}
+			},
+			"title": "BaseProductinfoSearch"
+		},
+		"Link": {
+			"type": "object",
+			"properties": {
+				"href": {
+					"type": "string"
+				},
+				"templated": {
+					"type": "boolean"
+				}
+			},
+			"title": "Link"
+		},
+		"Map?string,Link?": {
+			"type": "object",
+			"title": "Map?string,Link?",
+			"additionalProperties": {
+				"$ref": "#/definitions/Link"
+			}
+		},
+		"OmsPlaceOrders": {
+			"type": "object",
+			"properties": {
+				"dtl": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/Omsorderdetails"
+					}
+				},
+				"id": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": false,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"orderno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"distributionno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"distributionid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"rdcid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"agencyid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"agencyname": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"agencycode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"resellername": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"resellercode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"resellerid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"destresellercode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"destresellername": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"destresellerid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"countyid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"channelcode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"channelid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"orderstatusid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"ordertypeid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"destrdcid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"biztypeid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"productgrouptypeid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"agencyaddresscode": {
+					"type": "string",
 					"allowEmptyValue": true,
 					"minLength": 0,
 					"maxLength": 100
 				},
-				"deptGroup": {
-					"type": "string",
-					"description": "部门组织ID",
-					"allowEmptyValue": true,
-					"minLength": 0,
-					"maxLength": 10
-				},
-				"createUser": {
-					"type": "string",
-					"description": "创建用户ID",
-					"allowEmptyValue": true,
-					"minLength": 0,
-					"maxLength": 10
-				},
-				"createDate": {
-					"type": "string",
-					"format": "date-time",
-					"description": "创建日期",
-					"allowEmptyValue": true
-				},
-				"updateUser": {
-					"type": "string",
-					"description": "修改用户ID",
-					"allowEmptyValue": true,
-					"minLength": 0,
-					"maxLength": 10
-				},
-				"updateDate": {
-					"type": "string",
-					"format": "date-time",
-					"description": "修改日期",
-					"allowEmptyValue": true
-				}
-			},
-			"title": "User",
-			"description": "用户"
-		},
-		"UserSearch": {
-			"type": "object",
-			"properties": {
-				"id": {
-					"type": "string",
-					"description": "用户ID",
-					"allowEmptyValue": false,
-					"minLength": 0,
-					"maxLength": 10
-				},
-				"corpID": {
-					"type": "string",
-					"example": {
-						"combo": 1,
-						"multi": true
-					},
-					"description": "公司ID",
-					"allowEmptyValue": true,
-					"minLength": 0,
-					"maxLength": 5
-				},
-				"userName": {
-					"type": "string",
-					"description": "用户名",
-					"allowEmptyValue": true,
-					"minLength": 0,
-					"maxLength": 50
-				},
-				"mobileNo": {
-					"type": "string",
-					"description": "手机号",
-					"allowEmptyValue": true,
-					"minLength": 0,
-					"maxLength": 20
-				},
-				"telNo": {
-					"type": "string",
-					"description": "座机号",
-					"allowEmptyValue": true,
-					"minLength": 0,
-					"maxLength": 20
-				},
-				"email": {
-					"type": "string",
-					"description": "邮箱",
-					"allowEmptyValue": true,
-					"minLength": 0,
-					"maxLength": 50
-				},
-				"useYN": {
+				"agencyaddressid": {
 					"type": "integer",
-					"format": "int32",
-					"description": "使用与否",
+					"format": "int64",
 					"allowEmptyValue": true,
 					"minimum": 0,
-					"maximum": 2,
+					"maximum": 20,
 					"exclusiveMinimum": false,
 					"exclusiveMaximum": false
 				},
-				"createDateStr": {
-					"type": "string",
-					"example": {
-						"datetime": true
-					},
-					"description": "创建日期",
-					"allowEmptyValue": true
-				},
-				"posID": {
-					"type": "string",
-					"description": "职位ID",
+				"volume": {
+					"type": "number",
 					"allowEmptyValue": true,
-					"minLength": 0,
-					"maxLength": 10
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
 				},
-				"updateDateStr": {
-					"type": "string",
-					"example": {
-						"date": true
-					},
-					"description": "修改日期",
-					"allowEmptyValue": true
-				},
-				"dutyID": {
-					"type": "string",
-					"description": "职责ID",
+				"weight": {
+					"type": "number",
 					"allowEmptyValue": true,
-					"minLength": 0,
-					"maxLength": 10
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
 				},
-				"password": {
+				"packingnum": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"total": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"resellerauditor": {
 					"type": "string",
-					"description": "密码",
 					"allowEmptyValue": true,
 					"minLength": 0,
 					"maxLength": 100
 				},
-				"deptGroup": {
+				"reselleraudittime": {
 					"type": "string",
-					"description": "部门组织ID",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"resellerauditreason": {
+					"type": "string",
 					"allowEmptyValue": true,
 					"minLength": 0,
-					"maxLength": 10
+					"maxLength": 21845
 				},
-				"createUser": {
+				"managerauditor": {
 					"type": "string",
-					"description": "创建用户ID",
 					"allowEmptyValue": true,
 					"minLength": 0,
-					"maxLength": 10
+					"maxLength": 100
 				},
-				"createDate": {
+				"manageraudittime": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"managerauditreason": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"auditstatus": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"remark": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"logicprovidername": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"phone": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 200
+				},
+				"email": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 200
+				},
+				"hangreason": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"hangdate": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"hangperson": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"hangtypeid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"mobile": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"postcode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"address": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"contactperson": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"text1": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"text2": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"text3": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"text4": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"text5": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"text6": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"transportmodeid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"withdrawalsperson": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"withdrawalsreason": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"withdrawalsdate": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"routeid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"deliverystandardid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"paymentid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"paymentamount": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"servicelevelid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"hour": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"ordersourceid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"agencyorderid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"secondlogisticsid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"secondlogisticsno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"ordertimes": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"createtimestamp": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"nooryes": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"resellerorderno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"createtime": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"createby": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"updatetime": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"updateby": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"uploadfileid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"uploadfileurl": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 200
+				},
+				"ismatsamecity": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 4,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"istwo": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 4,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"destdistributionno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"destdistributionid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"xlsordertypeid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				}
+			},
+			"title": "OmsPlaceOrders",
+			"description": "订单"
+		},
+		"Omsorderdetails": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": false,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"orderid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"orderno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 200
+				},
+				"productcode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 255
+				},
+				"barcode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 255
+				},
+				"childorderid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"productstockid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"goodmaindataid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"productgroupid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"total": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"volume": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"weight": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"packingnum": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"tmsordno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"tmsagentordno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"remark": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"ordsign": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"producttypename": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"goodmainvolume": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"goodmainweight": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"text1": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"text2": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"text3": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"text4": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"text5": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"text6": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"createtime": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"createby": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"updatetime": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"updateby": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"ismachined": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 4,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"oldweight": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"binstocktypecode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"inbinstocktypecode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				}
+			},
+			"title": "Omsorderdetails",
+			"description": "订单详细"
+		},
+		"OmsorderdetailsList": {
+			"type": "object",
+			"properties": {
+				"barcode": {
+					"type": "string"
+				},
+				"binstocktypecode": {
+					"type": "string"
+				},
+				"childorderid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"createby": {
+					"type": "string"
+				},
+				"createtime": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"goodmaindataid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"goodmainvolume": {
+					"type": "number"
+				},
+				"goodmainweight": {
+					"type": "number"
+				},
+				"id": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": false,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"inbinstocktypecode": {
+					"type": "string"
+				},
+				"ismachined": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"oldweight": {
+					"type": "number"
+				},
+				"orderid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"orderno": {
+					"type": "string"
+				},
+				"ordsign": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"packingnum": {
+					"type": "number"
+				},
+				"productcode": {
+					"type": "string"
+				},
+				"productgroupid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"productstockid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"producttypename": {
+					"type": "string"
+				},
+				"remark": {
+					"type": "string"
+				},
+				"text1": {
+					"type": "string"
+				},
+				"text2": {
+					"type": "string"
+				},
+				"text3": {
+					"type": "string"
+				},
+				"text4": {
+					"type": "string"
+				},
+				"text5": {
+					"type": "string"
+				},
+				"text6": {
+					"type": "string"
+				},
+				"tmsagentordno": {
+					"type": "string"
+				},
+				"tmsordno": {
+					"type": "string"
+				},
+				"total": {
+					"type": "number"
+				},
+				"updateby": {
+					"type": "string"
+				},
+				"updatetime": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"volume": {
+					"type": "number"
+				},
+				"weight": {
+					"type": "number"
+				}
+			},
+			"title": "OmsorderdetailsList",
+			"description": "订单详细"
+		},
+		"OmsorderdetailsSearch": {
+			"type": "object",
+			"properties": {
+				"createtimeFrom": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"createtimeTo": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"id": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": false,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"updatetimeFrom": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"updatetimeTo": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"orderid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"orderno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 200
+				},
+				"productcode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 255
+				},
+				"barcode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 255
+				},
+				"childorderid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"productstockid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"goodmaindataid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"productgroupid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"total": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"volume": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"weight": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"packingnum": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"tmsordno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"tmsagentordno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"remark": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"ordsign": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"producttypename": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"goodmainvolume": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"goodmainweight": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"text1": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"text2": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"text3": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"text4": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"text5": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"text6": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"createtime": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"createby": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"updatetime": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"updateby": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"ismachined": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 4,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"oldweight": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"binstocktypecode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"inbinstocktypecode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				}
+			},
+			"title": "OmsorderdetailsSearch"
+		},
+		"Omsorders": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": false,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"orderno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"distributionno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"distributionid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"rdcid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"agencyid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"agencyname": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"agencycode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"resellername": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"resellercode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"resellerid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"destresellercode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"destresellername": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"destresellerid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"countyid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"channelcode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"channelid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"orderstatusid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"ordertypeid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"destrdcid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"biztypeid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"productgrouptypeid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"agencyaddresscode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"agencyaddressid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"volume": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"weight": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"packingnum": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"total": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"resellerauditor": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"reselleraudittime": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"resellerauditreason": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"managerauditor": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"manageraudittime": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"managerauditreason": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"auditstatus": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"remark": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"logicprovidername": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"phone": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 200
+				},
+				"email": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 200
+				},
+				"hangreason": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"hangdate": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"hangperson": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"hangtypeid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"mobile": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"postcode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"address": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"contactperson": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"text1": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"text2": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"text3": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"text4": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"text5": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"text6": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"transportmodeid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"withdrawalsperson": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"withdrawalsreason": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"withdrawalsdate": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"routeid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"deliverystandardid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"paymentid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"paymentamount": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"servicelevelid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"hour": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"ordersourceid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"agencyorderid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"secondlogisticsid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"secondlogisticsno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"ordertimes": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"createtimestamp": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"nooryes": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"resellerorderno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"createtime": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"createby": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"updatetime": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"updateby": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"uploadfileid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"uploadfileurl": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 200
+				},
+				"ismatsamecity": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 4,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"istwo": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 4,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"destdistributionno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"destdistributionid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"xlsordertypeid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				}
+			},
+			"title": "Omsorders",
+			"description": "订单"
+		},
+		"OmsordersList": {
+			"type": "object",
+			"properties": {
+				"address": {
+					"type": "string"
+				},
+				"agencyaddresscode": {
+					"type": "string"
+				},
+				"agencyaddressid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"agencycode": {
+					"type": "string"
+				},
+				"agencyid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"agencyname": {
+					"type": "string"
+				},
+				"agencyorderid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"auditstatus": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"biztypeid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"channelcode": {
+					"type": "string"
+				},
+				"channelid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"contactperson": {
+					"type": "string"
+				},
+				"countyid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"createby": {
+					"type": "string"
+				},
+				"createtime": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"createtimestamp": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"deliverystandardid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"destdistributionid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"destdistributionno": {
+					"type": "string"
+				},
+				"destrdcid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"destresellercode": {
+					"type": "string"
+				},
+				"destresellerid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"destresellername": {
+					"type": "string"
+				},
+				"distributionid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"distributionno": {
+					"type": "string"
+				},
+				"email": {
+					"type": "string"
+				},
+				"hangdate": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"hangperson": {
+					"type": "string"
+				},
+				"hangreason": {
+					"type": "string"
+				},
+				"hangtypeid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"hour": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"id": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": false,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"ismatsamecity": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"istwo": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"logicprovidername": {
+					"type": "string"
+				},
+				"managerauditor": {
+					"type": "string"
+				},
+				"managerauditreason": {
+					"type": "string"
+				},
+				"manageraudittime": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"mobile": {
+					"type": "string"
+				},
+				"nooryes": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"orderno": {
+					"type": "string"
+				},
+				"ordersourceid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"orderstatusid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"ordertimes": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"ordertypeid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"packingnum": {
+					"type": "number"
+				},
+				"paymentamount": {
+					"type": "number"
+				},
+				"paymentid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"phone": {
+					"type": "string"
+				},
+				"postcode": {
+					"type": "string"
+				},
+				"productgrouptypeid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"rdcid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"remark": {
+					"type": "string"
+				},
+				"resellerauditor": {
+					"type": "string"
+				},
+				"resellerauditreason": {
+					"type": "string"
+				},
+				"reselleraudittime": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"resellercode": {
+					"type": "string"
+				},
+				"resellerid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"resellername": {
+					"type": "string"
+				},
+				"resellerorderno": {
+					"type": "string"
+				},
+				"routeid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"secondlogisticsid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"secondlogisticsno": {
+					"type": "string"
+				},
+				"servicelevelid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"text1": {
+					"type": "string"
+				},
+				"text2": {
+					"type": "string"
+				},
+				"text3": {
+					"type": "string"
+				},
+				"text4": {
+					"type": "string"
+				},
+				"text5": {
+					"type": "string"
+				},
+				"text6": {
+					"type": "string"
+				},
+				"total": {
+					"type": "number"
+				},
+				"transportmodeid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"updateby": {
+					"type": "string"
+				},
+				"updatetime": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"uploadfileid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"uploadfileurl": {
+					"type": "string"
+				},
+				"volume": {
+					"type": "number"
+				},
+				"weight": {
+					"type": "number"
+				},
+				"withdrawalsdate": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"withdrawalsperson": {
+					"type": "string"
+				},
+				"withdrawalsreason": {
+					"type": "string"
+				},
+				"xlsordertypeid": {
+					"type": "integer",
+					"format": "int64"
+				}
+			},
+			"title": "OmsordersList",
+			"description": "订单"
+		},
+		"OmsordersSearch": {
+			"type": "object",
+			"properties": {
+				"createtimeFrom": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"createtimeTo": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"hangdateFrom": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"hangdateTo": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"id": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": false,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"manageraudittimeFrom": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"manageraudittimeTo": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"ordertimesFrom": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"ordertimesTo": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"reselleraudittimeFrom": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"reselleraudittimeTo": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"updatetimeFrom": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"updatetimeTo": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"withdrawalsdateFrom": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"withdrawalsdateTo": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"orderno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"distributionno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"distributionid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"rdcid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"agencyid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"agencyname": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"agencycode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"resellername": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"resellercode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"resellerid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"destresellercode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"destresellername": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"destresellerid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"countyid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"channelcode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"channelid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"orderstatusid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"ordertypeid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"destrdcid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"biztypeid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"productgrouptypeid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"agencyaddresscode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"agencyaddressid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"volume": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"weight": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"packingnum": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"total": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"resellerauditor": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"reselleraudittime": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"resellerauditreason": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"managerauditor": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"manageraudittime": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"managerauditreason": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"auditstatus": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"remark": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"logicprovidername": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"phone": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 200
+				},
+				"email": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 200
+				},
+				"hangreason": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"hangdate": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"hangperson": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"hangtypeid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"mobile": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"postcode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"address": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"contactperson": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"text1": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"text2": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"text3": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"text4": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"text5": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"text6": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"transportmodeid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"withdrawalsperson": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"withdrawalsreason": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"withdrawalsdate": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"routeid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"deliverystandardid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"paymentid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"paymentamount": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"servicelevelid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"hour": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"ordersourceid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"agencyorderid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"secondlogisticsid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"secondlogisticsno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"ordertimes": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"createtimestamp": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"nooryes": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"resellerorderno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"createtime": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"createby": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"updatetime": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"updateby": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"uploadfileid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"uploadfileurl": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 200
+				},
+				"ismatsamecity": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 4,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"istwo": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 4,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"destdistributionno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"destdistributionid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"xlsordertypeid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				}
+			},
+			"title": "OmsordersSearch"
+		},
+		"OutScanresultlist": {
+			"type": "object",
+			"properties": {
+				"scanresultlistId": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": false,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"scanId": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"sendId": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"sendlistId": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"pickbillId": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"pickbilllistId": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"productcode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"productname": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"barcode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"sn": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"mo": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"remark": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"enable": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"createid": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"creator": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"createdate": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"modifyid": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"modifier": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"modifydate": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"volume": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"weight": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"positionno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"plateno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"ishavebarcode": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"snMtm": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"isMtmSn": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"snMo": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"productbigname": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"originalproductcode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"operator": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"tabletno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"iscompletetablet": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"imei1": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"imei2": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"imei3": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"qrCode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"outsapno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				}
+			},
+			"title": "OutScanresultlist",
+			"description": "SN"
+		},
+		"OutScanresultlistList": {
+			"type": "object",
+			"properties": {
+				"barcode": {
+					"type": "string"
+				},
+				"createdate": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"createid": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"creator": {
+					"type": "string"
+				},
+				"enable": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"imei1": {
+					"type": "string"
+				},
+				"imei2": {
+					"type": "string"
+				},
+				"imei3": {
+					"type": "string"
+				},
+				"isMtmSn": {
+					"type": "string"
+				},
+				"iscompletetablet": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"ishavebarcode": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"mo": {
+					"type": "string"
+				},
+				"modifier": {
+					"type": "string"
+				},
+				"modifydate": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"modifyid": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"operator": {
+					"type": "string"
+				},
+				"originalproductcode": {
+					"type": "string"
+				},
+				"outsapno": {
+					"type": "string"
+				},
+				"pickbillId": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"pickbilllistId": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"plateno": {
+					"type": "string"
+				},
+				"positionno": {
+					"type": "string"
+				},
+				"productbigname": {
+					"type": "string"
+				},
+				"productcode": {
+					"type": "string"
+				},
+				"productname": {
+					"type": "string"
+				},
+				"qrCode": {
+					"type": "string"
+				},
+				"remark": {
+					"type": "string"
+				},
+				"scanId": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"scanresultlistId": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": false,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"sendId": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"sendlistId": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"sn": {
+					"type": "string"
+				},
+				"snMo": {
+					"type": "string"
+				},
+				"snMtm": {
+					"type": "string"
+				},
+				"tabletno": {
+					"type": "string"
+				},
+				"volume": {
+					"type": "number"
+				},
+				"weight": {
+					"type": "number"
+				}
+			},
+			"title": "OutScanresultlistList",
+			"description": "SN"
+		},
+		"OutScanresultlistSearch": {
+			"type": "object",
+			"properties": {
+				"createdateFrom": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"createdateTo": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"modifydateFrom": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"modifydateTo": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"scanresultlistId": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": false,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"scanId": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"sendId": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"sendlistId": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"pickbillId": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"pickbilllistId": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"productcode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"productname": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 21845
+				},
+				"barcode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"sn": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"mo": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"remark": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"enable": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"createid": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"creator": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"createdate": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"modifyid": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"modifier": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"modifydate": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"volume": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"weight": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"positionno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"plateno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"ishavebarcode": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"snMtm": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"isMtmSn": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"snMo": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"productbigname": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"originalproductcode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"operator": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"tabletno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"iscompletetablet": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"imei1": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"imei2": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"imei3": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"qrCode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"outsapno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				}
+			},
+			"title": "OutScanresultlistSearch"
+		},
+		"Productstocks": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": false,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"materialid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"biztypeid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"productgroupid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"channelid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"rdcid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"resellerid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"productcode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"productgroupcode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"biztypename": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"channelcode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"resellercode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"rdccode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"tmsordno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"tmsagentordno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"ordsign": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"totalnum": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"usablenum": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"exceptionnum": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"text1": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"text2": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"text3": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"text4": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"text5": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"text6": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"laststockindate": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"createtime": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"createby": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"updatetime": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"updateby": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"mianid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"fromdatarouteid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"fromdbserverid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"hadresolveexceptionnum": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 19,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"machinednum": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"employnums": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				}
+			},
+			"title": "Productstocks",
+			"description": "库存"
+		},
+		"ProductstocksList": {
+			"type": "object",
+			"properties": {
+				"biztypeid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"biztypename": {
+					"type": "string"
+				},
+				"channelcode": {
+					"type": "string"
+				},
+				"channelid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"createby": {
+					"type": "string"
+				},
+				"createtime": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"employnums": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"exceptionnum": {
+					"type": "number"
+				},
+				"fromdatarouteid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"fromdbserverid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"hadresolveexceptionnum": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"id": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": false,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"laststockindate": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"machinednum": {
+					"type": "number"
+				},
+				"materialid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"mianid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"ordsign": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"productcode": {
+					"type": "string"
+				},
+				"productgroupcode": {
+					"type": "string"
+				},
+				"productgroupid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"rdccode": {
+					"type": "string"
+				},
+				"rdcid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"resellercode": {
+					"type": "string"
+				},
+				"resellerid": {
+					"type": "integer",
+					"format": "int64"
+				},
+				"text1": {
+					"type": "string"
+				},
+				"text2": {
+					"type": "string"
+				},
+				"text3": {
+					"type": "string"
+				},
+				"text4": {
+					"type": "string"
+				},
+				"text5": {
+					"type": "string"
+				},
+				"text6": {
+					"type": "string"
+				},
+				"tmsagentordno": {
+					"type": "string"
+				},
+				"tmsordno": {
+					"type": "string"
+				},
+				"totalnum": {
+					"type": "number"
+				},
+				"updateby": {
+					"type": "string"
+				},
+				"updatetime": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"usablenum": {
+					"type": "number"
+				}
+			},
+			"title": "ProductstocksList",
+			"description": "库存"
+		},
+		"ProductstocksSearch": {
+			"type": "object",
+			"properties": {
+				"createtimeFrom": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"createtimeTo": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"id": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": false,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"laststockindateFrom": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"laststockindateTo": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"updatetimeFrom": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"updatetimeTo": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"materialid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"biztypeid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"productgroupid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"channelid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"rdcid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"resellerid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"productcode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"productgroupcode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"biztypename": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"channelcode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"resellercode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"rdccode": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"tmsordno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"tmsagentordno": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"ordsign": {
+					"type": "integer",
+					"format": "int32",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 11,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"totalnum": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"usablenum": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"exceptionnum": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"text1": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"text2": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"text3": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"text4": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"text5": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"text6": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 100
+				},
+				"laststockindate": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"createtime": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"createby": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"updatetime": {
+					"type": "string",
+					"format": "date-time",
+					"allowEmptyValue": true
+				},
+				"updateby": {
+					"type": "string",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 715827882
+				},
+				"mianid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"fromdatarouteid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"fromdbserverid": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"hadresolveexceptionnum": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 19,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"machinednum": {
+					"type": "number",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"employnums": {
+					"type": "integer",
+					"format": "int64",
+					"allowEmptyValue": true,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				}
+			},
+			"title": "ProductstocksSearch"
+		},
+		"School": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "integer",
+					"format": "int64",
+					"description": "id",
+					"allowEmptyValue": false,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"name": {
+					"type": "string",
+					"description": "名称",
+					"allowEmptyValue": false,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"address": {
+					"type": "string",
+					"description": "地址",
+					"allowEmptyValue": false,
+					"minLength": 0,
+					"maxLength": 500
+				},
+				"remark": {
+					"type": "string",
+					"description": "备注",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 500
+				},
+				"createdate": {
 					"type": "string",
 					"format": "date-time",
 					"description": "创建日期",
-					"allowEmptyValue": true
+					"allowEmptyValue": false
 				},
-				"updateUser": {
+				"createby": {
 					"type": "string",
-					"description": "修改用户ID",
-					"allowEmptyValue": true,
+					"description": "创建人",
+					"allowEmptyValue": false,
 					"minLength": 0,
-					"maxLength": 10
+					"maxLength": 50
 				},
-				"updateDate": {
+				"updatedate": {
 					"type": "string",
 					"format": "date-time",
 					"description": "修改日期",
 					"allowEmptyValue": true
+				},
+				"updateby": {
+					"type": "string",
+					"description": "修改人",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
 				}
 			},
-			"title": "UserSearch",
-			"description": "用户"
+			"title": "School",
+			"description": "学校"
+		},
+		"SchoolList": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "integer",
+					"format": "int64",
+					"description": "id",
+					"allowEmptyValue": false,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"name": {
+					"type": "string",
+					"description": "名称",
+					"allowEmptyValue": false,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"address": {
+					"type": "string",
+					"description": "地址",
+					"allowEmptyValue": false,
+					"minLength": 0,
+					"maxLength": 500
+				},
+				"remark": {
+					"type": "string",
+					"description": "备注",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 500
+				},
+				"createdate": {
+					"type": "string",
+					"format": "date-time",
+					"description": "创建日期",
+					"allowEmptyValue": false
+				},
+				"createby": {
+					"type": "string",
+					"description": "创建人",
+					"allowEmptyValue": false,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"updatedate": {
+					"type": "string",
+					"format": "date-time",
+					"description": "修改日期",
+					"allowEmptyValue": true
+				},
+				"updateby": {
+					"type": "string",
+					"description": "修改人",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				}
+			},
+			"title": "SchoolList",
+			"description": "学校"
+		},
+		"SchoolSearch": {
+			"type": "object",
+			"properties": {
+				"createdateFrom": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"createdateTo": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"updatedateFrom": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"updatedateTo": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"name": {
+					"type": "string",
+					"description": "名称",
+					"allowEmptyValue": false,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"address": {
+					"type": "string",
+					"description": "地址",
+					"allowEmptyValue": false,
+					"minLength": 0,
+					"maxLength": 500
+				},
+				"remark": {
+					"type": "string",
+					"description": "备注",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 500
+				},
+				"createdate": {
+					"type": "string",
+					"format": "date-time",
+					"description": "创建日期",
+					"allowEmptyValue": false
+				},
+				"createby": {
+					"type": "string",
+					"description": "创建人",
+					"allowEmptyValue": false,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"updatedate": {
+					"type": "string",
+					"format": "date-time",
+					"description": "修改日期",
+					"allowEmptyValue": true
+				},
+				"updateby": {
+					"type": "string",
+					"description": "修改人",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				}
+			},
+			"title": "SchoolSearch"
+		},
+		"Student": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "integer",
+					"format": "int64",
+					"description": "id",
+					"allowEmptyValue": false,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"name": {
+					"type": "string",
+					"description": "名称",
+					"allowEmptyValue": false,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"age": {
+					"type": "integer",
+					"format": "int32",
+					"description": "年龄",
+					"allowEmptyValue": false,
+					"minimum": 0,
+					"maximum": 4,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"schoolId": {
+					"type": "integer",
+					"format": "int64",
+					"description": "学校",
+					"allowEmptyValue": false,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"remark": {
+					"type": "string",
+					"description": "备注",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 500
+				},
+				"createdate": {
+					"type": "string",
+					"format": "date-time",
+					"description": "创建日期",
+					"allowEmptyValue": false
+				},
+				"createby": {
+					"type": "string",
+					"description": "创建人",
+					"allowEmptyValue": false,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"updatedate": {
+					"type": "string",
+					"format": "date-time",
+					"description": "修改日期",
+					"allowEmptyValue": true
+				},
+				"updateby": {
+					"type": "string",
+					"description": "修改人",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				}
+			},
+			"title": "Student",
+			"description": "学生"
+		},
+		"StudentList": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "integer",
+					"format": "int64",
+					"description": "id",
+					"allowEmptyValue": false,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"name": {
+					"type": "string",
+					"description": "名称",
+					"allowEmptyValue": false,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"age": {
+					"type": "integer",
+					"format": "int32",
+					"description": "年龄",
+					"allowEmptyValue": false,
+					"minimum": 0,
+					"maximum": 4,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"schoolId": {
+					"type": "integer",
+					"format": "int64",
+					"description": "学校",
+					"allowEmptyValue": false,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"remark": {
+					"type": "string",
+					"description": "备注",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 500
+				},
+				"createdate": {
+					"type": "string",
+					"format": "date-time",
+					"description": "创建日期",
+					"allowEmptyValue": false
+				},
+				"createby": {
+					"type": "string",
+					"description": "创建人",
+					"allowEmptyValue": false,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"updatedate": {
+					"type": "string",
+					"format": "date-time",
+					"description": "修改日期",
+					"allowEmptyValue": true
+				},
+				"updateby": {
+					"type": "string",
+					"description": "修改人",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				}
+			},
+			"title": "StudentList",
+			"description": "学生"
+		},
+		"StudentSearch": {
+			"type": "object",
+			"properties": {
+				"createdateFrom": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"createdateTo": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"updatedateFrom": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"updatedateTo": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"name": {
+					"type": "string",
+					"description": "名称",
+					"allowEmptyValue": false,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"age": {
+					"type": "integer",
+					"format": "int32",
+					"description": "年龄",
+					"allowEmptyValue": false,
+					"minimum": 0,
+					"maximum": 4,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"schoolId": {
+					"type": "integer",
+					"format": "int64",
+					"description": "学校",
+					"allowEmptyValue": false,
+					"minimum": 0,
+					"maximum": 20,
+					"exclusiveMinimum": false,
+					"exclusiveMaximum": false
+				},
+				"remark": {
+					"type": "string",
+					"description": "备注",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 500
+				},
+				"createdate": {
+					"type": "string",
+					"format": "date-time",
+					"description": "创建日期",
+					"allowEmptyValue": false
+				},
+				"createby": {
+					"type": "string",
+					"description": "创建人",
+					"allowEmptyValue": false,
+					"minLength": 0,
+					"maxLength": 50
+				},
+				"updatedate": {
+					"type": "string",
+					"format": "date-time",
+					"description": "修改日期",
+					"allowEmptyValue": true
+				},
+				"updateby": {
+					"type": "string",
+					"description": "修改人",
+					"allowEmptyValue": true,
+					"minLength": 0,
+					"maxLength": 50
+				}
+			},
+			"title": "StudentSearch"
 		}
 	}
 }

@@ -60,6 +60,9 @@ module.exports = class {
          * 模板文件列表
          */
         this.templates = [];
+        /** 删除的列表 */
+        this.deleteList = [];
+        this.deleteTime = new Date().getTime();
         /**
          * 初始化配置
          */
@@ -97,54 +100,59 @@ module.exports = class {
      * 创建组件
      * @param {*} fsPath 
      */
-    async create(component) {
-        const spinner = ora('Create ' + this.componentName).start();
+    async create(components) {
+        // const spinner = ora('Create Components').start();
         try {
-            this.componentName = component.containers.containersName;
+            // this.componentName = component.containers.containersName;
             // console.log(JSON.stringify(component.containers, null, 4));
-            // 过滤
-            if (!this.componentName) {
-                throw "组件名称不能为空";
+            // 清空目录
+            fs.readdirSync(this.temporaryPath).map(dir => {
+                fsExtra.removeSync(path.join(this.temporaryPath, dir));
+            });
+            this.deleteList = [];
+            // 创建成功的组件
+            const successList = [];
+            for (let index = 0, length = components.length; index < length; index++) {
+                const component = components[index];
+                try {
+                    const fsPath = path.join(this.containersPath, component.componentName);
+                    // 创建临时文件
+                    const temporaryPath = path.join(this.temporaryPath, component.componentName);
+                    // 模板服务
+                    const analysis = new templateServer(temporaryPath);
+                    this.mkdirSync(temporaryPath);
+                    // spinner.text = 'Create template';
+                    this.createTemporary(component.template, temporaryPath);
+                    // 写入配置文件。
+                    // spinner.text = 'Create pageConfig';
+                    fsExtra.writeJsonSync(path.join(temporaryPath, "pageConfig.json"), component, { spaces: 4 });
+                    // spinner.text = 'analysis template';
+                    await analysis.render();
+                    successList.push(component);
+                    log.success("创建成功 " + component.componentName);
+                    // 创建目录
+                    this.mkdirSync(fsPath);
+                    // 拷贝生成组件
+                    this.copy(temporaryPath, fsPath);
+                    // 删除临时文件
+                    fsExtra.removeSync(temporaryPath);
+                } catch (error) {
+                    log.error("创建失败 ", component.componentName);
+                    log.error("error-", error);
+                }
             }
-            // 组件目录不不存在 直接退出。
-            if (!this.fsExistsSync(this.containersPath)) {
-                throw "组件目录不存在 " + this.wtmfrontConfig.containers;
-            }
-            if (fs.readdirSync(this.containersPath).some(x => x == this.componentName)) {
-                throw "组件已经存在 " + this.componentName;
-            }
-            const fsPath = path.join(this.containersPath, this.componentName);
-            // 创建临时文件
-            const temporaryPath = path.join(this.temporaryPath, this.componentName);
-            // 模板服务
-            const analysis = new templateServer(temporaryPath);
-            this.mkdirSync(temporaryPath);
-            spinner.text = 'Create template';
-            this.createTemporary(component.containers.template, temporaryPath);
-            // 写入配置文件。
-            spinner.text = 'Create pageConfig';
-            fsExtra.writeJsonSync(path.join(temporaryPath, "pageConfig.json"), component.model, { spaces: 4 });
-            spinner.text = 'analysis template';
-             await analysis.render();
-            // return
-            // 创建目录
-            this.mkdirSync(fsPath);
-            // 拷贝生成组件
-            this.copy(temporaryPath, fsPath);
-            spinner.text = 'writeRouters';
             // 写入路由
-            this.writeRouters(component.containers, 'add');
+            this.writeRouters(successList, 'add');
             // 生成导出
             this.writeContainers();
-            // 删除临时文件
-            fsExtra.removeSync(temporaryPath);
             //  修改 页面配置 模型
             log.success("create " + this.componentName);
+            // spinner.text = 'writeRouters';
         } catch (error) {
             log.error("error", error);
             throw error
         } finally {
-            spinner.stop();
+            // spinner.stop();
         }
 
     }
@@ -181,16 +189,21 @@ module.exports = class {
      */
     delete(componentName) {
         try {
+            // 防止操作太快。
+            if (new Date().getTime() - this.deleteTime <= 3000) {
+                throw "操作太快,请等待3秒后再试"
+            }
+            this.deleteTime = new Date().getTime();
+            this.deleteList.push(componentName);
+            this.writeContainers(componentName);
+            // setTimeout(() => {
             fsExtra.removeSync(path.join(this.containersPath, componentName));
             this.writeRouters(componentName, 'delete');
+            log.success("delete " + componentName);
+            // });
         } catch (error) {
             log.error("delete ", error);
-        }
-        finally {
-            setTimeout(() => {
-                this.writeContainers();
-            }, 500);
-            log.success("delete " + componentName);
+            throw error
         }
     }
     /**
@@ -233,25 +246,27 @@ module.exports = class {
     }
     /**
      * 写入路由  菜单
-     * @param {*} component 
+     * @param {*} components 
      */
-    writeRouters(component, type = 'add') {
+    writeRouters(components, type = 'add') {
         if (this.exists(this.subMenuPath)) {
             // 读取路由json
             let routers = this.readJSON();
             if (type == 'add') {
-                routers.subMenu.push({
-                    "Key": this.guid(),//唯一标识
-                    "Name": component.menuName || component.containersName,//菜单名称
-                    "Icon": "menu-fold",//图标
-                    "Path": `/${component.containersName}`,//路径
-                    "Component": component.containersName,//组件
-                    "Action": [],//操作
-                    "Children": []//子菜单
-                });
+                components.map(component => {
+                    routers.subMenu.push({
+                        "Key": component.key,//唯一标识
+                        "Name": component.menuName,//菜单名称
+                        "Icon": component.icon,//图标
+                        "Path": `/${component.componentName}`,//路径
+                        "Component": component.componentName,//组件
+                        "Action": Object.keys(component.actions),//操作
+                        "Children": []//子菜单
+                    });
+                })
             } else {
                 // 删除
-                const index = routers.subMenu.findIndex(x => x.Component == component);
+                const index = routers.subMenu.findIndex(x => x.Component == components);
                 if (index != -1) {
                     routers.subMenu.splice(index, 1);
                 }
@@ -260,7 +275,7 @@ module.exports = class {
             // 写入json
             // editorFs.writeJSON(path.join(this.contextRoot, "src", "app", "a.json"), routers);
             fsExtra.writeJsonSync(this.subMenuPath, routers, { spaces: 4 });
-            log.success("writeRouters " + type, JSON.stringify(component, null, 4));
+            // log.success("writeRouters " + type, JSON.stringify(components, null, 4));
         } else {
             log.error("没有找到对应的路由JSON文件");
         }
@@ -277,7 +292,7 @@ module.exports = class {
     /**
      * 写入组件导出
      */
-    writeContainers() {
+    writeContainers(componentName) {
         // 获取所有组件，空目录排除
         const containersDir = this.getContainersDir();
         // import 列表
@@ -286,12 +301,19 @@ module.exports = class {
         //     + containersDir.join(",\n    ") +
         //     '\n}')
         // fs.writeFileSync(path.join(this.containersPath, "index.ts"), importList.join("\n"));
-        let importList = containersDir.map(x => `${x}: () => import('./${x}').then(x => x.default)`);
+        let importList = containersDir.filter(component => {
+            if (component == componentName || this.deleteList.some(x => component == x)) {
+                return false;
+            }
+            return true;
+        }).map(component => {
+            return `${component}: () => import('./${component}').then(x => x.default)`
+        });
         fs.writeFileSync(path.join(this.containersPath, "index.ts"), 'export default {\n    '
             + importList.join(",\n    ") +
             '\n}'
         );
-        log.success("writeContainers");
+        // log.success("writeContainers");
     }
     /**
      * 获取组件列表
